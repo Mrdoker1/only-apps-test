@@ -64,6 +64,8 @@
   margin-left: -791px; /* frame x: -71 */
   animation-duration: 34s;
   animation-direction: reverse;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
 }
 
 .page__glow--right {
@@ -71,6 +73,14 @@
   width: 677px;
   height: 508px;
   margin-left: 43px; /* frame x: 763 */
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 32%),
+    linear-gradient(180deg, #000 55%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 32%),
+    linear-gradient(180deg, #000 55%, transparent 100%);
+  mask-composite: intersect;
 }
 
 /* The halo SVG bleeds 200px past its 396px node box on every side. */
