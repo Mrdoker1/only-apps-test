@@ -62,9 +62,18 @@ a {
   color: #fff;
 }
 
+/*
+ * The page scrollbar carries the brand accent; scroll areas inside the UI keep
+ * the quiet 4px bar from the design spec.
+ */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 255, 0, 0.5) transparent;
+}
+
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -72,12 +81,38 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(200, 255, 0, 0.45);
+  background-clip: content-box;
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background-color: var(--lime);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.popover {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.popover::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.popover::-webkit-scrollbar-thumb {
+  border: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  background-clip: border-box;
+}
+
+.popover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.18);
 }
 
 /* Shared primitives ------------------------------------------------------ */

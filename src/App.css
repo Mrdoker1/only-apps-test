@@ -42,7 +42,6 @@
   mix-blend-mode: lighten;
   opacity: 0.5;
   pointer-events: none;
-  transition: transform 500ms var(--ease-out);
   animation: glow-drift 26s ease-in-out infinite;
 }
 
@@ -63,7 +62,6 @@
 .page__glow--left {
   top: 758px;
   margin-left: -791px; /* frame x: -71 */
-  transform: translate3d(calc(var(--par-x) * 0.7), calc(var(--par-y) * 0.7), 0);
   animation-duration: 34s;
   animation-direction: reverse;
 }
@@ -73,7 +71,6 @@
   width: 677px;
   height: 508px;
   margin-left: 43px; /* frame x: 763 */
-  transform: translate3d(calc(var(--par-x) * -0.45), calc(var(--par-y) * -0.45), 0);
 }
 
 /* The halo SVG bleeds 200px past its 396px node box on every side. */
@@ -86,8 +83,6 @@
   margin-left: -541px; /* frame x: 379, minus the bleed */
   background: url('./assets/img/ellipse-glow.svg') center / contain no-repeat;
   pointer-events: none;
-  transform: translate3d(calc(var(--par-x) * 0.3), calc(var(--par-y) * 0.3), 0);
-  transition: transform 500ms var(--ease-out);
   animation: halo-breathe 18s ease-in-out infinite;
 }
 
