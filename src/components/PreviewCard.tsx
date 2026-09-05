@@ -51,7 +51,10 @@ export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
           </div>
           <span className="eyebrow preview__count" aria-live="polite">
             <span className="eyebrow__dot" aria-hidden />
-            {isGenerating ? 'Working…' : `${count} generated`}
+            <span className="preview__count-swap">
+              <span className={isGenerating ? 'is-on' : undefined}>Working…</span>
+              <span className={isGenerating ? undefined : 'is-on'}>{count} generated</span>
+            </span>
           </span>
         </div>
 
