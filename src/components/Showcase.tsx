@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import { handlePointerGlow } from '../hooks/usePointerGlow';
 import badgeVideo from '../assets/icons/badge-video.svg';
@@ -54,7 +55,7 @@ const CARDS: Card[] = [
   },
 ];
 
-export function Showcase() {
+export const Showcase = memo(function Showcase() {
   const reveal = useReveal<HTMLElement>();
 
   return (
@@ -100,4 +101,4 @@ export function Showcase() {
       </div>
     </section>
   );
-}
+});

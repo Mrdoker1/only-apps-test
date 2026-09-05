@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { memo } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import youtube from '../assets/img/logo-youtube.svg';
 import tiktok from '../assets/img/logo-tiktok.svg';
@@ -18,7 +19,7 @@ const LOGOS = [
   { src: linkedin, name: 'LinkedIn', width: 111, desktopOnly: true },
 ];
 
-export function TrustedBy() {
+export const TrustedBy = memo(function TrustedBy() {
   const reveal = useReveal<HTMLElement>();
 
   return (
@@ -37,4 +38,4 @@ export function TrustedBy() {
       </div>
     </section>
   );
-}
+});
