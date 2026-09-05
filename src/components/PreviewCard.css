@@ -12,6 +12,21 @@
   overflow: clip;
 }
 
+.preview.reveal--in {
+  animation: card-in-right 700ms var(--ease-expo) both;
+}
+
+@keyframes card-in-right {
+  from {
+    opacity: 0;
+    transform: translate3d(28px, 16px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .preview__body {
   display: flex;
   flex: 0 0 auto;
@@ -69,6 +84,10 @@
   line-height: 24px;
 }
 
+.preview__count--busy img {
+  animation: blink-dot 1.4s ease-in-out infinite;
+}
+
 .preview__count {
   display: inline-flex;
   flex-shrink: 0;
@@ -96,6 +115,33 @@
   border: 2px solid transparent;
   border-radius: var(--r-lg);
   overflow: hidden;
+  cursor: pointer;
+  transition: border-color var(--t-surface) ease-out, transform var(--t-surface) ease-out;
+}
+
+.preview__thumb:hover {
+  border-color: rgba(200, 255, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+.preview__thumb img {
+  transition: transform var(--t-surface) ease-out;
+}
+
+.preview__thumb:hover img {
+  transform: scale(1.04);
+}
+
+/* Skeleton keeps the grid geometry while variants are generating. */
+.preview__thumb--skeleton {
+  background: var(--surface-elevated, #242632);
+  cursor: default;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.preview__thumb--skeleton:hover {
+  border-color: transparent;
+  transform: none;
 }
 
 .preview__thumb--selected {
@@ -107,6 +153,37 @@
   height: 100%;
   border-radius: 14px;
   object-fit: cover;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* Marks the active result. */
+.preview__thumb-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border: 1px solid rgba(200, 255, 0, 0.22);
+  border-radius: var(--r-pill);
+  background: rgba(10, 17, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: var(--lime);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.preview__thumb--selected .preview__thumb-badge {
+  opacity: 1;
+}
+
+.preview__skeleton {
+  aspect-ratio: 263.5 / 177.5;
+  border-radius: var(--r-lg);
+  background: #242632;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
 .preview__actions {
@@ -116,6 +193,10 @@
 
 .preview__action {
   display: flex;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
   flex: 1 1 0;
   min-width: 0;
   align-items: center;
@@ -132,12 +213,56 @@
   white-space: nowrap;
 }
 
+.preview__action {
+  cursor: pointer;
+  transition: background-color var(--t-state) ease-out, border-color var(--t-state) ease-out,
+    transform var(--t-state) ease-out;
+}
+
+.preview__action:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
 .preview__action--solid {
   background: #35383c;
 }
 
+.preview__action--solid:hover:not(:disabled) {
+  background: #43464b;
+  transform: translateY(-1px);
+}
+
+.preview__action--ghost:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
 .preview__action--ghost {
   border: 1px solid var(--line-strong);
+}
+
+.preview__action--solid:hover:not(:disabled) {
+  background: #43464b;
+}
+
+.preview__action--ghost:hover:not(:disabled) {
+  border-color: var(--line-hover);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.preview__action:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.preview__action:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.preview__action:disabled {
+  cursor: default;
+  opacity: 0.45;
 }
 
 .preview__rule {
@@ -168,13 +293,16 @@
   letter-spacing: -0.325px;
 }
 
-@media (max-width: 1023px) {
-  /* Column flex: keep the content-based height instead of a 0 basis. */
+@media (max-width: 1279px) {
+  /* Stacked column: keep the content height instead of a 0 flex basis. */
   .preview {
     flex: 0 0 auto;
+    width: 100%;
     min-height: auto;
   }
+}
 
+@media (max-width: 1023px) {
   .preview__body {
     gap: 24px;
     padding: 32px 16px;
@@ -196,6 +324,33 @@
 
   .preview__count {
     display: none;
+  }
+
+  /* Marks the active result. */
+.preview__thumb-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border: 1px solid rgba(200, 255, 0, 0.22);
+  border-radius: var(--r-pill);
+  background: rgba(10, 17, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: var(--lime);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.preview__thumb--selected .preview__thumb-badge {
+  opacity: 1;
+}
+
+.preview__skeleton {
+    aspect-ratio: 178 / 109;
   }
 
   .preview__thumb {

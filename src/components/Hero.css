@@ -16,9 +16,112 @@
   text-align: center;
 }
 
+/* The headline types itself in, character by character. */
+.hero__title {
+  display: inline-flex;
+  white-space: pre;
+}
+
+.hero__char {
+  display: inline-block;
+  animation: char-in 450ms var(--ease-expo) both;
+}
+
+@keyframes char-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em) rotateX(-50deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .hero__script {
+  display: block;
+  flex-shrink: 0;
   width: 297px;
+}
+
+.hero__script svg {
+  width: 100%;
   height: auto;
+}
+
+/*
+ * Handwriting: every stroke is revealed by a left-to-right wipe over its own
+ * bounding box, staggered in writing order — "Create", then the W of
+ * "Without", the rest of the word, its dot, the L of "Limits", and so on,
+ * with the underline swash drawn last.
+ */
+.hero__script path {
+  animation: script-write 1ms var(--ease-out) both;
+}
+
+@keyframes script-write {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 -1px 0 0);
+  }
+}
+
+.hero__script path:nth-child(1) {
+  animation-duration: 620ms;
+  animation-delay: 500ms;
+}
+
+.hero__script path:nth-child(4) {
+  animation-duration: 220ms;
+  animation-delay: 1080ms;
+}
+
+.hero__script path:nth-child(2) {
+  animation-duration: 420ms;
+  animation-delay: 1280ms;
+}
+
+.hero__script path:nth-child(8) {
+  animation-duration: 100ms;
+  animation-delay: 1680ms;
+}
+
+.hero__script path:nth-child(6) {
+  animation-duration: 260ms;
+  animation-delay: 1740ms;
+}
+
+.hero__script path:nth-child(3) {
+  animation-duration: 420ms;
+  animation-delay: 1980ms;
+}
+
+.hero__script path:nth-child(7) {
+  animation-duration: 100ms;
+  animation-delay: 2360ms;
+}
+
+.hero__script path:nth-child(9) {
+  animation-duration: 100ms;
+  animation-delay: 2440ms;
+}
+
+.hero__script path:nth-child(5) {
+  animation-duration: 380ms;
+  animation-delay: 2520ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__script path {
+    animation: none;
+    clip-path: none;
+  }
+
+  .hero__char {
+    animation: none;
+  }
 }
 
 @media (max-width: 1023px) {

@@ -1,3 +1,4 @@
+import { useReveal } from '../hooks/useReveal';
 import badgeVideo from '../assets/icons/badge-video.svg';
 import badgeCore from '../assets/icons/badge-core.svg';
 import badgeImage from '../assets/icons/badge-image.svg';
@@ -53,8 +54,10 @@ const CARDS: Card[] = [
 ];
 
 export function Showcase() {
+  const reveal = useReveal<HTMLElement>();
+
   return (
-    <section className="showcase">
+    <section className={`showcase ${reveal.className}`} ref={reveal.ref}>
       <header className="showcase__header">
         <span className="eyebrow">
           <span className="eyebrow__dot" aria-hidden />
@@ -67,8 +70,13 @@ export function Showcase() {
       </header>
 
       <div className="showcase__cards">
-        {CARDS.map((card) => (
-          <a className="showcase__card" key={card.id} href={`#${card.id}`}>
+        {CARDS.map((card, index) => (
+          <a
+            className="showcase__card"
+            key={card.id}
+            href={`#${card.id}`}
+            style={{ transitionDelay: `${index * 40}ms` }}
+          >
             <img className="showcase__card-image" src={card.image} alt="" />
             <span className="showcase__card-scrim" aria-hidden />
 

@@ -1,0 +1,105 @@
+.popover {
+  position: fixed;
+  z-index: var(--z-overlay);
+  max-width: calc(100vw - 16px);
+  max-height: 384px;
+  padding: 8px;
+  border: 1px solid var(--popover-border);
+  border-radius: var(--r-md);
+  background: var(--popover);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.9);
+  overflow-y: auto;
+  animation: popover-in var(--t-state) ease-out;
+}
+
+.popover:focus {
+  outline: none;
+}
+
+.popover[data-side='top'] {
+  --popover-from: 8px;
+}
+
+.popover__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 280px;
+}
+
+.popover__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+  color: rgba(235, 238, 249, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color var(--t-state) ease-out, color var(--t-state) ease-out,
+    background-color var(--t-state) ease-out;
+}
+
+.popover__option:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(235, 238, 249, 0.9);
+}
+
+.popover__option[aria-pressed='true'] {
+  border-color: rgba(200, 255, 0, 0.59);
+  background: rgba(200, 255, 0, 0.26);
+  color: var(--lime);
+  font-weight: 600;
+}
+
+/* Mini frame preview for the aspect-ratio options. */
+.popover__ratio {
+  flex-shrink: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+.popover__stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px;
+}
+
+.popover__step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-pill);
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1;
+  transition: background-color var(--t-state) ease-out, border-color var(--t-state) ease-out;
+}
+
+.popover__step:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.popover__step:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.popover__step-value {
+  min-width: 32px;
+  text-align: center;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

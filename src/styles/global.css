@@ -11,6 +11,14 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
+  /* Never overflow:hidden on body — it breaks iOS scrolling. */
+  overflow-x: clip;
+}
+
+/* Never overflow:hidden on body — it breaks iOS scrolling. */
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
@@ -18,9 +26,12 @@ body {
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'rlig' 1, 'calt' 1;
 }
 
-img {
+img,
+svg,
+video {
   display: block;
   max-width: 100%;
 }
@@ -37,6 +48,36 @@ button {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* The focus ring is never removed — 2px Volt at a 2px offset. */
+:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+::selection {
+  background: rgba(200, 255, 0, 0.25);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* Shared primitives ------------------------------------------------------ */
@@ -63,6 +104,7 @@ a {
   border-radius: var(--r-pill);
   background: var(--lime);
   box-shadow: 0 0 8px 0 var(--lime);
+  animation: blink-dot 2s ease-in-out infinite;
 }
 
 .btn-lime {
@@ -76,6 +118,26 @@ a {
   color: var(--lime-ink);
   filter: drop-shadow(var(--glow-lime));
   box-shadow: var(--inset-top);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    filter var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.btn-lime:hover:not(:disabled) {
+  background: #d8ff44;
+  filter: drop-shadow(var(--glow-lime)) brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-lime:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-lime:disabled {
+  cursor: default;
+  opacity: 0.45;
+  transform: none;
 }
 
 .section-title {
@@ -99,4 +161,247 @@ a {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Motion ----------------------------------------------------------------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes blink-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes glow-volt-pulse {
+  0%,
+  100% {
+    box-shadow: var(--inset-top), 0 0 20px rgba(200, 255, 0, 0.25);
+  }
+  50% {
+    box-shadow: var(--inset-top), 0 0 32px rgba(200, 255, 0, 0.42);
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scroll reveal: blocks start hidden and fade up once they enter view. */
+.reveal {
+  opacity: 0;
+}
+
+.reveal--in {
+  animation: fade-up var(--dur-reveal) var(--ease-expo) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+  }
+}
+
+/* Coarse pointers get a 44px minimum touch target. */
+@media (pointer: coarse) {
+  button,
+  a[href],
+  [role='button'],
+  [role='tab'],
+  [role='option'] {
+    min-height: 44px;
+  }
+}
+
+/* Motion ----------------------------------------------------------------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes glow-volt-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 20px rgba(200, 255, 0, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 32px rgba(200, 255, 0, 0.42));
+  }
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(var(--popover-from, -8px));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Blocks fade up once they scroll into view. */
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: fade-up var(--t-reveal) var(--ease-out) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Focus ------------------------------------------------------------------ */
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--lime);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--lime);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Scrollbar -------------------------------------------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Interaction primitives ------------------------------------------------- */
+
+.btn-lime {
+  transition: background-color var(--t-state) ease-out, filter var(--t-state) ease-out,
+    transform var(--t-state) ease-out;
+}
+
+.btn-lime:hover {
+  background: #d8ff44;
+  filter: drop-shadow(0 0 28px rgba(200, 255, 0, 0.32)) brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn-lime:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+  }
 }

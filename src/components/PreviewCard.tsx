@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 import bulbSprite from '../assets/img/bulb-sprite.png';
 import dot from '../assets/icons/dot.svg';
 import downloadIcon from '../assets/icons/download.svg';
@@ -16,9 +18,23 @@ const THUMBNAILS = [
   { src: thumb4, alt: 'Thumbnail variant “Good boy mode”' },
 ];
 
-export function PreviewCard() {
+type PreviewCardProps = {
+  count: number;
+  runId: number;
+  isGenerating: boolean;
+};
+
+export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
+  const [selected, setSelected] = useState(0);
+  const reveal = useReveal<HTMLElement>(80);
+
+  // A fresh run always highlights the first result.
+  useEffect(() => setSelected(0), [runId]);
+
+  const shown = THUMBNAILS.slice(0, count);
+
   return (
-    <section className="preview">
+    <section className={`preview ${reveal.className}`} ref={reveal.ref} style={reveal.style}>
       <div className="preview__body">
         <div className="preview__head">
           <span className="preview__mark" aria-hidden>
@@ -28,31 +44,39 @@ export function PreviewCard() {
             <h2 className="preview__title">Preview</h2>
             <p className="preview__subtitle">Choose the one that works best.</p>
           </div>
-          <span className="preview__count">
+          <span className="preview__count" aria-live="polite">
             <img src={dot} alt="" width={10} height={10} />
-            4 generated
+            {isGenerating ? 'Working…' : `${count} generated`}
           </span>
         </div>
 
         <div className="preview__grid">
-          {THUMBNAILS.map((thumb, index) => (
-            <button
-              className={`preview__thumb${index === 0 ? ' preview__thumb--selected' : ''}`}
-              key={thumb.src}
-              type="button"
-              aria-pressed={index === 0}
-            >
-              <img src={thumb.src} alt={thumb.alt} />
-            </button>
-          ))}
+          {isGenerating
+            ? Array.from({ length: count }, (_, index) => (
+                <span className="preview__skeleton" key={index} aria-hidden />
+              ))
+            : shown.map((thumb, index) => (
+                <button
+                  className={`preview__thumb${index === selected ? ' preview__thumb--selected' : ''}`}
+                  key={thumb.src}
+                  type="button"
+                  aria-pressed={index === selected}
+                  onClick={() => setSelected(index)}
+                >
+                  <img src={thumb.src} alt={thumb.alt} />
+                  <span className="preview__thumb-badge" aria-hidden>
+                    Selected
+                  </span>
+                </button>
+              ))}
         </div>
 
         <div className="preview__actions">
-          <button className="preview__action preview__action--solid" type="button">
+          <button className="preview__action preview__action--solid" type="button" disabled={isGenerating}>
             <img src={downloadIcon} alt="" width={18} height={18} />
             Download all
           </button>
-          <button className="preview__action preview__action--ghost" type="button">
+          <button className="preview__action preview__action--ghost" type="button" disabled={isGenerating}>
             <img src={editIcon} alt="" width={18} height={18} />
             Edit &amp; Refine
           </button>

@@ -65,6 +65,18 @@
   padding: 32px 96px;
 }
 
+/*
+ * Two 609px cards only fit from ~1280px up. Below that the workspace stacks
+ * and is capped so the cards do not stretch across a tablet.
+ */
+@media (max-width: 1279px) {
+  .page__workspace {
+    flex-direction: column;
+    align-items: center;
+    max-width: 768px;
+  }
+}
+
 @media (max-width: 1023px) {
   .page {
     padding-bottom: 24px;
@@ -99,8 +111,8 @@
   }
 
   .page__workspace {
-    flex-direction: column;
     gap: 24px;
+    max-width: none;
     padding: 24px 24px 0;
   }
 }

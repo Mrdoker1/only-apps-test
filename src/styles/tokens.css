@@ -11,6 +11,7 @@
   --surface-card: #13141b;
   --surface-soft: rgba(255, 255, 255, 0.04);
   --surface-faint: rgba(255, 255, 255, 0.02);
+  --surface-elevated: #242632;
 
   /* Text */
   --text-primary: #ebeef9;
@@ -37,8 +38,34 @@
 
   /* Effects */
   --glow-lime: 0 0 10px rgba(200, 255, 0, 0.22);
+  --glow-volt: 0 0 20px rgba(200, 255, 0, 0.25), 0 0 60px rgba(200, 255, 0, 0.08);
   --inset-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+
+  /* Motion — durations and easings from the design system */
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-page: 300ms;
+  --dur-reveal: 500ms;
+  --ease-out: ease-out;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Surfaces for overlays */
+  --popover: #191b24;
+  --line-hover: rgba(255, 255, 255, 0.15);
 
   /* Layout */
   --page-max: 1440px;
+
+  /* Motion — durations and easings from the design spec */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-state: 150ms;
+  --t-surface: 200ms;
+  --t-page: 300ms;
+  --t-reveal: 500ms;
+
+  /* Popover surfaces */
+  --popover: #191b24;
+  --popover-border: rgba(255, 255, 255, 0.1);
+  --popover-item-hover: rgba(255, 255, 255, 0.06);
+  --z-overlay: 50;
 }

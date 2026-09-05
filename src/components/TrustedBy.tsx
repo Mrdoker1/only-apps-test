@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useReveal } from '../hooks/useReveal';
 import youtube from '../assets/img/logo-youtube.svg';
 import tiktok from '../assets/img/logo-tiktok.svg';
 import instagram from '../assets/img/logo-instagram.svg';
@@ -18,8 +19,10 @@ const LOGOS = [
 ];
 
 export function TrustedBy() {
+  const reveal = useReveal<HTMLElement>();
+
   return (
-    <section className="trusted">
+    <section className={`trusted ${reveal.className}`} ref={reveal.ref}>
       <h2 className="trusted__label">Trusted by creators</h2>
       <div className="trusted__logos">
         {LOGOS.map((logo) => (

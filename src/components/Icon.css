@@ -1,0 +1,22 @@
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * A CSS property beats an SVG presentation attribute, so this recolours the
+ * exported artwork without touching the files. `fill="none"` is left alone so
+ * stroke-only icons keep their shape.
+ */
+.icon svg [fill]:not([fill='none']) {
+  fill: currentColor;
+}
+
+.icon svg [stroke]:not([stroke='none']) {
+  stroke: currentColor;
+}

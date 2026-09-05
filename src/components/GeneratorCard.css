@@ -10,7 +10,55 @@
   border-radius: var(--r-2xl);
   background: rgba(16, 16, 16, 0.2);
   backdrop-filter: blur(50px);
+}
+
+.generator__art {
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
   overflow: clip;
+  pointer-events: none;
+}
+
+/*
+ * A highlight travels around the lime border. The conic gradient is masked to
+ * a 2px ring so only the outline lights up.
+ */
+@property --beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.generator::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  border-radius: var(--r-2xl);
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg 250deg,
+    rgba(200, 255, 0, 0.5) 300deg,
+    #f4ffd0 335deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: border-beam 5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes border-beam {
+  to {
+    --beam-angle: 360deg;
+  }
 }
 
 .generator__bg {
@@ -34,13 +82,62 @@
   pointer-events: none;
 }
 
+.generator__bulb::after {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 255, 0, 0.5) 0%, rgba(200, 255, 0, 0) 65%);
+  filter: blur(14px);
+  animation: bulb-glow 3s ease-in-out infinite;
+}
+
+@keyframes bulb-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
 .generator__bulb img {
+  animation: bulb-brighten 3s ease-in-out infinite;
   position: absolute;
   top: -22.53%;
   left: -276.91%;
   width: 382.09%;
   height: 254.73%;
   max-width: none;
+}
+
+@keyframes bulb-brighten {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+/* The card slides in from the side it sits on. */
+.generator.reveal--in {
+  animation: card-in-left 700ms var(--ease-expo) both;
+}
+
+@keyframes card-in-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-28px, 16px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .generator__body {
@@ -99,6 +196,13 @@
 
 .generator__tab {
   display: flex;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+  transition: opacity var(--t-state) ease-out, border-color var(--t-state) ease-out,
+    color var(--t-state) ease-out;
   flex: 1 1 0;
   min-width: 0;
   align-items: center;
@@ -116,6 +220,11 @@
   opacity: 0.6;
 }
 
+.generator__tab:hover:not(.generator__tab--active) {
+  border-color: rgba(255, 255, 255, 0.16);
+  opacity: 0.85;
+}
+
 .generator__tab--active {
   border-color: var(--lime);
   color: var(--lime);
@@ -123,12 +232,32 @@
   opacity: 1;
 }
 
+/* Inactive tabs read as muted white, the active one picks up Volt. */
+.generator__tab .icon {
+  color: #fff;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.generator__tab--active .icon {
+  color: var(--lime);
+}
+
+.generator__upload .icon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .generator__tab-label--short {
   display: none;
 }
 
+.generator__tab:hover:not(.generator__tab--active) {
+  border-color: var(--line-hover);
+  opacity: 0.9;
+}
+
 .generator__prompt {
   display: flex;
+  transition: border-color var(--dur-fast) var(--ease-out);
   align-items: flex-end;
   gap: 12px;
   height: 120px;
@@ -162,6 +291,87 @@
   outline: none;
 }
 
+.generator__prompt:focus-within {
+  border-color: var(--line-hover);
+}
+
+/* Upload target used by the “From video” and “From image” tabs. */
+.generator__upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 120px;
+  padding: 16px;
+  border: 1px dashed var(--line-soft);
+  border-radius: var(--r-xl);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.generator__upload:hover,
+.generator__upload:focus-within {
+  border-color: var(--lime);
+}
+
+.generator__upload-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.generator__upload-hint {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.generator__prompt:focus-within {
+  border-color: rgba(200, 255, 0, 0.4);
+}
+
+/* Upload target for the "From video" and "From image" modes. */
+.generator__upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 120px;
+  padding: 16px;
+  border: 1px dashed var(--line-soft);
+  border-radius: var(--r-xl);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color var(--t-state) ease-out, background-color var(--t-state) ease-out;
+}
+
+.generator__upload:hover {
+  border-color: rgba(200, 255, 0, 0.45);
+  background: linear-gradient(0deg, rgba(200, 255, 0, 0.07) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.generator__upload:focus-within {
+  border-color: var(--lime);
+}
+
+.generator__upload-title {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.325px;
+}
+
+.generator__upload-hint {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
 .generator__prompt-action {
   display: flex;
   align-items: center;
@@ -170,6 +380,12 @@
   height: 44px;
   border-radius: var(--r-lg);
   background: var(--surface-soft);
+  transition: background-color var(--t-state) ease-out, transform var(--t-state) ease-out;
+}
+
+.generator__prompt-action:hover {
+  background: rgba(200, 255, 0, 0.14);
+  transform: translateY(-1px);
 }
 
 .generator__selects {
@@ -192,12 +408,17 @@
   color: var(--text-label);
 }
 
-.generator__field-label--short {
+.generator__field-label-short {
   display: none;
 }
 
 .generator__select {
   display: flex;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+  transition: border-color var(--t-state) ease-out, background-color var(--t-state) ease-out;
   align-items: center;
   gap: 8px;
   width: 100%;
@@ -205,6 +426,20 @@
   border: 1px solid var(--line-soft);
   border-radius: var(--r-sm);
   background: var(--surface-soft);
+}
+
+.generator__select:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.generator__select[aria-expanded='true'] {
+  border-color: rgba(200, 255, 0, 0.45);
+}
+
+.generator__select:hover {
+  border-color: var(--line-hover);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .generator__select-icon {
@@ -228,6 +463,11 @@
 .generator__select-chevron {
   flex-shrink: 0;
   transform: rotate(180deg);
+  transition: transform var(--t-state) ease-out;
+}
+
+.generator__select[aria-expanded='true'] .generator__select-chevron {
+  transform: rotate(0deg);
 }
 
 .generator__cta {
@@ -247,12 +487,41 @@
   color: var(--text-ink);
 }
 
+.generator__submit {
+  animation: glow-volt-pulse 2.8s ease-in-out infinite;
+}
+
+.generator__submit:disabled {
+  cursor: default;
+  opacity: 0.75;
+  animation: none;
+  transform: none;
+}
+
+.generator__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(6, 8, 16, 0.25);
+  border-top-color: var(--text-ink);
+  border-radius: var(--r-pill);
+  animation: spin 0.7s linear infinite;
+}
+
 .generator__note {
   margin: 0;
   text-align: center;
   font-size: 15px;
   line-height: 24px;
   color: var(--text-dim);
+}
+
+@media (max-width: 1279px) {
+  /* Stacked column: keep the content height instead of a 0 flex basis. */
+  .generator {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: auto;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -287,36 +556,21 @@
     max-width: none;
   }
 
-  /* Column flex: keep the content-based height instead of a 0 basis. */
-  .generator {
-    flex: 0 0 auto;
-    min-height: auto;
-  }
-
   .generator__compose {
     gap: 8px;
   }
 
   .generator__tabs {
-    gap: 0;
-    justify-content: space-between;
+    gap: 8px;
     padding: 8px;
   }
 
   .generator__tab {
-    flex: 0 1 auto;
     font-size: 14px;
   }
 
-  .generator__tab-label {
-    display: none;
-  }
-
-  .generator__tab-label--short {
-    display: inline;
-  }
-
-  .generator__prompt {
+  .generator__prompt,
+  .generator__upload {
     height: 104px;
   }
 
@@ -329,15 +583,28 @@
   }
 
   .generator__field-label {
-    display: none;
     font-size: 14px;
-  }
-
-  .generator__field-label--short {
-    display: block;
   }
 
   .generator__select-value {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .generator__tab-label {
+    display: none;
+  }
+
+  .generator__tab-label--short {
+    display: inline;
+  }
+
+  .generator__field-label-full {
+    display: none;
+  }
+
+  .generator__field-label-short {
+    display: inline;
   }
 }

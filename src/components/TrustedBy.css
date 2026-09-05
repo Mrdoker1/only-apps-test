@@ -29,6 +29,16 @@
 .trusted__logo {
   width: calc(var(--logo-width) * 1px);
   height: auto;
+  opacity: 0.65;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.trusted__logos:hover .trusted__logo {
+  opacity: 0.4;
+}
+
+.trusted__logos .trusted__logo:hover {
+  opacity: 1;
 }
 
 @media (max-width: 1023px) {

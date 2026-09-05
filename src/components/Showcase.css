@@ -39,6 +39,9 @@
 
 .showcase__card {
   position: relative;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
   flex: 1 1 0;
   min-width: 0;
   height: 220px;
@@ -47,8 +50,23 @@
   overflow: clip;
 }
 
+.showcase__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.9);
+}
+
+.showcase__card:hover .showcase__card-image {
+  transform: scale(1.06);
+}
+
+.showcase__card:hover .showcase__explore-arrow,
+.showcase__card:hover .showcase__explore img {
+  transform: translate(3px, -3px);
+}
+
 .showcase__card-image {
   position: absolute;
+  transition: transform 600ms var(--ease-out);
   inset: 1px;
   width: calc(100% - 2px);
   height: calc(100% - 2px);
@@ -146,6 +164,7 @@
 .showcase__explore img {
   width: 12px;
   height: 12px;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 @media (max-width: 1023px) {
