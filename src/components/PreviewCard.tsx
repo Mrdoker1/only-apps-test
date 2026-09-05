@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import { handlePointerGlow } from '../hooks/usePointerGlow';
+import { useCountUp } from '../hooks/useCountUp';
 import bulbSprite from '../assets/img/bulb-sprite.png';
 import downloadIcon from '../assets/icons/download.svg';
 import editIcon from '../assets/icons/edit.svg';
@@ -26,6 +27,7 @@ type PreviewCardProps = {
 
 export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
   const [selected, setSelected] = useState(0);
+  const shownCount = useCountUp(count, runId);
   const reveal = useReveal<HTMLElement>(80);
 
   // A fresh run always highlights the first result.
@@ -53,7 +55,7 @@ export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
             <span className="eyebrow__dot" aria-hidden />
             <span className="preview__count-swap">
               <span className={isGenerating ? 'is-on' : undefined}>Working…</span>
-              <span className={isGenerating ? undefined : 'is-on'}>{count} generated</span>
+              <span className={isGenerating ? undefined : 'is-on'}>{shownCount} generated</span>
             </span>
           </span>
         </div>

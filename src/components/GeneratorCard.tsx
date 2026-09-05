@@ -1,4 +1,5 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Images, Palette, Ratio } from 'lucide-react';
 import { Popover } from './Popover';
 import { Icon } from './Icon';
 import { useReveal } from '../hooks/useReveal';
@@ -8,9 +9,6 @@ import tabPrompt from '../assets/icons/tab-prompt.svg?raw';
 import tabVideo from '../assets/icons/tab-video.svg?raw';
 import tabImage from '../assets/icons/tab-image.svg?raw';
 import wand from '../assets/icons/wand.svg';
-import styleIcon from '../assets/icons/style.svg';
-import aspectIcon from '../assets/icons/aspect-ratio.svg';
-import autoModeIcon from '../assets/icons/auto-mode.svg';
 import chevron from '../assets/icons/chevron-16.svg';
 import sparkle from '../assets/icons/sparkle.svg';
 import './GeneratorCard.css';
@@ -64,10 +62,32 @@ export function GeneratorCard({
   const [openField, setOpenField] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [indicator, setIndicator] = useState<{ x: number; width: number } | null>(null);
   const styleRef = useRef<HTMLButtonElement>(null);
   const ratioRef = useRef<HTMLButtonElement>(null);
   const variantsRef = useRef<HTMLButtonElement>(null);
   const reveal = useReveal<HTMLElement>();
+
+  // The active-tab pill is positioned from the real button box, so it slides
+  // between tabs instead of being repainted in place.
+  const measureIndicator = useCallback(() => {
+    const container = tabsRef.current;
+    const active = tabRefs.current[TABS.findIndex((tab) => tab.id === activeTab)];
+    if (!container || !active) return;
+
+    const containerBox = container.getBoundingClientRect();
+    const activeBox = active.getBoundingClientRect();
+    setIndicator({ x: activeBox.left - containerBox.left, width: activeBox.width });
+  }, [activeTab]);
+
+  useLayoutEffect(() => {
+    measureIndicator();
+    const observer = new ResizeObserver(measureIndicator);
+    if (tabsRef.current) observer.observe(tabsRef.current);
+    return () => observer.disconnect();
+  }, [measureIndicator]);
 
   const toggle = (field: string) => setOpenField((current) => (current === field ? null : field));
   const close = () => setOpenField(null);
@@ -96,12 +116,22 @@ export function GeneratorCard({
         </div>
 
         <div className="generator__compose">
-          <div className="generator__tabs" role="tablist" aria-label="Creation modes">
+          <div className="generator__tabs" ref={tabsRef} role="tablist" aria-label="Creation modes">
+            {indicator && (
+              <span
+                className="generator__tab-indicator"
+                style={{ transform: `translateX(${indicator.x}px)`, width: indicator.width }}
+                aria-hidden
+              />
+            )}
             {TABS.map((tab, index) => (
               <Fragment key={tab.id}>
                 {index === 2 && <span className="generator__tab-divider" aria-hidden />}
                 <button
                   className={`generator__tab${activeTab === tab.id ? ' generator__tab--active' : ''}`}
+                  ref={(node) => {
+                    tabRefs.current[index] = node;
+                  }}
                   type="button"
                   role="tab"
                   aria-selected={activeTab === tab.id}
@@ -168,7 +198,7 @@ export function GeneratorCard({
               aria-labelledby="label-style"
               onClick={() => toggle('style')}
             >
-              <img className="generator__select-icon" src={styleIcon} alt="" width={24} height={24} />
+              <Palette className="generator__select-icon" size={22} strokeWidth={1.75} aria-hidden />
               <span className="generator__select-value">{styleValue}</span>
               <img className="generator__select-chevron" src={chevron} alt="" width={16} height={16} />
             </button>
@@ -210,13 +240,7 @@ export function GeneratorCard({
               aria-labelledby="label-ratio"
               onClick={() => toggle('ratio')}
             >
-              <img
-                className="generator__select-icon generator__select-icon--dim"
-                src={aspectIcon}
-                alt=""
-                width={24}
-                height={24}
-              />
+              <Ratio className="generator__select-icon" size={22} strokeWidth={1.75} aria-hidden />
               <span className="generator__select-value">{ratio}</span>
               <img className="generator__select-chevron" src={chevron} alt="" width={16} height={16} />
             </button>
@@ -260,7 +284,7 @@ export function GeneratorCard({
               aria-labelledby="label-variants"
               onClick={() => toggle('variants')}
             >
-              <img className="generator__select-icon" src={autoModeIcon} alt="" width={24} height={24} />
+              <Images className="generator__select-icon" size={22} strokeWidth={1.75} aria-hidden />
               <span className="generator__select-value">{variants}</span>
               <img className="generator__select-chevron" src={chevron} alt="" width={16} height={16} />
             </button>

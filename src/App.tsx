@@ -5,6 +5,7 @@ import { GeneratorCard } from './components/GeneratorCard';
 import { PreviewCard } from './components/PreviewCard';
 import { TrustedBy } from './components/TrustedBy';
 import { Showcase } from './components/Showcase';
+import { handleParallax } from './hooks/useParallax';
 import './App.css';
 
 /** How long the mocked generation runs before results come back. */
@@ -29,11 +30,12 @@ export default function App() {
 
   return (
     <div className="page" id="top">
+      <span className="page__noise" aria-hidden />
       <div className="page__header">
         <Header />
       </div>
 
-      <main className="page__main">
+      <main className="page__main" onPointerMove={handleParallax}>
         <span className="page__glow page__glow--left" aria-hidden />
         <span className="page__glow page__glow--right" aria-hidden />
         <span className="page__halo" aria-hidden />
