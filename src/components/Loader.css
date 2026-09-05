@@ -1,0 +1,64 @@
+/* Full-screen blocker: z-index 100, per the design spec's layer table. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: var(--bg-page);
+  transition: opacity var(--dur-page) var(--ease-out);
+}
+
+.loader--hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fade-up var(--dur-reveal) var(--ease-expo) both;
+}
+
+.loader__logo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--lime-strong);
+  filter: drop-shadow(0 0 9px rgba(200, 255, 0, 0.22)) drop-shadow(0 0 30px rgba(200, 255, 0, 0.08));
+  animation: glow-volt-pulse 2.5s ease-in-out infinite;
+}
+
+.loader__name {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 28px;
+  letter-spacing: -0.8px;
+  color: var(--text-primary);
+}
+
+.loader__track {
+  width: 220px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.loader__bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lime);
+  box-shadow: 0 0 12px rgba(200, 255, 0, 0.6);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
