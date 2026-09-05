@@ -74,14 +74,16 @@ export function GeneratorCard({
 
   return (
     <section className={`generator ${reveal.className}`} ref={reveal.ref}>
-      <img className="generator__bg" src={cardBg} alt="" aria-hidden />
-      <span className="generator__bulb" aria-hidden>
-        <img src={bulbSprite} alt="" />
-      </span>
-      <span className="generator__particles" aria-hidden>
-        {Array.from({ length: 7 }, (_, index) => (
-          <span className="generator__particle" key={index} />
-        ))}
+      <span className="generator__art" aria-hidden>
+        <img className="generator__bg" src={cardBg} alt="" />
+        <span className="generator__bulb">
+          <img src={bulbSprite} alt="" />
+        </span>
+        <span className="generator__particles">
+          {Array.from({ length: 7 }, (_, index) => (
+            <span className="generator__particle" key={index} />
+          ))}
+        </span>
       </span>
 
       <div className="generator__body">

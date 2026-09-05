@@ -10,7 +10,55 @@
   border-radius: var(--r-2xl);
   background: rgba(16, 16, 16, 0.2);
   backdrop-filter: blur(50px);
+}
+
+.generator__art {
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
   overflow: clip;
+  pointer-events: none;
+}
+
+/*
+ * A highlight travels around the lime border. The conic gradient is masked to
+ * a 2px ring so only the outline lights up.
+ */
+@property --beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.generator::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  border-radius: var(--r-2xl);
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg 250deg,
+    rgba(200, 255, 0, 0.5) 300deg,
+    #f4ffd0 335deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: border-beam 5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes border-beam {
+  to {
+    --beam-angle: 360deg;
+  }
 }
 
 .generator__bg {
