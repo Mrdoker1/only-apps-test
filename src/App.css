@@ -1,0 +1,96 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-black);
+}
+
+.page__main {
+  position: relative;
+  padding: 32px 0 0;
+  background: var(--bg-page);
+  overflow: clip;
+}
+
+/* Decorative light sweeps from the design. */
+.page__glow {
+  position: absolute;
+  width: 617px;
+  height: 463px;
+  background: url('./assets/img/glow-sweep.png') center / cover no-repeat;
+  mix-blend-mode: lighten;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.page__glow--left {
+  top: 758px;
+  left: -71px;
+}
+
+.page__glow--right {
+  top: -3px;
+  right: -41px;
+  width: 677px;
+  height: 508px;
+}
+
+.page__halo {
+  position: absolute;
+  top: -295px;
+  left: 50%;
+  width: 796px;
+  height: 796px;
+  margin-left: -300px;
+  background: url('./assets/img/ellipse-glow.svg') center / contain no-repeat;
+  pointer-events: none;
+}
+
+.page__workspace {
+  position: relative;
+  display: flex;
+  gap: 32px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 32px 96px;
+}
+
+@media (max-width: 1023px) {
+  .page {
+    padding-bottom: 24px;
+  }
+
+  .page__main {
+    background: var(--bg-black);
+  }
+
+  .page__main {
+    padding-top: 0;
+  }
+
+  .page__glow--left {
+    top: 1063px;
+    left: -338px;
+  }
+
+  .page__glow--right {
+    top: 0;
+    right: auto;
+    left: 33px;
+    width: 631px;
+    height: 473px;
+  }
+
+  .page__halo {
+    top: -124px;
+    left: 41px;
+    width: 796px;
+    margin-left: 0;
+  }
+
+  .page__workspace {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+  }
+}

@@ -1,0 +1,118 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 32px;
+  background: var(--bg-black);
+  overflow: clip;
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__logo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--lime-strong);
+  filter: drop-shadow(0 0 9px rgba(200, 255, 0, 0.22)) drop-shadow(0 0 30px rgba(200, 255, 0, 0.08));
+}
+
+.header__brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 28px;
+  letter-spacing: -0.8px;
+  color: var(--text-primary);
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-pill);
+  background: rgba(19, 20, 27, 0.6);
+  backdrop-filter: blur(24px);
+  overflow: clip;
+}
+
+.header__nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.header__nav-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--line-faint);
+}
+
+.header__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: var(--r-pill);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.header__nav-link:hover {
+  color: var(--text-primary);
+}
+
+.header__chevron {
+  width: 12px;
+  height: 12px;
+}
+
+.header__nav-badge {
+  padding: 2px 8px;
+  border: 1px solid rgba(204, 255, 0, 0.25);
+  border-radius: var(--r-pill);
+  color: var(--lime-strong);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 1.08px;
+  text-transform: uppercase;
+}
+
+.header__sign-in {
+  width: 146px;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 17.05px;
+  letter-spacing: -0.22px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1023px) {
+  .header {
+    padding: 14px 32px;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__sign-in {
+    width: auto;
+    min-width: 71px;
+  }
+}

@@ -1,0 +1,202 @@
+.preview {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-card);
+  border-radius: var(--r-xl);
+  background: var(--surface-card);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.9), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  overflow: clip;
+}
+
+.preview__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+}
+
+.preview__head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Same sprite sheet as the generator bulb, cropped to the stacked-frames mark. */
+.preview__mark {
+  position: relative;
+  flex-shrink: 0;
+  width: 133px;
+  height: 75px;
+  overflow: hidden;
+}
+
+.preview__mark img {
+  position: absolute;
+  top: -196.68%;
+  left: 0;
+  width: 278.77%;
+  height: 329.45%;
+  max-width: none;
+}
+
+.preview__head-text {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  letter-spacing: -0.325px;
+}
+
+.preview__title {
+  margin: 0;
+  color: var(--lime);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 20.15px;
+  text-transform: uppercase;
+}
+
+.preview__subtitle {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.preview__count {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(200, 255, 0, 0.2);
+  border-radius: var(--r-pill);
+  background: rgba(200, 255, 0, 0.1);
+  color: var(--lime);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18.6px;
+}
+
+.preview__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.preview__thumb {
+  position: relative;
+  aspect-ratio: 263.5 / 177.5;
+  border: 2px solid transparent;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.preview__thumb--selected {
+  border-color: var(--lime);
+}
+
+.preview__thumb img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.preview__actions {
+  display: flex;
+  gap: 16px;
+}
+
+.preview__action {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 45px;
+  padding: 12px 16px;
+  border-radius: var(--r-xl);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20.15px;
+  letter-spacing: -0.325px;
+  white-space: nowrap;
+}
+
+.preview__action--solid {
+  background: #35383c;
+}
+
+.preview__action--ghost {
+  border: 1px solid var(--line-strong);
+}
+
+.preview__rule {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.preview__tip {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 60px;
+  padding: 28px 36px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.preview__tip p {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.325px;
+}
+
+@media (max-width: 1023px) {
+  .preview__body {
+    gap: 24px;
+    padding: 32px 16px;
+  }
+
+  .preview__mark {
+    width: 95px;
+    height: 54px;
+  }
+
+  .preview__title {
+    font-size: 20px;
+  }
+
+  .preview__subtitle {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .preview__count {
+    display: none;
+  }
+
+  .preview__action {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .preview__tip {
+    gap: 16px;
+    padding: 16px;
+  }
+}

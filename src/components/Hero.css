@@ -1,0 +1,28 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
+}
+
+.hero__heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 44px;
+  max-width: 1301px;
+  padding: 0 68px 16px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.hero__script {
+  width: 297px;
+  height: auto;
+}
+
+@media (max-width: 1023px) {
+  .hero {
+    display: none;
+  }
+}

@@ -1,0 +1,44 @@
+:root {
+  /* Brand */
+  --lime: #c8ff00;
+  --lime-strong: #cf0;
+  --lime-ink: #0a1100;
+  --cyan: #00c2ff;
+
+  /* Surfaces */
+  --bg-page: #100f17;
+  --bg-black: #000;
+  --surface-card: #13141b;
+  --surface-soft: rgba(255, 255, 255, 0.04);
+  --surface-faint: rgba(255, 255, 255, 0.02);
+
+  /* Text */
+  --text-primary: #ebeef9;
+  --text-ink: #060810;
+  --text-muted: #9fa5bc;
+  --text-dim: rgba(255, 255, 255, 0.5);
+  --text-label: rgba(255, 255, 255, 0.45);
+  --text-value: rgba(235, 238, 249, 0.7);
+  --text-body: rgba(235, 238, 249, 0.65);
+
+  /* Lines */
+  --line-soft: rgba(255, 255, 255, 0.08);
+  --line-faint: rgba(255, 255, 255, 0.06);
+  --line-card: rgba(255, 255, 255, 0.07);
+  --line-strong: #525359;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-2xl: 32px;
+  --r-pill: 9999px;
+
+  /* Effects */
+  --glow-lime: 0 0 10px rgba(200, 255, 0, 0.22);
+  --inset-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+
+  /* Layout */
+  --page-max: 1481px;
+}
