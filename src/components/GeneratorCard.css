@@ -263,6 +263,7 @@
   line-height: 24px;
   letter-spacing: -0.325px;
   color: rgba(255, 255, 255, 0.8);
+  text-wrap: balance;
 }
 
 /* Desktop repeats the 24px body gap; the mobile design tightens it to 8px. */
@@ -667,12 +668,14 @@
   }
 
   .generator__title {
-    font-size: 44px;
+    font-size: clamp(34px, 10vw, 44px);
     line-height: 1.175;
   }
 
   .generator__subtitle {
     max-width: none;
+    font-size: 16px;
+    line-height: 22px;
   }
 
   .generator__compose {
@@ -725,5 +728,25 @@
 
   .generator__field-label-short {
     display: inline;
+  }
+}
+
+@media (max-width: 600px) {
+  .generator__selects {
+    flex-wrap: wrap;
+  }
+
+  .generator__field {
+    flex: 1 1 104px;
+  }
+
+  .generator__select {
+    gap: 6px;
+    padding: 6px 10px;
+  }
+
+  .generator__select-icon {
+    width: 20px;
+    height: 20px;
   }
 }
