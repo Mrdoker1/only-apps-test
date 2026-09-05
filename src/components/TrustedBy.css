@@ -33,11 +33,7 @@
   transition: opacity var(--dur-base) var(--ease-out);
 }
 
-.trusted__logos:hover .trusted__logo {
-  opacity: 0.4;
-}
-
-.trusted__logos .trusted__logo:hover {
+.trusted__logo:hover {
   opacity: 1;
 }
 

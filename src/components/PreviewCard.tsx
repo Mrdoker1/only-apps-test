@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import bulbSprite from '../assets/img/bulb-sprite.png';
-import dot from '../assets/icons/dot.svg';
 import downloadIcon from '../assets/icons/download.svg';
 import editIcon from '../assets/icons/edit.svg';
 import lightbulb from '../assets/icons/lightbulb.svg';
@@ -44,8 +43,8 @@ export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
             <h2 className="preview__title">Preview</h2>
             <p className="preview__subtitle">Choose the one that works best.</p>
           </div>
-          <span className="preview__count" aria-live="polite">
-            <img src={dot} alt="" width={10} height={10} />
+          <span className="eyebrow preview__count" aria-live="polite">
+            <span className="eyebrow__dot" aria-hidden />
             {isGenerating ? 'Working…' : `${count} generated`}
           </span>
         </div>

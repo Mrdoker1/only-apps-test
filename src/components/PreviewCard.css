@@ -89,18 +89,8 @@
 }
 
 .preview__count {
-  display: inline-flex;
   flex-shrink: 0;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border: 1px solid rgba(200, 255, 0, 0.2);
-  border-radius: var(--r-pill);
-  background: rgba(200, 255, 0, 0.1);
-  color: var(--lime);
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 18.6px;
+  white-space: nowrap;
 }
 
 .preview__grid {
@@ -151,8 +141,8 @@
 .preview__thumb img {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
   object-fit: cover;
+  transform: scale(1.04);
   transition: transform var(--dur-base) var(--ease-out);
 }
 
