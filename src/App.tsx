@@ -9,7 +9,9 @@ import './App.css';
 export default function App() {
   return (
     <div className="page" id="top">
-      <Header />
+      <div className="page__header">
+        <Header />
+      </div>
 
       <main className="page__main">
         <span className="page__glow page__glow--left" aria-hidden />

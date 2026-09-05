@@ -2,6 +2,7 @@
   position: relative;
   flex: 1 1 0;
   min-width: 0;
+  min-height: 680px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,9 +15,9 @@
 
 .generator__bg {
   position: absolute;
-  top: -21%;
-  left: -57%;
-  width: 274%;
+  top: -20.7%;
+  left: -63.7%;
+  width: 306.4%;
   max-width: none;
   pointer-events: none;
   object-fit: cover;
@@ -25,8 +26,8 @@
 /* The bulb art is a sprite sheet — the frame below crops it to the bulb. */
 .generator__bulb {
   position: absolute;
-  top: -52px;
-  right: -33px;
+  top: -50px;
+  right: -108px;
   width: 310px;
   height: 310px;
   overflow: hidden;
@@ -59,6 +60,7 @@
 .generator__title {
   display: flex;
   flex-direction: column;
+  line-height: 0.958;
 }
 
 .generator__subtitle {
@@ -68,6 +70,13 @@
   line-height: 24px;
   letter-spacing: -0.325px;
   color: rgba(255, 255, 255, 0.8);
+}
+
+/* Desktop repeats the 24px body gap; the mobile design tightens it to 8px. */
+.generator__compose {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .generator__tabs {
@@ -80,14 +89,6 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(12px);
   overflow: clip;
-}
-
-.generator__tab-slot {
-  display: flex;
-  flex: 1 1 0;
-  min-width: 0;
-  align-items: center;
-  gap: 20px;
 }
 
 .generator__tab-divider {
@@ -257,13 +258,13 @@
 @media (max-width: 1023px) {
   .generator__bg {
     top: -38%;
-    left: -108%;
-    width: 505%;
+    left: -98.5%;
+    width: 462%;
   }
 
   .generator__bulb {
     top: -30px;
-    right: -55px;
+    right: -76px;
     width: 185px;
     height: 185px;
   }
@@ -279,21 +280,27 @@
 
   .generator__title {
     font-size: 44px;
+    line-height: 1.175;
   }
 
   .generator__subtitle {
     max-width: none;
   }
 
+  /* Column flex: keep the content-based height instead of a 0 basis. */
+  .generator {
+    flex: 0 0 auto;
+    min-height: auto;
+  }
+
+  .generator__compose {
+    gap: 8px;
+  }
+
   .generator__tabs {
     gap: 0;
     justify-content: space-between;
     padding: 8px;
-  }
-
-  .generator__tab-slot {
-    flex: 0 1 auto;
-    gap: 8px;
   }
 
   .generator__tab {

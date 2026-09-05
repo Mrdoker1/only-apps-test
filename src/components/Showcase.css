@@ -1,8 +1,10 @@
 .showcase {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 32px;
-  padding: 48px 0;
+  min-height: 519px;
+  padding: 45px 0;
   background: var(--bg-black);
   overflow: clip;
 }
@@ -11,6 +13,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
 }
 
 .showcase__heading {
@@ -26,6 +31,9 @@
 .showcase__cards {
   display: flex;
   gap: 32px;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
   padding: 0 32px;
 }
 
@@ -91,15 +99,11 @@
 .showcase__card-body {
   position: absolute;
   left: 21px;
-  bottom: 26px;
+  bottom: 21px;
   display: flex;
   flex-direction: column;
   width: calc(100% - 42px);
   max-width: 411px;
-}
-
-.showcase__card-body--lowered {
-  bottom: 6px;
 }
 
 .showcase__card-title {
@@ -146,6 +150,7 @@
 
 @media (max-width: 1023px) {
   .showcase {
+    min-height: 0;
     padding: 24px 0;
   }
 

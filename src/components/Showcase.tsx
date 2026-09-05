@@ -17,7 +17,6 @@ type Card = {
   accent: 'cyan' | 'lime';
   title: string;
   description: string;
-  lowered?: boolean;
 };
 
 const CARDS: Card[] = [
@@ -50,7 +49,6 @@ const CARDS: Card[] = [
     accent: 'cyan',
     title: 'Create Image',
     description: 'Editorial portraits, product shots, brand visuals.',
-    lowered: true,
   },
 ];
 
@@ -79,7 +77,7 @@ export function Showcase() {
               {card.badge}
             </span>
 
-            <span className={`showcase__card-body${card.lowered ? ' showcase__card-body--lowered' : ''}`}>
+            <span className="showcase__card-body">
               <span className="showcase__card-title">{card.title}</span>
               <span className="showcase__card-text">{card.description}</span>
               <span className={`showcase__explore showcase__explore--${card.accent}`}>

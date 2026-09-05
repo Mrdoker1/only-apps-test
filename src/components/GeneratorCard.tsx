@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import cardBg from '../assets/img/card-bg.png';
 import bulbSprite from '../assets/img/bulb-sprite.png';
 import tabPrompt from '../assets/icons/tab-prompt.svg';
@@ -40,33 +41,35 @@ export function GeneratorCard() {
           <p className="generator__subtitle">Drop in a frame, write the words that go on it.</p>
         </div>
 
-        <div className="generator__tabs" role="tablist" aria-label="Creation modes">
-          {TABS.map((tab, index) => (
-            <div className="generator__tab-slot" key={tab.id}>
-              {index === 2 && <span className="generator__tab-divider" aria-hidden />}
-              <button
-                className={`generator__tab${index === 0 ? ' generator__tab--active' : ''}`}
-                type="button"
-                role="tab"
-                aria-selected={index === 0}
-              >
-                <img src={tab.icon} alt="" width={18} height={18} />
-                <span className="generator__tab-label">{tab.label}</span>
-                <span className="generator__tab-label generator__tab-label--short">{tab.shortLabel}</span>
-              </button>
-            </div>
-          ))}
-        </div>
+        <div className="generator__compose">
+          <div className="generator__tabs" role="tablist" aria-label="Creation modes">
+            {TABS.map((tab, index) => (
+              <Fragment key={tab.id}>
+                {index === 2 && <span className="generator__tab-divider" aria-hidden />}
+                <button
+                  className={`generator__tab${index === 0 ? ' generator__tab--active' : ''}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={index === 0}
+                >
+                  <img src={tab.icon} alt="" width={18} height={18} />
+                  <span className="generator__tab-label">{tab.label}</span>
+                  <span className="generator__tab-label generator__tab-label--short">{tab.shortLabel}</span>
+                </button>
+              </Fragment>
+            ))}
+          </div>
 
-        <div className="generator__prompt">
-          <textarea
-            className="generator__prompt-input"
-            placeholder="Describe the thumbnail you want to create..."
-            aria-label="Thumbnail prompt"
-          />
-          <button className="generator__prompt-action" type="button" aria-label="Enhance prompt">
-            <img src={wand} alt="" width={18} height={18} />
-          </button>
+          <div className="generator__prompt">
+            <textarea
+              className="generator__prompt-input"
+              placeholder="Describe the thumbnail you want to create..."
+              aria-label="Thumbnail prompt"
+            />
+            <button className="generator__prompt-action" type="button" aria-label="Enhance prompt">
+              <img src={wand} alt="" width={18} height={18} />
+            </button>
+          </div>
         </div>
 
         <div className="generator__selects">

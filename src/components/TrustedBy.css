@@ -27,6 +27,7 @@
 }
 
 .trusted__logo {
+  width: calc(var(--logo-width) * 1px);
   height: auto;
 }
 
@@ -45,6 +46,6 @@
   }
 
   .trusted__logo {
-    width: 96px !important;
+    width: calc(var(--logo-width) * 0.827px);
   }
 }

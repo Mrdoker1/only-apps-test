@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import youtube from '../assets/img/logo-youtube.svg';
 import tiktok from '../assets/img/logo-tiktok.svg';
 import instagram from '../assets/img/logo-instagram.svg';
@@ -27,7 +28,7 @@ export function TrustedBy() {
             key={logo.name}
             src={logo.src}
             alt={logo.name}
-            style={{ width: logo.width }}
+            style={{ '--logo-width': logo.width } as CSSProperties}
           />
         ))}
       </div>
