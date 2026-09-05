@@ -428,8 +428,7 @@
     background-color var(--dur-fast) var(--ease-out);
 }
 
-.generator__upload:hover,
-.generator__upload:focus-within {
+.generator__upload:hover {
   border-color: var(--lime);
 }
 
@@ -442,10 +441,6 @@
 .generator__upload-hint {
   font-size: 13px;
   color: var(--text-dim);
-}
-
-.generator__prompt:focus-within {
-  border-color: rgba(200, 255, 0, 0.4);
 }
 
 /* Upload target for the "From video" and "From image" modes. */
@@ -470,8 +465,13 @@
   background: linear-gradient(0deg, rgba(200, 255, 0, 0.07) 0%, rgba(255, 255, 255, 0) 100%);
 }
 
-.generator__upload:focus-within {
-  border-color: var(--lime);
+.generator__upload input:focus-visible {
+  outline: none;
+}
+
+.generator__upload:has(input:focus-visible) {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
 }
 
 .generator__upload-title {
