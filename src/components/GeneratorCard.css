@@ -398,12 +398,15 @@
   color: var(--text-dim);
 }
 
-.generator__prompt-input:focus {
+.generator__prompt-input:focus,
+.generator__prompt-input:focus-visible {
   outline: none;
+  box-shadow: none;
 }
 
-.generator__prompt:focus-within {
-  border-color: var(--line-hover);
+.generator__prompt:has(.generator__prompt-input:focus-visible) {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
 }
 
 /* Upload target used by the “From video” and “From image” tabs. */
