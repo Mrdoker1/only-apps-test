@@ -405,3 +405,71 @@ a:focus-visible,
     opacity: 1;
   }
 }
+
+/*
+ * Cursor-following glow. `--glow-x` / `--glow-y` are written by
+ * handlePointerGlow; the ring is a radial gradient masked to the card's outline
+ * so the contour itself lights up under the pointer.
+ */
+.glow-card {
+  --glow-x: 50%;
+  --glow-y: -100px;
+  --glow-ring: 240px;
+  --glow-wash: 300px;
+}
+
+.glow-card::before,
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+/* The lit outline. */
+.glow-card::before {
+  z-index: 4;
+  padding: 1px;
+  background: radial-gradient(
+    var(--glow-ring) circle at var(--glow-x) var(--glow-y),
+    #e8ff8a,
+    rgba(200, 255, 0, 0.45) 45%,
+    transparent 72%
+  );
+  filter: drop-shadow(0 0 5px rgba(200, 255, 0, 0.45));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* A soft wash inside the card, under its content. */
+.glow-card::after {
+  z-index: 2;
+  background: radial-gradient(
+    var(--glow-wash) circle at var(--glow-x) var(--glow-y),
+    rgba(200, 255, 0, 0.14),
+    transparent 65%
+  );
+}
+
+.glow-card:hover::before,
+.glow-card:hover::after,
+.glow-card:focus-visible::before,
+.glow-card:focus-visible::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .glow-card::before,
+  .glow-card::after {
+    display: none;
+  }
+}

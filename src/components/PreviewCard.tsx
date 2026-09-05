@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useReveal } from '../hooks/useReveal';
+import { handlePointerGlow } from '../hooks/usePointerGlow';
 import bulbSprite from '../assets/img/bulb-sprite.png';
 import downloadIcon from '../assets/icons/download.svg';
 import editIcon from '../assets/icons/edit.svg';
@@ -33,7 +34,12 @@ export function PreviewCard({ count, runId, isGenerating }: PreviewCardProps) {
   const shown = THUMBNAILS.slice(0, count);
 
   return (
-    <section className={`preview ${reveal.className}`} ref={reveal.ref} style={reveal.style}>
+    <section
+      className={`preview glow-card ${reveal.className}`}
+      ref={reveal.ref}
+      style={reveal.style}
+      onPointerMove={handlePointerGlow}
+    >
       <div className="preview__body">
         <div className="preview__head">
           <span className="preview__mark" aria-hidden>

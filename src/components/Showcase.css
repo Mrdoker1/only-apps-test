@@ -66,6 +66,7 @@
 
 .showcase__card-image {
   position: absolute;
+  z-index: 0;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -76,6 +77,7 @@
 
 .showcase__card-scrim {
   position: absolute;
+  z-index: 1;
   inset: 0;
   background: linear-gradient(
     0deg,
@@ -87,6 +89,7 @@
 
 .showcase__badge {
   position: absolute;
+  z-index: 3;
   top: 17px;
   left: 17px;
   display: inline-flex;
@@ -116,6 +119,7 @@
 
 .showcase__card-body {
   position: absolute;
+  z-index: 3;
   left: 21px;
   bottom: 21px;
   display: flex;

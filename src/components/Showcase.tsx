@@ -1,4 +1,5 @@
 import { useReveal } from '../hooks/useReveal';
+import { handlePointerGlow } from '../hooks/usePointerGlow';
 import badgeVideo from '../assets/icons/badge-video.svg';
 import badgeCore from '../assets/icons/badge-core.svg';
 import badgeImage from '../assets/icons/badge-image.svg';
@@ -72,10 +73,11 @@ export function Showcase() {
       <div className="showcase__cards">
         {CARDS.map((card, index) => (
           <a
-            className="showcase__card"
+            className="showcase__card glow-card"
             key={card.id}
             href={`#${card.id}`}
             style={{ transitionDelay: `${index * 40}ms` }}
+            onPointerMove={handlePointerGlow}
           >
             <img className="showcase__card-image" src={card.image} alt="" />
             <span className="showcase__card-scrim" aria-hidden />
