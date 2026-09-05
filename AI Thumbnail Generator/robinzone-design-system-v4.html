@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Robinzone Design System v1.4 «Charged» — ревизия v4 (полная)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --background:232 18% 9%;
+  --foreground:228 55% 95%;
+  --card:232 16% 14%;
+  --card-foreground:228 55% 95%;
+  --popover:232 18% 12%;
+  --primary:72 100% 50%;
+  --primary-foreground:84 100% 4%;
+  --secondary:232 14% 21%;
+  --muted:232 12% 26%;
+  --muted-foreground:228 18% 68%;
+  --accent:72 100% 50%;
+  --destructive:4 100% 60%;
+  --success:150 100% 60%;
+  --border:230 20% 14%;
+  --input:232 18% 12%;
+  --ring:72 100% 50%;
+  --radius:.625rem;
+  --surface-elevated:232 16% 17%;
+  --surface-hover:232 14% 24%;
+
+  --volt:#C8FF00; --volt-h:#D8FF44; --volt-dim:rgba(200,255,0,.10); --volt-bdr:rgba(200,255,0,.22); --volt-txt:#0a1100;
+  --sky:#00C2FF;  --sky-h:#33CEFF;  --sky-dim:rgba(0,194,255,.10);  --sky-bdr:rgba(0,194,255,.22);  --sky-txt:#001a24;
+  --plasma:#9F6EFF; --plasma-h:#B389FF; --plasma-dim:rgba(159,110,255,.10); --plasma-bdr:rgba(159,110,255,.22); --plasma-txt:#0f0820;
+  --coral:#FF4D3D; --coral-dim:rgba(255,77,61,.12); --coral-bdr:rgba(255,77,61,.22);
+  --lime:#39FF88;  --lime-dim:rgba(57,255,136,.10); --lime-bdr:rgba(57,255,136,.22);
+  --violet:#9F6EFF;--violet-dim:rgba(159,110,255,.10); --violet-bdr:rgba(159,110,255,.22);
+
+  --t0:#ffffff; --t1:#e2e6f4; --t2:#9098b8; --t3:#5c6280; --t4:#363d56;
+
+  --gradient-brand:linear-gradient(135deg,#C8FF00 0%,#00C2FF 100%);
+  --glow-brand:0 0 32px rgba(200,255,0,.20), 0 0 80px rgba(200,255,0,.08);
+  --header-height:64px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{
+  margin:0;background:hsl(var(--background));color:hsl(var(--foreground));
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"rlig" 1,"calt" 1,"ss01" 1;
+}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.025em;line-height:1.05;margin:0}
+h1{font-weight:800}h2{font-weight:700}h3{font-weight:700}
+code,kbd,pre{font-family:'JetBrains Mono',monospace}
+a{color:var(--volt)}
+
+.shell{max-width:1120px;margin:0 auto;padding:0 24px}
+.hero{padding:72px 0 48px;border-bottom:1px solid hsl(var(--border))}
+.brandrow{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.mark{width:44px;height:44px;border-radius:12px;background:var(--volt);display:grid;place-items:center;box-shadow:0 0 18px rgba(200,255,0,.22),0 0 60px rgba(200,255,0,.08)}
+.wordmark{font-size:26px;font-weight:700;letter-spacing:-.03em}
+.hero h1{font-size:clamp(38px,6vw,64px)}
+.lede{color:var(--t2);max-width:62ch;margin-top:18px;font-size:17px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+
+section{padding:56px 0;border-bottom:1px solid hsl(var(--border))}
+section > h2{font-size:30px;margin-bottom:8px}
+.sub{color:var(--t2);margin:0 0 28px;max-width:70ch}
+h3.block{font-size:16px;font-weight:700;margin:32px 0 14px;color:var(--t1)}
+
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+
+.swatch{border:1px solid hsl(var(--border));border-radius:14px;overflow:hidden;background:hsl(var(--card))}
+.swatch .chip{height:76px}
+.swatch .meta{padding:11px 13px}
+.swatch .name{font-size:13px;font-weight:600}
+.swatch .val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);margin-top:3px;word-break:break-all}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid hsl(var(--border));vertical-align:top}
+th{color:var(--t3);font-weight:600;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+td.mono,code.i{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t1)}
+code.i{background:rgba(255,255,255,.05);border:1px solid hsl(var(--border));padding:1px 6px;border-radius:6px}
+
+.card{border:1px solid rgba(255,255,255,.10);background:hsl(var(--card));border-radius:16px;padding:20px}
+.panel{border:1px solid hsl(var(--border));background:hsl(var(--popover));border-radius:14px;padding:18px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border-radius:9999px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-cta{background:var(--volt);color:var(--volt-txt);box-shadow:0 0 20px rgba(200,255,0,.22),inset 0 1px 0 rgba(255,255,255,.12)}
+.btn-cta:hover{background:var(--volt-h);transform:translateY(-1px);box-shadow:0 0 28px rgba(200,255,0,.35),inset 0 1px 0 rgba(255,255,255,.15)}
+.btn-sky{background:var(--sky);color:var(--sky-txt);box-shadow:0 0 18px rgba(0,194,255,.22),inset 0 1px 0 rgba(255,255,255,.15)}
+.btn-sky:hover{background:var(--sky-h);transform:translateY(-1px)}
+.btn-util{background:hsl(var(--secondary));color:hsl(var(--foreground));border:1px solid rgba(255,255,255,.10)}
+.btn-util:hover{background:hsl(var(--surface-hover))}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid hsl(var(--border))}
+.btn-destructive{background:hsl(var(--destructive));color:#fff}
+.btn-meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;height:36px;padding:0 16px;background:hsl(var(--secondary));color:hsl(var(--foreground));border:1px solid rgba(255,255,255,.10);border-radius:9999px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+.badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:9999px;display:inline-flex;align-items:center}
+.b-volt{color:var(--volt);background:var(--volt-dim);border:1px solid var(--volt-bdr)}
+.b-sky{color:var(--sky);background:var(--sky-dim);border:1px solid var(--sky-bdr)}
+.b-plasma{color:var(--plasma);background:var(--plasma-dim);border:1px solid var(--plasma-bdr)}
+.b-coral{color:var(--coral);background:var(--coral-dim);border:1px solid var(--coral-bdr)}
+.b-lime{color:var(--lime);background:var(--lime-dim);border:1px solid var(--lime-bdr)}
+.b-violet{color:var(--violet);background:var(--violet-dim);border:1px solid var(--violet-bdr)}
+
+.inp{width:100%;height:44px;border-radius:10px;background:hsl(var(--input));border:1px solid hsl(var(--border));color:hsl(var(--foreground));padding:0 14px;font-family:inherit;font-size:15px;outline:none}
+.inp::placeholder{color:var(--t3)}
+.inp:focus{border-color:var(--volt);box-shadow:0 0 0 2px rgba(200,255,0,.28)}
+label.lbl{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:7px}
+
+.glow-volt{box-shadow:0 0 20px rgba(200,255,0,.25),0 0 60px rgba(200,255,0,.08)}
+.glow-sky{box-shadow:0 0 18px rgba(0,194,255,.22),0 0 60px rgba(0,194,255,.08)}
+.card-hover{box-shadow:0 12px 40px rgba(0,0,0,.6),0 4px 16px rgba(0,0,0,.4)}
+.shadowbox{height:76px;border-radius:14px;background:hsl(var(--card));border:1px solid hsl(var(--border));display:grid;place-items:center;font-size:12px;color:var(--t2)}
+
+.text-gradient{background:var(--gradient-brand);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+.radbox{height:72px;background:hsl(var(--secondary));border:1px solid hsl(var(--border));display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2)}
+
+.sectioncard{position:relative;overflow:hidden;border-radius:28px 28px 12px 12px;border:2px solid rgba(200,255,0,.5);padding:34px 26px;min-height:150px}
+.sc-sky{border-color:rgba(0,194,255,.5)}
+.sc-coral{border-color:rgba(255,77,61,.55)}
+
+.tone-note{font-size:12.5px;color:var(--t3);margin-top:10px}
+.rule{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid hsl(var(--border));border-radius:12px;background:rgba(255,255,255,.02);font-size:14px;margin-bottom:10px}
+.rule .k{color:var(--volt);font-weight:700}
+.rule.bad .k{color:var(--coral)}
+.ta{display:grid;grid-template-columns:1fr;gap:8px}
+
+footer{padding:44px 0 72px;color:var(--t3);font-size:13px}
+@media(max-width:640px){.shell{padding:0 16px}.hero{padding:44px 0 32px}section{padding:40px 0}}
+
+/* ─── Switch ─── */
+.sw{position:relative;display:inline-flex;align-items:center;height:24px;width:44px;flex:none;cursor:pointer;border-radius:9999px;border:2px solid transparent;background:hsl(var(--input));transition:background-color .15s ease,box-shadow .15s ease;padding:0}
+.sw:focus-visible{outline:none;box-shadow:0 0 0 2px hsl(var(--background)),0 0 0 4px hsl(var(--ring)/.7)}
+.sw[aria-checked="true"]{background:var(--volt)}
+.sw .thumb{pointer-events:none;display:block;height:20px;width:20px;border-radius:9999px;background:hsl(var(--background));box-shadow:0 2px 6px rgba(0,0,0,.45);transform:translateX(0);transition:transform .18s cubic-bezier(.4,0,.2,1)}
+.sw[aria-checked="true"] .thumb{transform:translateX(20px)}
+.sw[disabled]{opacity:.5;cursor:not-allowed}
+.sw.sw-sky[aria-checked="true"]{background:var(--sky)}
+.sw.sw-coral[aria-checked="true"]{background:var(--coral)}
+.sw-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0}
+.sw-row + .sw-row{border-top:1px solid rgba(255,255,255,.06)}
+.sw-cap{font-size:13px;font-weight:600}
+.sw-sub{font-size:12px;color:var(--t2);margin-top:2px}
+
+/* ─── Slider ─── */
+.sl{position:relative;display:flex;align-items:center;width:100%;height:20px;touch-action:none;user-select:none}
+.sl .track{position:relative;height:8px;width:100%;border-radius:9999px;background:hsl(var(--secondary));overflow:hidden}
+.sl .range{position:absolute;inset:0 auto 0 0;height:100%;background:var(--volt)}
+.sl .thumb{position:absolute;top:50%;height:20px;width:20px;margin-left:-10px;border-radius:9999px;border:2px solid var(--volt);background:hsl(var(--background));transform:translateY(-50%);transition:box-shadow .15s ease}
+.sl:focus-within .thumb{box-shadow:0 0 0 2px hsl(var(--background)),0 0 0 4px hsl(var(--ring)/.7)}
+.sl input[type=range]{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
+.sl.sl-sky .range{background:var(--sky)} .sl.sl-sky .thumb{border-color:var(--sky)}
+.sl.sl-plasma .range{background:var(--plasma)} .sl.sl-plasma .thumb{border-color:var(--plasma)}
+.sl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sl-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-variant-numeric:tabular-nums;color:var(--t2)}
+
+/* ─── Params chips / selectors ─── */
+.paramsbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pb-spacer{flex:1 1 auto;min-width:0}
+.chipwrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.30);border-radius:16px;padding:4px}
+.chipwrap-scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chipwrap-scroll::-webkit-scrollbar{display:none}
+.pb-mobile{gap:6px;flex-wrap:nowrap;min-height:44px}
+.chiprow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+
+.chip{--acc:var(--volt);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  border-radius:12px;padding:6px 12px;font-family:inherit;font-size:11px;font-weight:500;line-height:1.4;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:hsl(var(--foreground)/.70);
+  cursor:pointer;transition:all .15s ease}
+.chip:hover{border-color:rgba(255,255,255,.16);color:hsl(var(--foreground)/.90)}
+.chip-hover{border-color:rgba(255,255,255,.16);color:hsl(var(--foreground)/.90)}
+.chip-active,.chip-active:hover{background:color-mix(in srgb, var(--acc) 15%, transparent);border-color:color-mix(in srgb, var(--acc) 35%, transparent);color:var(--acc);font-weight:600}
+.chip-on{background:color-mix(in srgb, var(--acc) 10%, transparent);border-color:color-mix(in srgb, var(--acc) 25%, transparent);color:var(--acc)}
+.chip[disabled]{opacity:.35;cursor:not-allowed}
+.chip .ico{width:12px;height:12px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.chip .dot{width:6px;height:6px;border-radius:9999px;background:rgba(255,255,255,.2);flex:none}
+.chip .dot.on{background:var(--acc)}
+.chip .swatch-dot{width:12px;height:12px;border-radius:9999px;border:1px solid rgba(255,255,255,.2);flex:none}
+.chip .chev{width:0;height:0;flex:none;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid hsl(var(--foreground)/.6);margin-left:1px}
+.chip-active .chev{border-bottom-color:var(--acc)}
+.chip-model{border-radius:8px;font-weight:600}
+.pb-cost{font-family:'JetBrains Mono',monospace;font-size:10px;color:hsl(var(--foreground)/.6);font-variant-numeric:tabular-nums}
+.chip-adv{color:hsl(var(--foreground)/.5)}
+
+.ratio-ico{width:16px;height:16px;flex:none;display:inline-flex;align-items:center;justify-content:center}
+.ratio-ico i{display:block;border-radius:2px;border:1px solid hsl(var(--foreground)/.45)}
+.chip-active .ratio-ico i{border-color:var(--acc);background:color-mix(in srgb, var(--acc) 12%, transparent)}
+
+.demo{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.pop{border:1px solid rgba(255,255,255,.10);background:hsl(var(--popover));border-radius:12px;padding:8px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,.65);max-width:280px}
+.pop-wide{max-width:300px}
+.pop-narrow{max-width:max-content}
+.poprow{display:flex;flex-wrap:wrap;gap:6px}
+.chip-trigger{margin-left:2px}
+
+.stepper{display:flex;align-items:center;gap:12px}
+.stp{width:32px;height:32px;border-radius:7px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.06);
+  color:hsl(var(--foreground)/.7);font-size:16px;line-height:1;cursor:pointer;font-family:inherit;transition:background .15s}
+.stp:hover{background:rgba(255,255,255,.1)}
+.stp[disabled]{opacity:.3;cursor:not-allowed}
+.stp-val{min-width:20px;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:hsl(var(--foreground)/.9)}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="shell">
+    <div class="brandrow">
+      <div class="mark">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 6.5 12.5 3l-2 5.5L21 7l-6 5.5 2.5 8-6-4.5L6 21l1.5-8.5L3 6.5Z" fill="#0a1100"/>
+        </svg>
+      </div>
+      <div class="wordmark">Robinzone</div>
+    </div>
+    <div class="eyebrow">Design System · v1.4 · ревизия документа v4</div>
+    <h1 style="margin-top:12px">«Charged»</h1>
+    <p class="lede">Тёмная, высококонтрастная система с единственным акцентом Volt. Один UI-шрифт, pill-кнопки, full-bleed раскладка, mobile-first. Все значения ниже — источник истины из <code class="i">src/index.css</code> и <code class="i">tailwind.config.ts</code>. Ревизия v4 закрывает пробелы v3: каркас приложения, оверлеи, формы, состояния, шкалы, доступность, микрокопирайт и процесс изменений.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px">
+      <span class="badge b-volt">Volt primary</span>
+      <span class="badge b-sky">Sky accent</span>
+      <span class="badge b-coral">Coral destructive</span>
+      <span class="badge b-lime">Success</span>
+    </div>
+  </div>
+</header>
+
+<!-- ФУНДАМЕНТ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">01</div>
+    <h2>Принципы</h2>
+    <p class="sub">Четыре правила, которые нельзя нарушать.</p>
+    <div class="ta">
+      <div class="rule"><span class="k">Токены</span><span>В компонентах — только семантические токены (<code class="i">bg-background</code>, <code class="i">text-foreground</code>, <code class="i">bg-primary</code>). Никаких <code class="i">text-white</code>, <code class="i">bg-black</code>, <code class="i">bg-[#hex]</code>.</span></div>
+      <div class="rule"><span class="k">Full-bleed</span><span>Корень любой страницы/секции — <code class="i">PageContainer</code> или <code class="i">.page-shell</code>. Никаких <code class="i">mx-auto max-w-*</code> и Tailwind <code class="i">.container</code>.</span></div>
+      <div class="rule"><span class="k">Mobile-first</span><span>Базовые стили — под мобильный, вверх через <code class="i">sm:/md:/lg:</code>. Тач-таргеты ≥44px. Учитывать safe-area.</span></div>
+      <div class="rule bad"><span class="k">100vh</span><span>Запрещён. Только <code class="i">min(100dvh, var(--vvh, 100dvh))</code> — утилиты <code class="i">.h-screen-safe</code>, <code class="i">.min-h-screen-safe</code>.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ЦВЕТ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">02</div>
+    <h2>Цвет</h2>
+    <p class="sub">Тёмная тема одна, светлой нет. <code class="i">color-scheme: dark</code>. Семантические токены задаются в HSL-компонентах без обёртки <code class="i">hsl()</code>.</p>
+
+    <h3 class="block">Семантические токены</h3>
+    <div class="grid g4">
+      <div class="swatch"><div class="chip" style="background:hsl(232 18% 9%)"></div><div class="meta"><div class="name">background</div><div class="val">232 18% 9%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(228 55% 95%)"></div><div class="meta"><div class="name">foreground</div><div class="val">228 55% 95%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 16% 14%)"></div><div class="meta"><div class="name">card</div><div class="val">232 16% 14%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 18% 12%)"></div><div class="meta"><div class="name">popover</div><div class="val">232 18% 12%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(72 100% 50%)"></div><div class="meta"><div class="name">primary</div><div class="val">72 100% 50% · #C8FF00</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(84 100% 4%)"></div><div class="meta"><div class="name">primary-foreground</div><div class="val">84 100% 4%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 14% 21%)"></div><div class="meta"><div class="name">secondary</div><div class="val">232 14% 21%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 12% 26%)"></div><div class="meta"><div class="name">muted</div><div class="val">232 12% 26%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(228 18% 68%)"></div><div class="meta"><div class="name">muted-foreground</div><div class="val">228 18% 68%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(4 100% 60%)"></div><div class="meta"><div class="name">destructive</div><div class="val">4 100% 60% · #FF4D3D</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(150 100% 60%)"></div><div class="meta"><div class="name">success</div><div class="val">150 100% 60%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(230 20% 14%)"></div><div class="meta"><div class="name">border</div><div class="val">230 20% 14%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 18% 12%)"></div><div class="meta"><div class="name">input</div><div class="val">232 18% 12%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(72 100% 50%)"></div><div class="meta"><div class="name">ring</div><div class="val">72 100% 50%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 16% 17%)"></div><div class="meta"><div class="name">surface-elevated</div><div class="val">232 16% 17%</div></div></div>
+      <div class="swatch"><div class="chip" style="background:hsl(232 14% 24%)"></div><div class="meta"><div class="name">surface-hover</div><div class="val">232 14% 24%</div></div></div>
+    </div>
+
+    <h3 class="block">Бренд-палитра</h3>
+    <table>
+      <thead><tr><th>Имя</th><th>Base</th><th>Hover</th><th>Dim (фон)</th><th>Border</th><th>Текст на заливке</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-volt">Volt</span></td><td class="mono">#C8FF00</td><td class="mono">#D8FF44</td><td class="mono">rgba(200,255,0,.10)</td><td class="mono">rgba(200,255,0,.22)</td><td class="mono">#0a1100</td></tr>
+        <tr><td><span class="badge b-sky">Sky</span></td><td class="mono">#00C2FF</td><td class="mono">#33CEFF</td><td class="mono">rgba(0,194,255,.10)</td><td class="mono">rgba(0,194,255,.22)</td><td class="mono">#001a24</td></tr>
+        <tr><td><span class="badge b-plasma">Plasma</span></td><td class="mono">#9F6EFF</td><td class="mono">#B389FF</td><td class="mono">rgba(159,110,255,.10)</td><td class="mono">rgba(159,110,255,.22)</td><td class="mono">#0f0820</td></tr>
+        <tr><td><span class="badge b-coral">Coral</span></td><td class="mono">#FF4D3D</td><td class="mono">—</td><td class="mono">rgba(255,77,61,.12)</td><td class="mono">rgba(255,77,61,.22)</td><td class="mono">—</td></tr>
+        <tr><td><span class="badge b-lime">Lime</span></td><td class="mono">#39FF88</td><td class="mono">—</td><td class="mono">rgba(57,255,136,.10)</td><td class="mono">rgba(57,255,136,.22)</td><td class="mono">—</td></tr>
+        <tr><td><span class="badge b-violet">Violet</span></td><td class="mono">#9F6EFF</td><td class="mono">—</td><td class="mono">rgba(159,110,255,.10)</td><td class="mono">rgba(159,110,255,.22)</td><td class="mono">—</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Известное расхождение: CSS-переменная <code class="i">--plasma</code> сейчас указывает на <code class="i">#00C2FF</code> (sky), а Tailwind-класс <code class="i">plasma</code> — на <code class="i">#9F6EFF</code>. Осознанно, до отдельного решения по градиентам <code class="i">/explore</code> и 404.</p>
+
+    <h3 class="block">Текстовая шкала</h3>
+    <div class="grid g3">
+      <div class="panel"><div style="color:var(--t0);font-weight:700">t0 — #ffffff</div><div class="val" style="color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px">максимальный контраст</div></div>
+      <div class="panel"><div style="color:var(--t1);font-weight:600">t1 — #e2e6f4</div><div style="color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px">основной текст</div></div>
+      <div class="panel"><div style="color:var(--t2)">t2 — #9098b8</div><div style="color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px">вторичный</div></div>
+      <div class="panel"><div style="color:var(--t3)">t3 — #5c6280</div><div style="color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px">подписи, disabled</div></div>
+      <div class="panel"><div style="color:var(--t4)">t4 — #363d56</div><div style="color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px">разделители</div></div>
+    </div>
+
+    <h3 class="block">Градиенты</h3>
+    <div class="grid g2">
+      <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#C8FF00 0%,#00C2FF 100%)"></div><div class="meta"><div class="name">--gradient-brand</div><div class="val">linear-gradient(135deg,#C8FF00,#00C2FF)</div></div></div>
+      <div class="swatch"><div class="chip" style="background:linear-gradient(180deg,hsl(232 18% 12%) 0%,hsl(232 18% 9%) 70%)"></div><div class="meta"><div class="name">--gradient-hero</div><div class="val">linear-gradient(180deg, popover, background 70%)</div></div></div>
+    </div>
+    <p style="margin-top:20px;font-size:34px;font-weight:800;letter-spacing:-.03em" class="text-gradient">Text gradient volt → sky</p>
+  </div>
+</section>
+
+<!-- ТИПОГРАФИКА -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">03</div>
+    <h2>Типографика</h2>
+    <p class="sub"><b>Plus Jakarta Sans — единственная UI-гарнитура</b> (display + body + labels). Контраст ролей задают только вес и размер. DM Sans и Syne удалены. <b>JetBrains Mono</b> — исключительно для настоящего mono: код, ID/slug, табличные числа, админ-поверхности. Не для маркетинговых eyebrow и лейблов кнопок.</p>
+    <table>
+      <thead><tr><th>Роль</th><th>Размер</th><th>Вес</th><th>Трекинг / интерлиньяж</th></tr></thead>
+      <tbody>
+        <tr><td>H1</td><td class="mono">clamp(38–64px)</td><td class="mono">800</td><td class="mono">-0.025em / 1.05</td></tr>
+        <tr><td>H2</td><td class="mono">30px</td><td class="mono">700</td><td class="mono">-0.025em / 1.05</td></tr>
+        <tr><td>H3</td><td class="mono">16–20px</td><td class="mono">700</td><td class="mono">-0.025em / 1.05</td></tr>
+        <tr><td>Body</td><td class="mono">15px</td><td class="mono">400</td><td class="mono">0 / 1.55</td></tr>
+        <tr><td>Small / caption</td><td class="mono">12–13px</td><td class="mono">500–600</td><td class="mono">0 / 1.5</td></tr>
+        <tr><td>Eyebrow (mono)</td><td class="mono">11px</td><td class="mono">500</td><td class="mono">0.14em, uppercase</td></tr>
+        <tr><td>Badge</td><td class="mono">10px</td><td class="mono">700</td><td class="mono">0.1em, uppercase</td></tr>
+        <tr><td>Prose (assist)</td><td class="mono">15px</td><td class="mono">400</td><td class="mono">0 / 1.78</td></tr>
+      </tbody>
+    </table>
+    <div class="card" style="margin-top:22px">
+      <div style="font-size:52px;font-weight:800;letter-spacing:-.03em">Aa · Generate anything</div>
+      <div style="font-size:30px;font-weight:700;letter-spacing:-.025em;margin-top:14px">Заголовок второго уровня</div>
+      <p style="color:var(--t2);margin:14px 0 0">Основной текст 15px / 1.55. Оптические настройки <code class="i">ss01</code>, <code class="i">rlig</code>, <code class="i">calt</code> включены глобально. На мобильных инпуты форсятся в 16px, чтобы iOS Safari не зумил при фокусе.</p>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t2);margin-top:14px">gen_01JXQ8W2 · 1920×1080 · 12.4s · $0.084</div>
+    </div>
+  </div>
+</section>
+
+<!-- ФОРМА -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">04</div>
+    <h2>Форма, радиусы, тени</h2>
+    <p class="sub">Базовый радиус <code class="i">--radius: 0.625rem</code> (10px). Кнопки всегда pill.</p>
+    <div class="grid g4">
+      <div><div class="radbox" style="border-radius:6px">sm · 6px</div></div>
+      <div><div class="radbox" style="border-radius:8px">md · 8px</div></div>
+      <div><div class="radbox" style="border-radius:10px">lg · 10px</div></div>
+      <div><div class="radbox" style="border-radius:16px">2xl · 16px (панели)</div></div>
+      <div><div class="radbox" style="border-radius:28px">28px (промо, mobile)</div></div>
+      <div><div class="radbox" style="border-radius:9999px">full (кнопки, бейджи)</div></div>
+    </div>
+
+    <h3 class="block">Тени и свечение</h3>
+    <div class="grid g3">
+      <div class="shadowbox glow-volt">glow-volt</div>
+      <div class="shadowbox glow-sky">glow-sky</div>
+      <div class="shadowbox card-hover">card-hover</div>
+    </div>
+    <table style="margin-top:18px">
+      <tbody>
+        <tr><td class="mono">glow-volt</td><td class="mono">0 0 18px rgba(200,255,0,.22), 0 0 60px rgba(200,255,0,.08)</td></tr>
+        <tr><td class="mono">glow-volt-btn</td><td class="mono">↑ + inset 0 1px 0 rgba(255,255,255,.15)</td></tr>
+        <tr><td class="mono">glow-sky</td><td class="mono">0 0 18px rgba(0,194,255,.22), 0 0 60px rgba(0,194,255,.08)</td></tr>
+        <tr><td class="mono">card-hover</td><td class="mono">0 12px 40px rgba(0,0,0,.6), 0 4px 16px rgba(0,0,0,.4)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- КОМПОНЕНТЫ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">05</div>
+    <h2>Компоненты</h2>
+
+    <h3 class="block">Кнопки</h3>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-cta">Generate</button>
+      <button class="btn btn-sky">Upgrade</button>
+      <button class="btn btn-util">Cancel</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-destructive">Delete</button>
+      <button class="btn btn-meta">16:9 · 1080p</button>
+      <button class="btn btn-cta" disabled>Disabled</button>
+    </div>
+    <p class="tone-note">Hover: <code class="i">translateY(-1px)</code> + усиление glow. Active: <code class="i">scale(.97)</code>. Focus-visible: <code class="i">ring-2 ring-ring/70 ring-offset-2 ring-offset-background</code>. На coarse-pointer минимальный размер 44×44px.</p>
+
+    <h3 class="block">Бейджи</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span class="badge b-volt">New</span>
+      <span class="badge b-sky">Beta</span>
+      <span class="badge b-plasma">Pro</span>
+      <span class="badge b-coral">Failed</span>
+      <span class="badge b-lime">Ready</span>
+      <span class="badge b-violet">Assist</span>
+    </div>
+
+    <h3 class="block">Поверхности</h3>
+    <div class="grid g2">
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:6px">.card / .studio-panel</div>
+        <div style="color:var(--t2);font-size:14px">border <code class="i">white/10</code> + <code class="i">bg-card</code>, радиус 16px. База для studio-shell, assist-shell, composer.</div>
+      </div>
+      <div class="panel">
+        <div style="font-weight:700;margin-bottom:6px">.studio-composer-popover</div>
+        <div style="color:var(--t2);font-size:14px"><code class="i">bg-popover</code> + border, радиус 16px. Дропдауны, меню параметров.</div>
+      </div>
+    </div>
+
+    <h3 class="block">Поля ввода</h3>
+    <div class="grid g2">
+      <div><label class="lbl">Prompt</label><input class="inp" placeholder="A robin flying over neon city…" /></div>
+      <div><label class="lbl">Focused</label><input class="inp" value="cinematic, 35mm" style="border-color:var(--volt);box-shadow:0 0 0 2px rgba(200,255,0,.28)" /></div>
+    </div>
+
+    <h3 class="block">Switch</h3>
+    <p class="sub">Radix <code class="i">Switch</code>: 44×24, thumb 20px, трек <code class="i">bg-input</code> → <code class="i">bg-primary</code> (Volt) во включённом состоянии. Смещение thumb — 20px, переход 180ms. Акцент трека может переопределяться на <code class="i">sky</code> / <code class="i">coral</code> в контекстных панелях.</p>
+    <div class="card">
+      <div class="sw-row">
+        <div><div class="sw-cap">Email-уведомления</div><div class="sw-sub">Транзакционные письма о генерациях и биллинге</div></div>
+        <button class="sw" role="switch" aria-checked="true" data-sw><span class="thumb"></span></button>
+      </div>
+      <div class="sw-row">
+        <div><div class="sw-cap">Маркетинговые письма</div><div class="sw-sub">Выключено по умолчанию</div></div>
+        <button class="sw sw-sky" role="switch" aria-checked="false" data-sw><span class="thumb"></span></button>
+      </div>
+      <div class="sw-row">
+        <div><div class="sw-cap">Weekly digest</div><div class="sw-sub">Coral-вариант для деструктивных / рисковых тумблеров</div></div>
+        <button class="sw sw-coral" role="switch" aria-checked="true" data-sw><span class="thumb"></span></button>
+      </div>
+      <div class="sw-row">
+        <div><div class="sw-cap">Недоступно</div><div class="sw-sub">disabled — opacity .5, курсор not-allowed</div></div>
+        <button class="sw" role="switch" aria-checked="false" disabled><span class="thumb"></span></button>
+      </div>
+    </div>
+
+    <h3 class="block">Slider</h3>
+    <p class="sub">Radix <code class="i">Slider</code>: трек 8px <code class="i">bg-secondary</code>, заполнение <code class="i">bg-primary</code>, thumb 20px с 2px обводкой акцента и фоном <code class="i">bg-background</code>. В Advanced-панелях студии слева слайдер, справа моно-значение с <code class="i">tabular-nums</code>.</p>
+    <div class="grid g2">
+      <div class="card">
+        <div class="sl-head"><span class="lbl" style="margin:0">Guidance scale</span><span class="sl-val" data-out>7.5</span></div>
+        <div class="sl"><div class="track"><div class="range" style="width:50%"></div></div><span class="thumb" style="left:50%"></span>
+          <input type="range" min="1" max="14" step="0.1" value="7.5" data-sl aria-label="Guidance scale" /></div>
+      </div>
+      <div class="card">
+        <div class="sl-head"><span class="lbl" style="margin:0">Steps (sky)</span><span class="sl-val" data-out>28</span></div>
+        <div class="sl sl-sky"><div class="track"><div class="range" style="width:56%"></div></div><span class="thumb" style="left:56%"></span>
+          <input type="range" min="1" max="50" step="1" value="28" data-sl aria-label="Steps" /></div>
+      </div>
+      <div class="card">
+        <div class="sl-head"><span class="lbl" style="margin:0">Strength (plasma)</span><span class="sl-val" data-out>0.65</span></div>
+        <div class="sl sl-plasma"><div class="track"><div class="range" style="width:65%"></div></div><span class="thumb" style="left:65%"></span>
+          <input type="range" min="0" max="1" step="0.01" value="0.65" data-sl aria-label="Strength" /></div>
+      </div>
+      <div class="card">
+        <div class="sl-head"><span class="lbl" style="margin:0">Duration, s</span><span class="sl-val" data-out>8</span></div>
+        <div class="sl"><div class="track"><div class="range" style="width:26%"></div></div><span class="thumb" style="left:26%"></span>
+          <input type="range" min="2" max="25" step="1" value="8" data-sl aria-label="Duration" /></div>
+      </div>
+    </div>
+    <p class="tone-note">Шаг: целые — <code class="i">step 1</code>, дробные — <code class="i">(max−min)/100</code>. Изменённое от дефолта значение помечается точкой 6px цветом акцента таба.</p>
+
+    <h3 class="block">SectionCard (только главная)</h3>
+    <p class="sub">Инсетные скруглённые карточки с tone-радиальным свечением без blur — только резкие градиентные стопы. Эффект стопки: каждая следующая перекрывает предыдущую на −20px (−32px на md+).</p>
+    <div class="grid g3">
+      <div class="sectioncard" style="background:radial-gradient(ellipse 64% 46% at 50% 0%, hsl(68 70% 28% / .72) 0%, hsl(68 70% 28% / .72) 6%, transparent 56%), radial-gradient(ellipse 112% 78% at 50% 0%, hsl(68 70% 28% / .72) 0%, transparent 66%), hsl(232 18% 9%)">
+        <span class="badge b-volt">volt</span><div style="font-weight:700;margin-top:12px;font-size:19px">Tone: volt</div>
+      </div>
+      <div class="sectioncard sc-sky" style="background:radial-gradient(ellipse 64% 46% at 50% 0%, hsl(195 70% 30% / .72) 0%, hsl(195 70% 30% / .72) 6%, transparent 56%), radial-gradient(ellipse 112% 78% at 50% 0%, hsl(195 70% 30% / .72) 0%, transparent 66%), hsl(232 18% 9%)">
+        <span class="badge b-sky">sky</span><div style="font-weight:700;margin-top:12px;font-size:19px">Tone: sky</div>
+      </div>
+      <div class="sectioncard sc-coral" style="background:radial-gradient(ellipse 64% 46% at 50% 0%, hsl(8 70% 30% / .72) 0%, hsl(8 70% 30% / .72) 6%, transparent 56%), radial-gradient(ellipse 112% 78% at 50% 0%, hsl(8 70% 30% / .72) 0%, transparent 66%), hsl(232 18% 9%)">
+        <span class="badge b-coral">coral</span><div style="font-weight:700;margin-top:12px;font-size:19px">Tone: coral</div>
+      </div>
+    </div>
+    <p class="tone-note">Доступные tone: <code class="i">volt</code>, <code class="i">sky</code>, <code class="i">coral</code>, <code class="i">violet</code>, <code class="i">lime</code>. Intensity: <code class="i">subtle</code> | <code class="i">vivid</code>.</p>
+
+    <h3 class="block">Бренд-мark</h3>
+    <div class="card" style="display:flex;gap:26px;align-items:center;flex-wrap:wrap">
+      <div class="mark" style="width:28px;height:28px;border-radius:8px"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M3 6.5 12.5 3l-2 5.5L21 7l-6 5.5 2.5 8-6-4.5L6 21l1.5-8.5L3 6.5Z" fill="#0a1100"/></svg></div>
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M3 6.5 12.5 3l-2 5.5L21 7l-6 5.5 2.5 8-6-4.5L6 21l1.5-8.5L3 6.5Z" fill="#0a1100"/></svg></div>
+      <div class="mark" style="width:72px;height:72px;border-radius:20px"><svg width="45" height="45" viewBox="0 0 24 24"><path d="M3 6.5 12.5 3l-2 5.5L21 7l-6 5.5 2.5 8-6-4.5L6 21l1.5-8.5L3 6.5Z" fill="#0a1100"/></svg></div>
+      <div style="color:var(--t2);font-size:14px;max-width:44ch">Origami-robin глиф в Volt-плитке. Радиус ≈ <code class="i">0.28 × size</code>, глиф <code class="i">0.62 × size</code>, по умолчанию с <code class="i">shadow-glow-volt</code>. Wordmark — «Robinzone», weight 700, tracking-tight.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTORS -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">06</div>
+    <h2>Селекторы параметров</h2>
+    <p class="sub">Chip-строка Creation Studio: пропорции, разрешение, продолжительность, количество медиа. Всё строится из JSON-схемы модели — источник истины: <code class="i">src/components/composer/ModelParamsChips.tsx</code> и <code class="i">src/components/creation-studio/paramsBarPrimary.ts</code>.</p>
+
+    <h3 class="block">Анатомия chip-строки</h3>
+    <div class="card">
+      <div class="paramsbar">
+        <div class="chipwrap">
+          <button class="chip" type="button"><span class="ratio-ico"><i style="width:14px;height:8px"></i></span>Ratio: Auto<span class="chev"></span></button>
+          <button class="chip" type="button"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>11s<span class="chev"></span></button>
+          <button class="chip" type="button">720p<span class="chev"></span></button>
+          <button class="chip chip-on" type="button"><span class="dot on"></span>Audio</button>
+          <button class="chip" type="button"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m5 17 4.5-5 3 3.5L16 12l3 5"/></svg>2 img<span class="chev"></span></button>
+          <button class="chip chip-adv" type="button"><svg class="ico" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="8" cy="17" r="2" fill="currentColor"/></svg>Advanced</button>
+        </div>
+        <div class="pb-spacer"></div>
+        <button class="chip chip-model" type="button"><span class="dot on"></span>Veo 3.1<span class="pb-cost">40c</span><span class="chev"></span></button>
+      </div>
+      <p class="tone-note">Контейнер: <code class="i">rounded-2xl border-white/[0.06] bg-black/30 p-1</code>, gap 6px, высота бара ≥60px (desktop) / 44px (mobile). Максимум <b>5</b> первичных чипов — остальное уезжает в Advanced. Порядок фиксирован массивом <code class="i">PRIMARY_FIELD_ORDER</code>.</p>
+    </div>
+
+    <h3 class="block">Анатомия одного чипа</h3>
+    <div class="grid g2" style="align-items:start">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:12px">Состояния</div>
+        <div class="chiprow">
+          <button class="chip" type="button">Idle<span class="chev"></span></button>
+          <button class="chip chip-hover" type="button">Hover<span class="chev"></span></button>
+          <button class="chip chip-active" type="button">Selected<span class="chev"></span></button>
+          <button class="chip chip-on" type="button"><span class="dot on"></span>Toggle on</button>
+          <button class="chip" type="button"><span class="dot"></span>Toggle off</button>
+          <button class="chip" type="button" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:12px">Спека</div>
+        <table style="font-size:12.5px">
+          <tbody>
+            <tr><td>Форма</td><td class="mono">rounded-xl · px-3 · py-[6px]</td></tr>
+            <tr><td>Текст</td><td class="mono">11px / 500 · foreground/70</td></tr>
+            <tr><td>Idle</td><td class="mono">bg white/[0.04] · border white/[0.08]</td></tr>
+            <tr><td>Hover</td><td class="mono">border white/[0.16] · text /90</td></tr>
+            <tr><td>Selected</td><td class="mono">accent 26 / border accent 59 / text accent / 600</td></tr>
+            <tr><td>Иконка</td><td class="mono">12×12, gap 6px</td></tr>
+            <tr><td>Chevron</td><td class="mono">ChevronUp 10×10, скрыт на mobile</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="block">Пропорции (<code class="i">aspect_ratio</code>)</h3>
+    <p class="sub">Enum-поповер: сетка пилюль с миниатюрой рамки, вычисленной из значения (<code class="i">MAX=16px</code> по большей стороне). Порядок канонический: 16:9 · 9:16 · 1:1 · 4:3 · 3:4 · 21:9, <code class="i">auto</code> всегда последний.</p>
+    <div class="demo">
+      <div class="pop pop-wide">
+        <div class="poprow" data-group="ratio">
+          <button class="chip" data-v="16:9"><span class="ratio-ico"><i style="width:16px;height:9px"></i></span>16:9</button>
+          <button class="chip" data-v="9:16"><span class="ratio-ico"><i style="width:9px;height:16px"></i></span>9:16</button>
+          <button class="chip" data-v="1:1"><span class="ratio-ico"><i style="width:14px;height:14px"></i></span>1:1</button>
+          <button class="chip" data-v="4:3"><span class="ratio-ico"><i style="width:16px;height:12px"></i></span>4:3</button>
+          <button class="chip" data-v="3:4"><span class="ratio-ico"><i style="width:12px;height:16px"></i></span>3:4</button>
+          <button class="chip" data-v="21:9"><span class="ratio-ico"><i style="width:16px;height:7px"></i></span>21:9</button>
+          <button class="chip chip-active" data-v="auto"><span class="ratio-ico"><i style="width:14px;height:8px"></i></span>Ratio: Auto</button>
+        </div>
+      </div>
+      <button class="chip chip-trigger" data-out="ratio"><span class="ratio-ico"><i style="width:14px;height:8px"></i></span>Ratio: Auto<span class="chev"></span></button>
+    </div>
+    <p class="tone-note">Лейбл в баре: чистое <code class="i">16:9</code> для явных значений и <code class="i">Ratio: Auto</code> для авто — см. <code class="i">formatChipValue()</code>.</p>
+
+    <h3 class="block">Разрешение (<code class="i">resolution</code>)</h3>
+    <p class="sub">Тот же enum-поповер без иконки. Порядок: 480p · 720p · 1080p · 0.5K · 1K · 2K · 4K · 8K. Короткие коды апперкейсятся (<code class="i">1k → 1K</code>), «p»-коды остаются в нижнем регистре.</p>
+    <div class="demo">
+      <div class="pop">
+        <div class="poprow" data-group="res">
+          <button class="chip" data-v="480p">480p</button>
+          <button class="chip chip-active" data-v="720p">720p</button>
+          <button class="chip" data-v="1080p">1080p</button>
+          <button class="chip" data-v="2K">2K</button>
+          <button class="chip" data-v="4K">4K</button>
+          <button class="chip" data-v="Res: Auto">Res: Auto</button>
+        </div>
+      </div>
+      <button class="chip chip-trigger" data-out="res">720p<span class="chev"></span></button>
+    </div>
+
+    <h3 class="block">Продолжительность (<code class="i">duration</code> / <code class="i">duration_seconds</code>)</h3>
+    <p class="sub">Enum из схемы, либо синтезируется из <code class="i">minimum/maximum</code>, если диапазон ≤ 20 значений. Сортировка числовая по возрастанию. <code class="i">0</code> → «Original», <code class="i">auto</code> → «Auto» и всегда в конце. Иконка — Clock.</p>
+    <div class="demo">
+      <div class="pop">
+        <div class="poprow" data-group="dur">
+          <button class="chip" data-v="3s">3s</button>
+          <button class="chip" data-v="4s">4s</button>
+          <button class="chip chip-active" data-v="5s">5s</button>
+          <button class="chip" data-v="6s">6s</button>
+          <button class="chip" data-v="8s">8s</button>
+          <button class="chip" data-v="10s">10s</button>
+          <button class="chip" data-v="12s">12s</button>
+          <button class="chip" data-v="15s">15s</button>
+          <button class="chip" data-v="Auto">Auto</button>
+        </div>
+      </div>
+      <button class="chip chip-trigger" data-out="dur"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5s<span class="chev"></span></button>
+    </div>
+
+    <h3 class="block">Количество медиа (<code class="i">num_images</code>)</h3>
+    <p class="sub">Не enum, а stepper-поповер: <code class="i">minimum</code>/<code class="i">maximum</code> из схемы (дефолт 1…4). Кнопки 32×32, значение — tabular-nums. Лейбл в баре: <code class="i">N img</code> с иконкой Image.</p>
+    <div class="demo">
+      <div class="pop pop-narrow">
+        <div class="stepper">
+          <button class="stp" data-step="-1" type="button">−</button>
+          <span class="stp-val" data-num>2</span>
+          <button class="stp" data-step="1" type="button">+</button>
+        </div>
+      </div>
+      <button class="chip chip-trigger"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m5 17 4.5-5 3 3.5L16 12l3 5"/></svg><span data-numlabel>2</span> img<span class="chev"></span></button>
+    </div>
+    <p class="tone-note">На границах диапазона кнопка получает <code class="i">opacity .3 · cursor:not-allowed</code>, а не исчезает.</p>
+
+    <h3 class="block">Прочие первичные селекторы</h3>
+    <div class="card">
+      <div class="chiprow">
+        <button class="chip chip-on" type="button"><span class="dot on"></span>Audio</button>
+        <button class="chip" type="button"><span class="dot"></span>Multi-Shot</button>
+        <button class="chip" type="button">◆ High<span class="chev"></span></button>
+        <button class="chip" type="button"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3v10"/><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Rachel<span class="chev"></span></button>
+        <button class="chip" type="button"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg>English<span class="chev"></span></button>
+        <button class="chip" type="button"><span class="swatch-dot" style="background:#ffffff"></span>White<span class="chev"></span></button>
+        <button class="chip" type="button">Style: Cinemat<span class="chev"></span></button>
+      </div>
+      <p class="tone-note">Boolean → toggle-чип с точкой (без поповера). Строковые поля <code class="i">voice</code>, <code class="i">language</code>, <code class="i">target_lang</code>, <code class="i">negative_prompt</code> имеют собственные пикеры (Command-список с поиском для языков).</p>
+    </div>
+
+    <h3 class="block">Поповер: правила</h3>
+    <table>
+      <thead><tr><th>Что</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Позиция</td><td class="mono">side="top" · align="start" · sideOffset={8}</td></tr>
+        <tr><td>Контейнер</td><td class="mono">rounded-xl · border-white/10 · bg-popover · p-2 · shadow-2xl · z-50</td></tr>
+        <tr><td>Габариты (enum)</td><td class="mono">max-w-[280px] · max-h-[250px] · overflow-y-auto</td></tr>
+        <tr><td>Раскладка опций</td><td class="mono">flex-wrap · gap-1.5, те же пилюли что и триггер</td></tr>
+        <tr><td>Выбор</td><td class="mono">мгновенный, без кнопки «Применить»</td></tr>
+        <tr><td>Акцент</td><td class="mono">наследуется от таба: volt · sky · plasma · lime</td></tr>
+        <tr><td>Fallback значения</td><td class="mono">value → schema.default → первый элемент enum</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Акценты по табам</h3>
+    <div class="grid g4">
+      <div class="panel" style="text-align:center"><button class="chip chip-active" style="--acc:#C8FF00">16:9</button><div class="tone-note">Video · volt</div></div>
+      <div class="panel" style="text-align:center"><button class="chip chip-active" style="--acc:#00C2FF">16:9</button><div class="tone-note">Image · sky</div></div>
+      <div class="panel" style="text-align:center"><button class="chip chip-active" style="--acc:#9F6EFF">16:9</button><div class="tone-note">Audio · plasma</div></div>
+      <div class="panel" style="text-align:center"><button class="chip chip-active" style="--acc:#39FF88">16:9</button><div class="tone-note">Edit · lime</div></div>
+    </div>
+
+    <h3 class="block">Mobile</h3>
+    <div class="card">
+      <div class="paramsbar pb-mobile">
+        <div class="chipwrap chipwrap-scroll">
+          <button class="chip" type="button"><span class="ratio-ico"><i style="width:14px;height:8px"></i></span>Ratio: Auto</button>
+          <button class="chip" type="button"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>11s</button>
+          <button class="chip" type="button">720p</button>
+          <button class="chip chip-on" type="button"><span class="dot on"></span>Audio</button>
+        </div>
+        <button class="chip chip-model" type="button"><span class="dot on"></span>Veo 3.1<span class="chev"></span></button>
+      </div>
+      <p class="tone-note">Один горизонтальный ряд с <code class="i">overflow-x-auto scrollbar-hide</code>, chevron скрыт (<code class="i">hideChevron</code>), высота ряда ≥44px, кнопка Generate живёт в липком доке снизу.</p>
+    </div>
+
+    <div class="ta" style="margin-top:26px">
+      <div class="rule"><span class="k">Do</span><span>Новый первичный селектор — только через <code class="i">PRIMARY_FIELD_ORDER</code> и <code class="i">formatChipValue()</code>. Никаких локальных чипов в страницах.</span></div>
+      <div class="rule"><span class="k">Do</span><span>Значение в баре должно читаться без открытия поповера: <code class="i">720p</code>, <code class="i">11s</code>, <code class="i">2 img</code>.</span></div>
+      <div class="rule bad"><span class="k">Don't</span><span>Не показывать более 5 чипов и не дублировать в баре то, что уже есть в Advanced.</span></div>
+      <div class="rule bad"><span class="k">Don't</span><span>Не хардкодить списки значений — enum берётся из <code class="i">/schemas/&lt;slug&gt;.json</code>, порядок из <code class="i">sortEnumValues()</code>.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYOUT -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">07</div>
+    <h2>Раскладка и сетка</h2>
+    <table>
+      <thead><tr><th>Что</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Горизонтальные отступы (<code class="i">.page-shell</code>)</td><td class="mono">px-4 · sm:px-6 · lg:px-8 · xl:px-10 · 2xl:px-12 + max(1rem, safe-area)</td></tr>
+        <tr><td>Tailwind <code class="i">.container</code></td><td class="mono">обнулён: все брейкпоинты = 100%</td></tr>
+        <tr><td>Ширина промо на главной</td><td class="mono">lg:max-w-[1240px]</td></tr>
+        <tr><td>Высота хедера</td><td class="mono">--header-height: 64px; --header-total: +safe-area-top</td></tr>
+        <tr><td>Высота вьюпорта</td><td class="mono">min(100dvh, var(--vvh, 100dvh))</td></tr>
+        <tr><td>Нижняя навигация (mobile)</td><td class="mono">60px + safe-area-bottom + var(--vv-bottom)</td></tr>
+        <tr><td>Брейкпоинты</td><td class="mono">sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536</td></tr>
+        <tr><td>Overflow-инвариант</td><td class="mono">html/body/#root: overflow-x: clip (fallback hidden). Никогда overflow:hidden на body</td></tr>
+        <tr><td>Тач-таргеты</td><td class="mono">≥44×44px, только @media (pointer: coarse)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MOTION -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">08</div>
+    <h2>Motion</h2>
+    <table>
+      <thead><tr><th>Класс</th><th>Анимация</th><th>Назначение</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">.animate-fade-up</td><td class="mono">0.5s cubic-bezier(.16,1,.3,1)</td><td>появление блоков</td></tr>
+        <tr><td class="mono">.animate-page-in</td><td class="mono">fade-up 0.3s ease-out</td><td>вход страницы</td></tr>
+        <tr><td class="mono">.animate-marquee</td><td class="mono">48s linear infinite</td><td>горизонтальные ленты</td></tr>
+        <tr><td class="mono">.animate-marquee-x / -y</td><td class="mono">50s / 30s linear</td><td>шоукейс-стены</td></tr>
+        <tr><td class="mono">.animate-glow-volt</td><td class="mono">glow-volt-pulse 2.5s ease-in-out</td><td>пульс CTA</td></tr>
+        <tr><td class="mono">.animate-blink</td><td class="mono">blink-dot 2s</td><td>индикатор «в работе»</td></tr>
+        <tr><td class="mono">kenburns</td><td class="mono">scale(1) → scale(1.08)</td><td>фоновые медиа</td></tr>
+        <tr><td class="mono">otp-shake</td><td class="mono">shake ±4px</td><td>ошибка OTP</td></tr>
+        <tr><td class="mono">accordion-down / -up</td><td class="mono">0.2s ease-out</td><td>раскрытие</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Стандартные длительности: 150–200ms для hover/состояний, 300ms для входа страницы, 500ms для scroll-reveal. Глобально уважается <code class="i">prefers-reduced-motion: reduce</code> — всё гасится до 0.001ms. Marquee ставится на паузу при hover (<code class="i">.pause-on-hover</code>).</p>
+  </div>
+</section>
+
+
+<!-- КАРКАС ПРИЛОЖЕНИЯ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">09</div>
+    <h2>Каркас приложения</h2>
+    <p class="sub">Навигация, футер и переходы. Это несущая конструкция продукта: она одинакова на всех страницах, кроме полноэкранных студий.</p>
+
+    <h3 class="block">Navbar</h3>
+    <table>
+      <thead><tr><th>Свойство</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Высота</td><td class="mono">h-16 (64px) = var(--header-height)</td></tr>
+        <tr><td>Позиция</td><td class="mono">fixed top-0, z-50</td></tr>
+        <tr><td>Фон (top)</td><td>прозрачный, без бордера</td></tr>
+        <tr><td>Фон (scrolled &gt; 8px)</td><td class="mono">bg-background/80 + backdrop-blur-xl + border-b border-white/8</td></tr>
+        <tr><td>Края</td><td>левый (логотип) и правый (действия) блоки — <code class="i">sticky</code>, с градиентной маской <code class="i">from-[#06080f] to-transparent</code>, центр скроллится горизонтально</td></tr>
+        <tr><td>Отступы</td><td class="mono">pl-4 sm:pl-6 lg:pl-8 / pr-3 sm:pr-6 lg:pr-8</td></tr>
+        <tr><td>Гость</td><td>Log in (ghost) + Sign up (<code class="i">.button-cta</code>, 36px)</td></tr>
+        <tr><td>Авторизован</td><td>CreditBalanceWidget → Avatar-меню; кнопки входа не рендерятся</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Мега-меню (Explore / Create)</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">Триггер</span><span>Hover (desktop, ≥1024px) с задержкой закрытия 120ms; click/Enter/Space — на touch и клавиатуре.</span></div>
+      <div class="rule"><span class="k">Панель</span><span><code class="i">bg-popover</code>, <code class="i">border border-white/10</code>, radius 16px, тень <code class="i">0 25px 50px -12px rgba(0,0,0,.65)</code>, отступ от шапки 8px, максимум 3 колонки.</span></div>
+      <div class="rule"><span class="k">Строка</span><span>иконка 16px + label 14/600 + описание 12px <code class="i">text-muted-foreground</code>; hover — <code class="i">bg-white/5</code>, radius 10px.</span></div>
+      <div class="rule"><span class="k">Клавиатура</span><span>Esc закрывает и возвращает фокус на триггер; Tab не выпадает из панели, пока она открыта; <code class="i">aria-expanded</code> обязателен.</span></div>
+    </div>
+
+    <h3 class="block">MobileBottomNav</h3>
+    <table>
+      <thead><tr><th>Свойство</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Показ</td><td>&lt; 768px, скрыт в полноэкранных студиях и модалках</td></tr>
+        <tr><td>Высота</td><td class="mono">60px + env(safe-area-inset-bottom)</td></tr>
+        <tr><td>Позиция</td><td class="mono">fixed bottom-0, z-40, bg-background/95 + backdrop-blur, border-t border-white/8</td></tr>
+        <tr><td>Таб</td><td>иконка 20px + подпись 10/600; активный — Volt + точка 4px под подписью; неактивный — <code class="i">text-muted-foreground</code></td></tr>
+        <tr><td>Тач-таргет</td><td>≥44×44px, растянут на всю высоту таба</td></tr>
+        <tr><td>Спейсер</td><td>у скроллящегося контента обязателен <code class="i">.mobile-bottom-nav-space</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Footer, CreditBalanceWidget, PageTransition</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">Footer</span><span>Full-bleed, <code class="i">border-t border-white/8</code>, 4 колонки ≥lg / 2 ≥sm / 1 на мобиле; ссылки 13px <code class="i">text-muted-foreground</code>, hover → <code class="i">foreground</code>. Нижняя строка: копирайт слева, легальные ссылки справа.</span></div>
+      <div class="rule"><span class="k">CreditBalanceWidget</span><span>Pill 32px, <code class="i">bg-white/5 border-white/10</code>, иконка молнии 14px Volt + число <code class="i">tabular-nums</code> 13/600. Состояния: loading — скелет-пилюля той же ширины (никогда не «0»); low (&lt;10%) — Coral-текст; zero — Coral + CTA «Top up».</span></div>
+      <div class="rule"><span class="k">PageTransition</span><span>fade+rise 300ms <code class="i">cubic-bezier(.4,0,.2,1)</code>, opacity 0→1, translateY 8px→0. Отключается при <code class="i">prefers-reduced-motion</code>. Скролл сбрасывается в 0 на смену роута.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ОВЕРЛЕИ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">10</div>
+    <h2>Оверлеи, меню, навигация внутри страницы</h2>
+    <p class="sub">Всё, что появляется над контентом. Общий закон: один слой оверлея за раз, Esc всегда закрывает, фокус возвращается на триггер.</p>
+
+    <table>
+      <thead><tr><th>Компонент</th><th>Анатомия</th><th>Мобильный вариант</th></tr></thead>
+      <tbody>
+        <tr><td>Dialog</td><td>overlay <code class="i">bg-black/80</code>, панель <code class="i">bg-card border border-white/10</code>, radius 16px, padding 24px, max-width 440/560/720px, close ×20px в правом верхнем углу (тач-таргет 44px)</td><td>ширина <code class="i">calc(100% - 24px)</code>, вертикальные отступы 16px, контент скроллится внутри</td></tr>
+        <tr><td>AlertDialog</td><td>то же, но без close-крестика; два действия справа, destructive — <code class="i">bg-destructive</code></td><td>кнопки в колонку, primary сверху</td></tr>
+        <tr><td>ConfirmDialog</td><td>заголовок 18/700 + описание 14 <code class="i">muted</code> + Cancel/Confirm; необратимые действия требуют явного глагола («Delete forever»)</td><td>то же</td></tr>
+        <tr><td>Sheet</td><td>сторона right/left, ширина 360–480px, radius 0, тень слева</td><td>side="bottom", radius 20px сверху, drag-handle 36×4px, max-height 85dvh</td></tr>
+        <tr><td>Drawer (vaul)</td><td>только мобильные bottom-sheet сценарии, snap-точки допускаются</td><td>—</td></tr>
+        <tr><td>Popover</td><td>см. §06: <code class="i">bg-popover</code>, radius 12px, padding 8px, max-w 280–300px, z-50</td><td>превращается в Sheet, если контент &gt; 60dvh</td></tr>
+        <tr><td>DropdownMenu / ContextMenu</td><td>min-w 180px, item 32px, 13/500, hover <code class="i">bg-white/6</code>, separator <code class="i">border-white/8</code>, destructive item — Coral</td><td>item 40px</td></tr>
+        <tr><td>Tooltip</td><td>задержка 300ms, 12/500, <code class="i">bg-popover</code>, padding 6×10, radius 8px; только пояснение, не источник критичной информации</td><td>не показывается — на touch дублируется подписью</td></tr>
+        <tr><td>HoverCard</td><td>задержка 500ms, ширина 280–320px, превью сущности (модель, автор)</td><td>отключён</td></tr>
+        <tr><td>Command (⌘K)</td><td>оверлей-диалог 560px, инпут 48px без бордера, группы с mono-заголовками 11px, item 36px, подсветка совпадений Volt</td><td>полноэкранный, инпут закреплён сверху</td></tr>
+        <tr><td>Tabs</td><td>underline-стиль: строка 40px, item 13/600, активный — Volt-текст + 2px Volt-подчёркивание; segmented-стиль — pill-контейнер <code class="i">bg-white/4</code>, активный <code class="i">bg-white/8</code></td><td>горизонтальный скролл, <code class="i">.scrollbar-hide</code></td></tr>
+        <tr><td>Select</td><td>триггер как <code class="i">.inp</code> (44px) + шеврон 16px; список — popover, item 36px, чек 16px слева у выбранного</td><td>список ≥ 8 позиций → Sheet</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Порядок закрытия: Esc закрывает верхний слой, а не всю стопку. Скролл body блокируется только для Dialog/Sheet/Drawer, не для Popover и Dropdown.</p>
+  </div>
+</section>
+
+<!-- ФОРМЫ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">11</div>
+    <h2>Формы</h2>
+    <p class="sub">Единый контракт поля: <code class="i">Label → Control → Description → Error</code>. Формы строятся на react-hook-form + zod через <code class="i">components/ui/form.tsx</code>.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <label class="lbl">Email <span style="color:var(--coral)">*</span></label>
+        <input class="inp" placeholder="you@studio.com" />
+        <div style="font-size:12px;color:var(--t3);margin-top:6px">Сюда придёт чек и ключ доступа.</div>
+      </div>
+      <div class="card">
+        <label class="lbl">Email <span style="color:var(--coral)">*</span></label>
+        <input class="inp" value="not-an-email" style="border-color:var(--coral);box-shadow:0 0 0 2px rgba(255,77,61,.22)" />
+        <div style="font-size:12px;color:var(--coral);margin-top:6px">Enter a valid email address.</div>
+      </div>
+    </div>
+
+    <table style="margin-top:18px">
+      <thead><tr><th>Элемент</th><th>Правило</th></tr></thead>
+      <tbody>
+        <tr><td>Label</td><td>12/600 <code class="i">text-muted-foreground</code>, margin-bottom 7px; обязательность — Coral-звёздочка, а не слово «required»</td></tr>
+        <tr><td>Description</td><td>12/400 <code class="i">text-muted-foreground</code>, 6px под контролом; исчезает, когда показана ошибка</td></tr>
+        <tr><td>Error</td><td>12/500 Coral + бордер поля Coral + <code class="i">aria-invalid</code> + <code class="i">aria-describedby</code></td></tr>
+        <tr><td>Валидация</td><td>onBlur для первого прохода, затем onChange; сабмит фокусирует первое невалидное поле</td></tr>
+        <tr><td>Textarea</td><td>min-height 96px, padding 12×14, radius 10px, авто-рост до 320px, resize только вертикальный</td></tr>
+        <tr><td>Счётчик</td><td>справа под полем, mono 11px; &gt;90% лимита — Coral</td></tr>
+        <tr><td>Checkbox / Radio</td><td>18×18px, radius 5px / круг, бордер <code class="i">white/16</code>, checked — Volt-фон + тёмная галочка; кликабельная зона включает лейбл, ≥44px по высоте строки</td></tr>
+        <tr><td>Toggle / ToggleGroup</td><td>36px, pill, активный — <code class="i">bg-white/8</code> + foreground; для взаимоисключающих режимов, не для настроек</td></tr>
+        <tr><td>Switch</td><td>см. §05 — только для мгновенно применяемых настроек</td></tr>
+        <tr><td>InputOTP</td><td>6 ячеек 44×48px, mono 18px, gap 8px, активная ячейка — Volt-бордер + ring; автопереход и вставка из буфера</td></tr>
+        <tr><td>Кнопка сабмита</td><td>во время запроса — <code class="i">disabled</code> + спиннер 16px слева, текст не меняется на «Loading…», а сохраняет глагол</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Загрузка файлов</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">Dropzone</span><span>Пунктирный бордер <code class="i">2px dashed white/12</code>, radius 14px, min-height 140px, иконка 24px + «Drop image or click to upload» 13/500 + подпись с форматами и лимитом 11px mono. Hover/drag-over — бордер Volt + фон <code class="i">volt-dim</code>.</span></div>
+      <div class="rule"><span class="k">Превью</span><span>Тайл в <code class="i">.hf-frame</code>, aspect сохраняется, крестик удаления 24px в углу, имя файла обрезается по центру (<code class="i">file…name.png</code>).</span></div>
+      <div class="rule"><span class="k">Прогресс</span><span>Полоса 3px Volt поверх нижней кромки превью + процент mono 11px. Ошибка — Coral-оверлей и кнопка Retry, файл из очереди не пропадает.</span></div>
+      <div class="rule bad"><span class="k">Нельзя</span><span>Блокировать всю форму на время аплоада и терять уже выбранные файлы при ошибке одного.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- СОСТОЯНИЯ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">12</div>
+    <h2>Состояния интерфейса</h2>
+    <p class="sub">У каждого блока данных обязаны быть четыре состояния: loading, empty, error, ready. Пятое — gated (нет прав/кредитов) — для всего, что тратит деньги.</p>
+
+    <h3 class="block">Loading</h3>
+    <table>
+      <thead><tr><th>Паттерн</th><th>Когда</th><th>Как</th></tr></thead>
+      <tbody>
+        <tr><td>Skeleton</td><td>первичная загрузка блока с известной геометрией</td><td><code class="i">animate-pulse rounded-md bg-muted</code>, повторяет форму контента, 3–6 плейсхолдеров максимум</td></tr>
+        <tr><td>Spinner</td><td>действие пользователя &lt; 2с (кнопка, инлайн-запрос)</td><td>16–20px, <code class="i">currentColor</code>, 800ms linear</td></tr>
+        <tr><td>Progress</td><td>процесс с известной долей (аплоад, генерация)</td><td>полоса 4–6px, Volt, radius 9999px, <code class="i">tabular-nums</code> процент рядом</td></tr>
+        <tr><td>Shimmer</td><td>медиа-тайлы в галереях</td><td>градиентный проход 1.4s, отключается при reduced-motion</td></tr>
+        <tr><td>Refetch поверх данных</td><td>обновление уже показанного</td><td>не заменять контент скелетом; лёгкая полоса 2px сверху блока</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Никогда не показывать «0» или Free-план, пока данные не загружены — используются флаги готовности (<code class="i">loaded</code> / <code class="i">snapshot_ready</code>), иначе интерфейс врёт про баланс и подписку.</p>
+
+    <h3 class="block">Empty / Error</h3>
+    <div class="grid g2">
+      <div class="card" style="text-align:center;padding:28px">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.05);margin:0 auto 14px"></div>
+        <div style="font-weight:700;font-size:15px">No generations yet</div>
+        <div style="color:var(--t2);font-size:13px;margin:6px 0 16px">Your renders will show up here.</div>
+        <button class="btn btn-cta">Start creating</button>
+      </div>
+      <div class="card" style="text-align:center;padding:28px;border-color:var(--coral-bdr)">
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--coral-dim);margin:0 auto 14px"></div>
+        <div style="font-weight:700;font-size:15px">Couldn’t load your library</div>
+        <div style="color:var(--t2);font-size:13px;margin:6px 0 16px">Check your connection and try again.</div>
+        <button class="btn btn-util">Retry</button>
+      </div>
+    </div>
+    <table style="margin-top:18px">
+      <thead><tr><th>Состояние</th><th>Контракт</th></tr></thead>
+      <tbody>
+        <tr><td>Empty (первый вход)</td><td>иконка/иллюстрация 44px + заголовок 15/700 + одна строка объяснения + один primary CTA</td></tr>
+        <tr><td>Empty (после фильтра)</td><td>без иллюстрации, текст «No results for …» + кнопка Clear filters</td></tr>
+        <tr><td>Inline error</td><td>Coral-текст 12px под полем/блоком, без модалки</td></tr>
+        <tr><td>Block error</td><td>карточка с Coral-бордером, заголовок без технических кодов, кнопка Retry, код ошибки — mono 11px <code class="i">t3</code> мелким шрифтом</td></tr>
+        <tr><td>ErrorBoundary</td><td>полностраничный экран: марка, «Something broke on our side», Reload + Go home, ID инцидента mono</td></tr>
+        <tr><td>404</td><td>тот же каркас, крупная mono-надпись 404, CTA на главную и в Explore</td></tr>
+        <tr><td>Degraded (данные о биллинге недоступны)</td><td>показываются нейтральные плейсхолдеры, мутации заблокированы, план не подменяется на Free</td></tr>
+        <tr><td>Disabled</td><td><code class="i">opacity .45</code>, <code class="i">cursor:not-allowed</code>, без hover-эффектов; причина всегда объясняется рядом или в tooltip</td></tr>
+        <tr><td>Gated</td><td>контрол активен, но открывает диалог апгрейда/пополнения; лок-иконка 12px и бейдж плана на карточке</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Toast (sonner)</h3>
+    <table>
+      <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Позиция</td><td>desktop — bottom-right; mobile (&lt;768px) — top-center, отступ <code class="i">env(safe-area-inset-top) + 72px</code></td></tr>
+        <tr><td>z-index</td><td class="mono">120</td></tr>
+        <tr><td>Стиль</td><td><code class="i">bg-background text-foreground border-border shadow-lg</code>, radius по <code class="i">--radius</code>, description — <code class="i">muted-foreground</code></td></tr>
+        <tr><td>Варианты</td><td>success — Lime-иконка; error — Coral; info — Sky; иконка 16px, цветом отличается только иконка, не фон</td></tr>
+        <tr><td>Длительность</td><td>4000ms; error — 6000ms; с действием — 8000ms; стек максимум 3, остальное схлопывается</td></tr>
+        <tr><td>Когда не тост</td><td>ошибка формы (инлайн), фатальная ошибка (экран), необратимое действие (диалог)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ДАННЫЕ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">13</div>
+    <h2>Данные, списки, индикаторы</h2>
+    <table>
+      <thead><tr><th>Компонент</th><th>Спецификация</th></tr></thead>
+      <tbody>
+        <tr><td>Table</td><td>th — 11px mono/600, uppercase, <code class="i">letter-spacing .08em</code>, <code class="i">text-muted-foreground</code>; строка 44px, разделитель <code class="i">border-white/6</code>, hover <code class="i">bg-white/3</code>; числа и деньги — <code class="i">tabular-nums</code>, выравнивание вправо; на мобиле — карточный режим «label / value», не горизонтальный скролл</td></tr>
+        <tr><td>Pagination</td><td>кнопки 36px pill, активная — <code class="i">bg-white/8</code> + foreground; при &gt; 7 страниц — эллипсисы; на мобиле только Prev/Next + «3 / 12»</td></tr>
+        <tr><td>Breadcrumb</td><td>12/500 muted, разделитель <code class="i">/</code> в <code class="i">t4</code>, последний элемент — foreground без ссылки; на мобиле схлопывается до «‹ Назад»</td></tr>
+        <tr><td>Accordion</td><td>заголовок 15/600, 52px, шеврон 16px с поворотом 180°, контент 14px muted, разделитель между секциями; анимация высоты 200ms</td></tr>
+        <tr><td>Avatar</td><td>размеры 24 / 32 / 40 / 64px, radius 9999px, фолбэк — инициалы 12/700 на <code class="i">bg-secondary</code>; онлайн-точка 8px Lime с 2px бордером фона</td></tr>
+        <tr><td>Progress</td><td>трек <code class="i">bg-secondary</code>, заполнение Volt (Sky — для вторичных процессов), высота 6px, radius 9999px; indeterminate — бегунок 30% с 1.2s циклом</td></tr>
+        <tr><td>Carousel</td><td>шаг = ширина карточки + gap, стрелки 36px круглые <code class="i">bg-black/50 backdrop-blur</code>, на мобиле стрелок нет — только свайп и <code class="i">scroll-snap-align: start</code></td></tr>
+        <tr><td>ScrollArea</td><td>скроллбар 6px, <code class="i">white/10</code>, появляется при hover; в мобильных списках скрыт</td></tr>
+        <tr><td>Sidebar</td><td>ширина 264px раскрытая / 64px свёрнутая, фон <code class="i">bg-card</code>, item 36px + иконка 16px, активный — <code class="i">bg-white/6</code> + Volt-иконка + 2px Volt-полоса слева</td></tr>
+        <tr><td>Chart</td><td>сетка <code class="i">white/6</code>, оси 11px mono <code class="i">t3</code>, серии в порядке Volt → Sky → Plasma → Lime, тултип = стиль popover; заливки — 12% прозрачности от цвета серии</td></tr>
+        <tr><td>Skeleton</td><td class="mono">animate-pulse rounded-md bg-muted</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ДОМЕННЫЕ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">14</div>
+    <h2>Доменные компоненты</h2>
+    <p class="sub">Продуктовые блоки Robinzone. Они собираются только из токенов и базовых компонентов выше.</p>
+
+    <table>
+      <thead><tr><th>Компонент</th><th>Анатомия и правила</th></tr></thead>
+      <tbody>
+        <tr><td>ModelCard</td><td>Медиа-превью в <code class="i">.hf-frame</code> (aspect 4:3), поверх — бейдж категории и стоимость в кредитах (mono 10px, правый нижний угол). Ниже: название 14/700, провайдер 12 muted, ряд тегов. Hover — <code class="i">.card-hover</code> + подъём 2px. Непроверенная модель — бейдж <code class="i">b-plasma</code> «Beta».</td></tr>
+        <tr><td>GenerationCard</td><td>Состояния: queued (скелет + mono-статус), running (прогресс-полоса Volt + процент/шаг), succeeded (медиа + hover-действия: download, rerun, delete), failed (Coral-рамка, человеко-читабельная причина, Retry с возвратом кредитов). Карточка не «прыгает» между состояниями — геометрия фиксирована.</td></tr>
+        <tr><td>Медиа-тайл / .hf-frame</td><td>radius 14px, <code class="i">border-white/8</code>, overflow hidden, фон <code class="i">bg-secondary</code> до загрузки; активный — <code class="i">.hf-frame--active</code> (2px Volt). Видео — автоплей muted loop только в зоне видимости.</td></tr>
+        <tr><td>MediaPreviewDialog</td><td>Полноэкранный оверлей <code class="i">bg-black/90</code>, медиа по центру (max 92dvh), панель метаданных справа 320px (на мобиле — bottom-sheet), стрелки ‹ › и клавиши ←/→, действия: Download, Copy prompt, Rerun.</td></tr>
+        <tr><td>PricingCard</td><td>4 тарифа, карточка <code class="i">bg-card</code> radius 16px; рекомендованный — Volt-бордер + бейдж «Most popular» + <code class="i">.glow-volt</code>. Цена 32/800 <code class="i">tabular-nums</code>, период 13 muted, список фич с 16px чек-иконками. Текущий план — кнопка disabled «Current plan».</td></tr>
+        <tr><td>CTA смены плана</td><td>Строго по факту серверного состояния: Upgrade to X / Downgrade to X / Current plan / Restore subscription. Пока биллинг-снапшот не готов — кнопка в состоянии loading, а не «Subscribe».</td></tr>
+        <tr><td>CompareTable / FAQ</td><td>Сравнение — sticky-заголовок колонок; FAQ — Accordion, одна секция открыта по умолчанию.</td></tr>
+        <tr><td>SubscriptionCard</td><td>План + статус-бейдж (active — Lime, past_due — Coral, scheduled cancel — Plasma), дата следующего списания, кредитные бакеты (subscription / purchased) с раздельными числами.</td></tr>
+        <tr><td>Кредиты</td><td>Формат: <code class="i">1 250</code> с неразрывным пробелом, mono <code class="i">tabular-nums</code>. Цена действия — «12 cr» рядом с кнопкой запуска. Недостаток кредитов показывается только после загрузки баланса.</td></tr>
+        <tr><td>Studio shell</td><td><code class="i">.studio-shell</code> — сетка: панель параметров 320px (≥lg) / bottom-sheet (моб.), канвас — оставшееся пространство, композер закреплён снизу с safe-area. Высота — <code class="i">.h-screen-safe</code>, внутренние области скроллятся отдельно.</td></tr>
+        <tr><td>Assist</td><td><code class="i">.assist-shell</code>, ответы — <code class="i">.assist-editorial-prose</code> (15px / 1.78). Поверхность помечена как paused: точка входа не показывается в навигации.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ШКАЛЫ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">15</div>
+    <h2>Системные шкалы</h2>
+
+    <h3 class="block">Spacing</h3>
+    <p class="sub">Шаг 4px. Разрешённые значения: 4, 6, 8, 12, 16, 20, 24, 32, 40, 56, 72, 96. Промежуточные — только внутри одного компонента и с комментарием.</p>
+    <table>
+      <thead><tr><th>Контекст</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Между иконкой и текстом</td><td class="mono">6–8px</td></tr>
+        <tr><td>Внутренний padding карточки</td><td class="mono">16px (компакт) / 20–24px (обычная)</td></tr>
+        <tr><td>Между карточками в сетке</td><td class="mono">12–16px</td></tr>
+        <tr><td>Заголовок → контент блока</td><td class="mono">14–20px</td></tr>
+        <tr><td>Вертикальный ритм секции</td><td class="mono">40px (моб.) / 56px (sm) / 72–96px (lg)</td></tr>
+        <tr><td>Горизонтальные поля страницы</td><td class="mono">16px / sm 24px / lg 32px (через .page-shell)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Z-index</h3>
+    <table>
+      <thead><tr><th>Слой</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td>Внутрикарточные слои (оверлеи медиа, градиенты)</td><td class="mono">1 / 5 / 6</td></tr>
+        <tr><td>Sticky-элементы внутри страницы</td><td class="mono">30</td></tr>
+        <tr><td>MobileBottomNav</td><td class="mono">40</td></tr>
+        <tr><td>Navbar, Popover, Dropdown, Tooltip, Dialog</td><td class="mono">50</td></tr>
+        <tr><td>Полноэкранные превью медиа</td><td class="mono">80</td></tr>
+        <tr><td>Критические оверлеи (блокирующие экраны)</td><td class="mono">100</td></tr>
+        <tr><td>Toast</td><td class="mono">120</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Новые произвольные <code class="i">z-[…]</code> вводить запрещено — использовать значения из этой таблицы.</p>
+
+    <h3 class="block">Breakpoints</h3>
+    <table>
+      <thead><tr><th>Токен</th><th>px</th><th>Что меняется</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">base</td><td>0</td><td>одна колонка, bottom-nav, bottom-sheet вместо поповеров</td></tr>
+        <tr><td class="mono">sm</td><td>640</td><td>поля 24px, 2 колонки в сетках карточек</td></tr>
+        <tr><td class="mono">md</td><td>768</td><td>bottom-nav исчезает, тосты уходят вниз-вправо</td></tr>
+        <tr><td class="mono">lg</td><td>1024</td><td>мега-меню по hover, боковые панели студий, 3–4 колонки</td></tr>
+        <tr><td class="mono">xl</td><td>1280</td><td>увеличенные медиа-сетки</td></tr>
+        <tr><td class="mono">2xl</td><td>1400</td><td>предел контентных блоков (промо-карточки 1240px)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Иконография</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">Библиотека</span><span>Только <code class="i">lucide-react</code>. Смешивать наборы нельзя.</span></div>
+      <div class="rule"><span class="k">Размеры</span><span>12px (внутри чипа) · 14px (кнопка meta, бейдж) · 16px (кнопка, меню, поле) · 20px (nav-таб, тулбар) · 24px (empty state, dropzone).</span></div>
+      <div class="rule"><span class="k">Штрих</span><span><code class="i">stroke-width: 1.8</code> для ≤16px, <code class="i">2</code> для ≥20px; цвет — всегда <code class="i">currentColor</code>.</span></div>
+      <div class="rule"><span class="k">Правило</span><span>Иконка без подписи допустима только при <code class="i">aria-label</code> и tooltip. Иконка не несёт смысла в одиночку в критичных действиях (удаление, оплата).</span></div>
+    </div>
+
+    <h3 class="block">Бордеры и прозрачности</h3>
+    <table>
+      <thead><tr><th>Значение</th><th>Применение</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">white/.04</td><td>фон чипа, самые тихие поверхности</td></tr>
+        <tr><td class="mono">white/.06</td><td>внутренние разделители, фон hover тихих элементов</td></tr>
+        <tr><td class="mono">white/.08</td><td>бордер по умолчанию у контейнеров и чипов</td></tr>
+        <tr><td class="mono">white/.10</td><td>бордер карточек и поповеров (.glass)</td></tr>
+        <tr><td class="mono">white/.16</td><td>hover-бордер, бордер чекбоксов</td></tr>
+        <tr><td class="mono">1px</td><td>единственная толщина бордера, кроме 2px у активных состояний (.hf-frame--active, SectionCard)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- A11Y -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">16</div>
+    <h2>Доступность</h2>
+    <div class="ta">
+      <div class="rule"><span class="k">Focus</span><span>Единое кольцо для всего интерфейса: <code class="i">outline:none; box-shadow:0 0 0 2px hsl(var(--background)),0 0 0 4px hsl(var(--ring)/.7)</code>. Убирать фокус без замены запрещено. Только <code class="i">:focus-visible</code>, не <code class="i">:focus</code>.</span></div>
+      <div class="rule"><span class="k">Контраст</span><span>Текст ≥4.5:1, крупный ≥3:1. <code class="i">t3</code> (#5C6280) — только для декоративных подписей, не для смысла. Volt используется как фон только с тёмным <code class="i">--volt-txt</code>; Volt-текст на светлом фоне запрещён.</span></div>
+      <div class="rule"><span class="k">Клавиатура</span><span>Все интерактивные элементы достижимы Tab. Поповеры и меню: ↑/↓ — перемещение, Enter — выбор, Esc — закрытие с возвратом фокуса. Focus trap только в Dialog/Sheet.</span></div>
+      <div class="rule"><span class="k">ARIA</span><span>Чипы — <code class="i">role="radio"</code> в <code class="i">role="radiogroup"</code> с <code class="i">aria-checked</code>; степпер — <code class="i">role="spinbutton"</code> с <code class="i">aria-valuenow/min/max</code>; switch — <code class="i">role="switch"</code>; прогресс генерации — <code class="i">aria-live="polite"</code>.</span></div>
+      <div class="rule"><span class="k">Motion</span><span><code class="i">prefers-reduced-motion: reduce</code> отключает transform-анимации, shimmer, marquee, автоплей каруселей; переходы схлопываются до 0.001ms, opacity-переходы допустимы.</span></div>
+      <div class="rule"><span class="k">Тач</span><span>Минимум 44×44px. Если визуально элемент меньше — зона расширяется псевдоэлементом, а не размером иконки.</span></div>
+      <div class="rule"><span class="k">Семантика</span><span>Один <code class="i">h1</code> на страницу, порядок заголовков не пропускается. Кнопка — <code class="i">button</code>, ссылка — <code class="i">a</code>. Все изображения имеют <code class="i">alt</code>; декоративные — <code class="i">alt=""</code>.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТЕНТ -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">17</div>
+    <h2>Контент и микрокопирайт</h2>
+    <p class="sub">Язык интерфейса — английский. Документация и внутренние обсуждения — русский. Смешение в UI недопустимо.</p>
+    <table>
+      <thead><tr><th>Правило</th><th>Да</th><th>Нет</th></tr></thead>
+      <tbody>
+        <tr><td>Кнопки — глагол действия, sentence case</td><td>Start creating · Upgrade to Pro</td><td>SUBMIT · Click here</td></tr>
+        <tr><td>Заголовки — sentence case</td><td>Your generations</td><td>Your Generations</td></tr>
+        <tr><td>Бейджи — uppercase, ≤2 слова</td><td>BETA · PRO</td><td>Currently in beta</td></tr>
+        <tr><td>Ошибки — что случилось + что делать</td><td>Not enough credits. Top up to continue.</td><td>Error 402</td></tr>
+        <tr><td>Числа</td><td><code class="i">tabular-nums</code>, разряды неразрывным пробелом: 1 250</td><td>1250.00</td></tr>
+        <tr><td>Деньги</td><td>$12.00 · $0 для бесплатного</td><td>12 USD · Free!!!</td></tr>
+        <tr><td>Кредиты</td><td>12 cr (компактно) / 12 credits (в тексте)</td><td>12 CR.</td></tr>
+        <tr><td>Даты</td><td>Aug 16, 2026 · относительные до 7 дней: 2h ago</td><td>16/08/26</td></tr>
+        <tr><td>Пустые значения</td><td>—</td><td>null · N/A</td></tr>
+        <tr><td>Обрезка</td><td>одна строка — многоточие в конце; имена файлов — по центру; полный текст в tooltip/title</td><td>обрезка без возможности увидеть целиком</td></tr>
+      </tbody>
+    </table>
+    <p class="tone-note">Тон: уверенный, короткий, без восклицаний и маркетингового шума внутри продукта. Не извиняемся дважды, не называем пользователя «юзер», не используем «просто» и «легко».</p>
+  </div>
+</section>
+
+<!-- UTILITIES -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">18</div>
+    <h2>Справочник утилит</h2>
+    <table>
+      <thead><tr><th>Класс</th><th>Что делает</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">.page-shell / .page-bleed</td><td>горизонтальные отступы страницы / full-bleed</td></tr>
+        <tr><td class="mono">.page-container</td><td>flex-колонка на полную безопасную высоту со скроллом</td></tr>
+        <tr><td class="mono">.h-screen-safe / .min-h-screen-safe</td><td>безопасная высота вьюпорта</td></tr>
+        <tr><td class="mono">.scrollable</td><td>вертикальный скролл с <code class="i">overscroll-behavior: contain</code></td></tr>
+        <tr><td class="mono">.scrollbar-hide / .hide-scrollbar-mobile</td><td>скрытие скроллбара</td></tr>
+        <tr><td class="mono">.glass</td><td><code class="i">border-white/10 + bg-card</code></td></tr>
+        <tr><td class="mono">.hf-frame / .hf-frame--active</td><td>рамка медиа-тайла / активная Volt-обводка 2px</td></tr>
+        <tr><td class="mono">.studio-shell / -panel / -control</td><td>поверхности Creation Studio</td></tr>
+        <tr><td class="mono">.assist-shell / -sidebar-surface / -card-lite</td><td>поверхности Assist</td></tr>
+        <tr><td class="mono">.assist-editorial-prose</td><td>читаемая типографика ответов (15px / 1.78)</td></tr>
+        <tr><td class="mono">.legal-prose</td><td>типографика юридических страниц</td></tr>
+        <tr><td class="mono">.button-cta / -sky / -utility / -meta</td><td>варианты кнопок</td></tr>
+        <tr><td class="mono">.cta-overlay / .rail-cta-wrap</td><td>CTA поверх медиа</td></tr>
+        <tr><td class="mono">.badge-volt / -sky / -plasma / -coral / -lime / -violet</td><td>бейджи</td></tr>
+        <tr><td class="mono">.text-gradient / .text-gradient-volt-sky / .bg-gradient-brand</td><td>брендовые градиенты</td></tr>
+        <tr><td class="mono">.glow-volt / -volt-btn / -plasma</td><td>свечения</td></tr>
+        <tr><td class="mono">.section-card-stack</td><td>эффект стопки промо-карточек</td></tr>
+        <tr><td class="mono">.mobile-bottom-nav-space</td><td>отступ под мобильную навигацию</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ПРОЦЕСС -->
+<section>
+  <div class="shell">
+    <div class="eyebrow">19</div>
+    <h2>Расхождения, процесс, версии</h2>
+
+    <h3 class="block">Известные расхождения кода и документа</h3>
+    <table>
+      <thead><tr><th>Расхождение</th><th>Решение</th></tr></thead>
+      <tbody>
+        <tr><td><code class="i">--plasma</code> в CSS и <code class="i">plasma</code> в Tailwind заданы независимо</td><td>источник истины — CSS-переменная; Tailwind-значение синхронизировать</td></tr>
+        <tr><td><code class="i">--gradient-hero</code>, <code class="i">--glow-brand</code> есть в CSS, но не выведены в Tailwind</td><td>использовать только через утилиты, в компонентах не хардкодить</td></tr>
+        <tr><td><code class="i">celebration</code>-цвет не описан в палитре</td><td>ограничить одним сценарием (успешная оплата) либо удалить</td></tr>
+        <tr><td><code class="i">.glow-plasma</code> фактически содержит Sky-значения</td><td>переименовать в <code class="i">.glow-sky</code> или исправить значения</td></tr>
+        <tr><td>В <code class="i">boxShadow</code> сосуществуют ключи <code class="i">sky</code> и <code class="i">plasma</code></td><td>оставить один набор имён</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="block">Как менять систему</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">Новый токен</span><span>Сначала <code class="i">src/index.css</code>, затем <code class="i">tailwind.config.ts</code>, затем этот документ. Токен без применения хотя бы в двух местах не добавляется.</span></div>
+      <div class="rule"><span class="k">Депрекейт</span><span>Класс помечается в разделе расхождений, живёт минимум один релиз, затем удаляется вместе с использованиями в одном PR.</span></div>
+      <div class="rule"><span class="k">One-off</span><span>Разовое отступление допустимо, если оно записано сюда с причиной и сроком. Незадокументированный one-off — баг.</span></div>
+      <div class="rule"><span class="k">Версионирование</span><span>Версия дизайн-системы (v1.4 «Charged») и ревизия документа (v4) — разные числа. Ревизия растёт при любом изменении документа, версия — только при смене визуального языка.</span></div>
+    </div>
+
+    <h3 class="block">Чеклист ревью UI-изменения</h3>
+    <div class="ta">
+      <div class="rule"><span class="k">1</span><span>Только семантические токены, нет <code class="i">text-white</code> / <code class="i">bg-[#hex]</code>.</span></div>
+      <div class="rule"><span class="k">2</span><span>Корень — <code class="i">PageContainer</code> / <code class="i">.page-shell</code>; нет <code class="i">100vh</code> и <code class="i">mx-auto max-w-*</code>.</span></div>
+      <div class="rule"><span class="k">3</span><span>Есть все четыре состояния: loading, empty, error, ready (и gated, если тратятся кредиты).</span></div>
+      <div class="rule"><span class="k">4</span><span>Проверено на 360px, тач-таргеты ≥44px, safe-area учтена.</span></div>
+      <div class="rule"><span class="k">5</span><span>Клавиатура и focus-visible работают; Esc закрывает оверлей.</span></div>
+      <div class="rule"><span class="k">6</span><span>Spacing и z-index взяты из шкал §15; новых <code class="i">z-[…]</code> нет.</span></div>
+      <div class="rule"><span class="k">7</span><span>Тексты — sentence case, ошибки объясняют действие, числа <code class="i">tabular-nums</code>.</span></div>
+      <div class="rule"><span class="k">8</span><span>Никакой подмены неизвестных данных дефолтами (баланс, план, статус).</span></div>
+    </div>
+
+    <h3 class="block">Changelog документа</h3>
+    <table>
+      <thead><tr><th>Ревизия</th><th>Дата</th><th>Что изменилось</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">v4</td><td>2026-08-16</td><td>Добавлены разделы: каркас приложения, оверлеи и меню, формы, состояния интерфейса, данные и индикаторы, доменные компоненты, системные шкалы (spacing / z-index / breakpoints / иконки / прозрачности), доступность, контент и микрокопирайт, процесс и changelog.</td></tr>
+        <tr><td class="mono">v3</td><td>—</td><td>Селекторы параметров, чипы, поповеры, степперы, мобильная панель параметров.</td></tr>
+        <tr><td class="mono">v2</td><td>—</td><td>Switch, Slider, SectionCard, motion.</td></tr>
+        <tr><td class="mono">v1</td><td>—</td><td>Токены, цвет, типографика, радиусы и тени, базовые компоненты.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="shell">
+    Robinzone Design System v1.4 «Charged» · ревизия документа v4 · источник истины: <code class="i">src/index.css</code>, <code class="i">tailwind.config.ts</code>, <code class="i">src/components/brand/BrandMark.tsx</code>, <code class="i">src/components/home/SectionCard.tsx</code>.
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('[data-sw]').forEach(function(b){
+  b.addEventListener('click', function(){
+    b.setAttribute('aria-checked', b.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+  });
+});
+document.querySelectorAll('[data-sl]').forEach(function(i){
+  var wrap = i.closest('.sl'), card = i.closest('.card');
+  var range = wrap.querySelector('.range'), thumb = wrap.querySelector('.thumb');
+  var out = card.querySelector('[data-out]');
+  function upd(){
+    var p = (i.value - i.min) / (i.max - i.min) * 100;
+    range.style.width = p + '%'; thumb.style.left = p + '%'; out.textContent = i.value;
+  }
+  i.addEventListener('input', upd); upd();
+});
+
+document.querySelectorAll('[data-group]').forEach(function(g){
+  g.addEventListener('click', function(e){
+    var b = e.target.closest('.chip'); if(!b) return;
+    g.querySelectorAll('.chip').forEach(function(c){c.classList.remove('chip-active')});
+    b.classList.add('chip-active');
+    var out = document.querySelector('[data-out="'+g.dataset.group+'"]');
+    if(out){
+      var txt = b.textContent.trim();
+      var keep = out.querySelector('.ico, .ratio-ico');
+      out.innerHTML = '';
+      if(keep) out.appendChild(b.querySelector('.ratio-ico') ? b.querySelector('.ratio-ico').cloneNode(true) : keep);
+      out.appendChild(document.createTextNode(txt));
+      var ch = document.createElement('span'); ch.className='chev'; out.appendChild(ch);
+    }
+  });
+});
+document.querySelectorAll('[data-step]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var wrap = b.closest('.stepper'), val = wrap.querySelector('[data-num]');
+    var n = Math.min(4, Math.max(1, parseInt(val.textContent,10) + parseInt(b.dataset.step,10)));
+    val.textContent = n;
+    var lab = document.querySelector('[data-numlabel]'); if(lab) lab.textContent = n;
+    wrap.querySelectorAll('.stp').forEach(function(s){
+      s.disabled = (s.dataset.step === '-1' && n <= 1) || (s.dataset.step === '1' && n >= 4);
+    });
+  });
+});
+</script>
+</body>
+</html>

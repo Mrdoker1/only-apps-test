@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robinzone Design Spec v1.4 «Charged»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #13141B;
+      --card: #1E2029;
+      --popover: #191B24;
+      --fg: #EBEEF9;
+      --muted: #9FA5BC;
+      --border: rgba(255,255,255,0.10);
+      --volt: #C8FF00;
+      --sky: #00C2FF;
+      --coral: #FF4D3D;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { display: flex; min-height: 100vh; }
+    aside {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 260px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      overflow-y: auto;
+      z-index: 40;
+    }
+    aside h2 { font-size: 14px; font-weight: 700; margin: 0 0 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    aside ul { list-style: none; margin: 0; padding: 0; }
+    aside li { margin: 0 0 8px; }
+    aside a { color: var(--fg); text-decoration: none; font-size: 13px; display: block; padding: 6px 10px; border-radius: 8px; }
+    aside a:hover { background: rgba(255,255,255,0.06); }
+    main { margin-left: 260px; padding: 48px 40px; max-width: 900px; }
+    h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; }
+    h2 { font-size: 28px; font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 20px; font-weight: 700; margin: 32px 0 14px; }
+    h4 { font-size: 16px; font-weight: 600; margin: 24px 0 10px; color: var(--muted); }
+    p { margin: 0 0 14px; }
+    ul, ol { margin: 0 0 16px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--popover);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--sky);
+    }
+    pre {
+      background: var(--popover);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 0 0 20px;
+    }
+    pre code { background: transparent; padding: 0; color: var(--fg); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 20px;
+      font-size: 14px;
+    }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    th { font-weight: 600; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:hover td { background: rgba(255,255,255,0.03); }
+    strong { color: var(--fg); font-weight: 600; }
+    .pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(200,255,0,0.10);
+      color: var(--volt);
+      border: 1px solid rgba(200,255,0,0.22);
+    }
+
+    /* ---------- UI EXAMPLES ---------- */
+    .ex { border: 1px solid var(--border); background: var(--card); border-radius: 16px; padding: 20px; margin: 0 0 20px; }
+    .ex + .ex { margin-top: -4px; }
+    .ex-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; font-family: 'JetBrains Mono', monospace; }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .col { display: flex; flex-direction: column; gap: 12px; }
+    .note { font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 20px; border-radius: 9999px; font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1; border: 1px solid transparent; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .15s, filter .15s; }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+    .btn:active { transform: scale(.97); }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(200,255,0,.7); }
+    .btn-primary { background: var(--volt); color: #0a1100; }
+    .btn-secondary { background: #2E303D; color: var(--fg); }
+    .btn-outline { background: transparent; color: var(--fg); border-color: rgba(255,255,255,.16); }
+    .btn-ghost { background: transparent; color: var(--muted); }
+    .btn-ghost:hover { background: rgba(255,255,255,.06); color: var(--fg); }
+    .btn-destructive { background: var(--coral); color: #FFFFFF; }
+    .btn-sm { height: 36px; padding: 0 16px; font-size: 13px; }
+    .btn-lg { height: 48px; padding: 0 28px; font-size: 15px; }
+    .btn-icon { width: 40px; padding: 0; }
+    .btn[disabled] { opacity: .45; pointer-events: none; }
+    .ico { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .b-volt { background: rgba(200,255,0,.10); color: var(--volt); border: 1px solid rgba(200,255,0,.22); }
+    .b-sky { background: rgba(0,194,255,.10); color: var(--sky); border: 1px solid rgba(0,194,255,.22); }
+    .b-coral { background: rgba(255,77,61,.10); color: var(--coral); border: 1px solid rgba(255,77,61,.22); }
+    .b-lime { background: rgba(57,255,136,.10); color: #39FF88; border: 1px solid rgba(57,255,136,.22); }
+    .b-muted { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid rgba(255,255,255,.10); }
+
+    .field { display: flex; flex-direction: column; gap: 6px; max-width: 340px; }
+    .label { font-size: 13px; font-weight: 600; }
+    .input, .textarea { width: 100%; height: 40px; padding: 0 14px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.10); color: var(--fg); font-family: inherit; font-size: 14px; transition: border-color .15s, box-shadow .15s; }
+    .textarea { height: auto; min-height: 88px; padding: 10px 14px; resize: vertical; line-height: 1.5; }
+    .input::placeholder, .textarea::placeholder { color: #5c6280; }
+    .input:focus, .textarea:focus { outline: none; border-color: rgba(200,255,0,.5); box-shadow: 0 0 0 2px rgba(200,255,0,.25); }
+    .input-error { border-color: var(--coral); box-shadow: 0 0 0 2px rgba(255,77,61,.22); }
+    .help { font-size: 12px; color: var(--muted); }
+    .err { font-size: 12px; color: var(--coral); }
+
+    .sel { position: relative; max-width: 340px; }
+    .sel > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 14px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.10); font-size: 14px; cursor: pointer; }
+    .sel > summary::-webkit-details-marker { display: none; }
+    .sel[open] > summary { border-color: rgba(200,255,0,.5); }
+    .sel-menu { position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: var(--popover); border: 1px solid var(--border); border-radius: 14px; padding: 6px; box-shadow: 0 18px 50px rgba(0,0,0,.55); z-index: 50; }
+    .sel-up .sel-menu { top: auto; bottom: calc(100% + 4px); }
+    .sel-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 10px 6px; }
+    .sel-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 10px; border-radius: 9px; font-size: 14px; cursor: pointer; }
+    .sel-item:hover { background: rgba(255,255,255,.06); }
+    .sel-item[aria-selected="true"] { color: var(--volt); }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .card-title { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+    .card-sub { font-size: 13px; color: var(--muted); margin: 0 0 16px; }
+    .grid3 { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+    .dialog-mock { position: relative; border-radius: 16px; overflow: hidden; background: rgba(0,0,0,.80); padding: 32px 16px; }
+    .dialog { max-width: 420px; margin: 0 auto; background: var(--popover); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 24px 70px rgba(0,0,0,.6); }
+    .dialog h4 { margin: 0 0 6px; font-size: 18px; font-weight: 700; color: var(--fg); }
+    .dialog p { font-size: 13px; color: var(--muted); }
+    .dialog-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+    .toast { display: flex; gap: 10px; align-items: flex-start; max-width: 380px; background: var(--popover); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+    .toast-t { font-size: 14px; font-weight: 600; margin: 0; }
+    .toast-d { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+
+    .sk { background: linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.10), rgba(255,255,255,.05)); background-size: 200% 100%; animation: shimmer 1.4s infinite linear; border-radius: 8px; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    @media (prefers-reduced-motion: reduce) { .sk { animation: none; } }
+
+    .tabs { display: inline-flex; gap: 4px; padding: 4px; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 9999px; }
+    .tab { padding: 7px 16px; border-radius: 9999px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
+    .tab.is-active { background: var(--volt); color: #0a1100; }
+
+    .switch { width: 44px; height: 26px; border-radius: 9999px; background: rgba(255,255,255,.12); position: relative; cursor: pointer; }
+    .switch.on { background: var(--volt); }
+    .switch i { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left .15s; }
+    .switch.on i { left: 21px; background: #0a1100; }
+
+    .empty { text-align: center; padding: 36px 20px; border: 1px dashed rgba(255,255,255,.14); border-radius: 14px; }
+    .empty h4 { margin: 12px 0 4px; color: var(--fg); font-size: 16px; font-weight: 700; }
+    .empty p { font-size: 13px; color: var(--muted); margin: 0 0 16px; }
+
+    .phone { width: 320px; border: 1px solid var(--border); border-radius: 26px; background: var(--bg); overflow: hidden; }
+    .phone-top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid var(--border); font-weight: 700; }
+    .phone-body { padding: 16px; min-height: 190px; display: flex; flex-direction: column; gap: 12px; }
+    .phone-nav { height: 60px; display: flex; border-top: 1px solid var(--border); }
+    .phone-nav div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 10px; color: var(--muted); }
+    .phone-nav div.is-active { color: var(--volt); }
+    .sheet-mock { border-radius: 20px 20px 0 0; background: var(--popover); border: 1px solid var(--border); border-bottom: none; padding: 12px 16px 20px; }
+    .sheet-grab { width: 40px; height: 4px; border-radius: 999px; background: rgba(255,255,255,.20); margin: 0 auto 14px; }
+
+    .swatch { display: flex; flex-direction: column; gap: 6px; }
+    .swatch .chip { height: 56px; border-radius: 12px; border: 1px solid var(--border); }
+    .swatch small { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+
+    @media (max-width: 1024px) {
+      aside { display: none; }
+      main { margin-left: 0; padding: 24px 16px; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside>
+      <h2>Содержание</h2>
+      <ul id="toc"></ul>
+    </aside>
+    <main>
+      <h1>Robinzone Design Spec v1.4 «Charged»</h1>
+<p>Самодостаточная спецификация для внешней команды. Все значения — абсолютные. Стек-агностично (примеры на CSS + Tailwind-совместимых классах). Тема одна — тёмная, светлой нет.</p>
+<hr>
+<h2>1. Цвет</h2>
+<h3>1.1 Базовые токены (HSL, как в CSS-переменных)</h3>
+<table>
+<thead>
+<tr>
+<th>Токен</th>
+<th>HSL</th>
+<th>HEX</th>
+<th>Применение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>background</td>
+<td><code>232 18% 9%</code></td>
+<td><code>#13141B</code></td>
+<td>фон страницы</td>
+</tr>
+<tr>
+<td>foreground</td>
+<td><code>228 55% 95%</code></td>
+<td><code>#EBEEF9</code></td>
+<td>основной текст</td>
+</tr>
+<tr>
+<td>card</td>
+<td><code>232 16% 14%</code></td>
+<td><code>#1E2029</code></td>
+<td>карточки, панели</td>
+</tr>
+<tr>
+<td>popover</td>
+<td><code>232 18% 12%</code></td>
+<td><code>#191B24</code></td>
+<td>выпадающие поверхности</td>
+</tr>
+<tr>
+<td>secondary</td>
+<td><code>232 14% 21%</code></td>
+<td><code>#2E303D</code></td>
+<td>вторичные кнопки, чипы</td>
+</tr>
+<tr>
+<td>muted</td>
+<td><code>232 12% 26%</code></td>
+<td><code>#3A3C4A</code></td>
+<td>разделители, «глухие» плашки</td>
+</tr>
+<tr>
+<td>muted-foreground</td>
+<td><code>228 18% 68%</code></td>
+<td><code>#9FA5BC</code></td>
+<td>подписи, вторичный текст</td>
+</tr>
+<tr>
+<td>border</td>
+<td><code>230 20% 14%</code></td>
+<td><code>#1D1F2B</code></td>
+<td>границы по умолчанию</td>
+</tr>
+<tr>
+<td>input</td>
+<td><code>232 18% 12%</code></td>
+<td><code>#191B24</code></td>
+<td>фон полей</td>
+</tr>
+<tr>
+<td>ring (focus)</td>
+<td><code>72 100% 50%</code></td>
+<td><code>#C8FF00</code></td>
+<td>фокус-кольцо</td>
+</tr>
+<tr>
+<td>surface-elevated</td>
+<td><code>232 16% 17%</code></td>
+<td><code>#242632</code></td>
+<td>приподнятая поверхность</td>
+</tr>
+<tr>
+<td>surface-hover</td>
+<td><code>232 14% 24%</code></td>
+<td><code>#353746</code></td>
+<td>hover-поверхность</td>
+</tr>
+</tbody></table>
+<h3>1.2 Акценты (фиксированные HEX)</h3>
+<table>
+<thead>
+<tr>
+<th>Роль</th>
+<th>HEX</th>
+<th>Hover</th>
+<th>Текст на нём</th>
+<th>Dim (фон 10%)</th>
+<th>Border (22%)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary / Volt</td>
+<td><code>#C8FF00</code></td>
+<td><code>#D8FF44</code></td>
+<td><code>#0a1100</code></td>
+<td><code>rgba(200,255,0,0.10)</code></td>
+<td><code>rgba(200,255,0,0.22)</code></td>
+</tr>
+<tr>
+<td>Sky (вторичный)</td>
+<td><code>#00C2FF</code></td>
+<td><code>#33CEFF</code></td>
+<td><code>#001a24</code></td>
+<td><code>rgba(0,194,255,0.10)</code></td>
+<td><code>rgba(0,194,255,0.22)</code></td>
+</tr>
+<tr>
+<td>Plasma / Violet</td>
+<td><code>#9F6EFF</code></td>
+<td><code>#B389FF</code></td>
+<td><code>#0f0820</code></td>
+<td><code>rgba(159,110,255,0.10)</code></td>
+<td><code>rgba(159,110,255,0.22)</code></td>
+</tr>
+<tr>
+<td>Destructive / Coral</td>
+<td><code>#FF4D3D</code></td>
+<td>—</td>
+<td><code>#FFFFFF</code></td>
+<td><code>rgba(255,77,61,0.12)</code></td>
+<td><code>rgba(255,77,61,0.22)</code></td>
+</tr>
+<tr>
+<td>Success / Lime</td>
+<td><code>#39FF88</code></td>
+<td>—</td>
+<td><code>#001409</code></td>
+<td><code>rgba(57,255,136,0.10)</code></td>
+<td><code>rgba(57,255,136,0.22)</code></td>
+</tr>
+</tbody></table>
+<h3>1.3 Текстовая шкала</h3>
+<p><code>--t0 #ffffff</code> (акцентный заголовок) → <code>--t1 #e2e6f4</code> (основной) → <code>--t2 #9098b8</code> (вторичный) → <code>--t3 #5c6280</code> (третичный, подписи) → <code>--t4 #363d56</code> (disabled/декор).</p>
+<h3>1.4 Градиент бренда</h3>
+<p>Один и только один:</p>
+<pre><code class="language-css">background: linear-gradient(135deg, #C8FF00 0%, #00C2FF 100%);
+</code></pre>
+<p>Для текста — тот же градиент + <code>background-clip: text; -webkit-text-fill-color: transparent</code>. Градиент героя: <code>linear-gradient(180deg, #191B24 0%, #13141B 70%)</code>.</p>
+<h3>1.5 Правила цвета</h3>
+<ul>
+<li>Volt (<code>#C8FF00</code>) — только для одного главного CTA на экран, фокус-кольца и активных состояний. Не использовать как фон больших областей.</li>
+<li>Текст на Volt всегда <code>#0a1100</code>. Белый текст на Volt запрещён (контраст &lt; 3:1).</li>
+<li>Границы: базовая <code>rgba(255,255,255,0.10)</code>, «тихая» <code>rgba(255,255,255,0.05)</code>, hover <code>rgba(255,255,255,0.15)</code>.</li>
+<li>Хардкод произвольных hex вне этой таблицы запрещён.</li>
+</ul>
+<hr>
+<h2>2. Типографика</h2>
+<p>Шрифты (Google Fonts):</p>
+<pre><code>Plus Jakarta Sans: 200,300,400,500,600,700,800 + italic 400,500
+JetBrains Mono: 300,400,500
+</code></pre>
+<ul>
+<li><strong>Plus Jakarta Sans — единственный UI-шрифт</strong>: заголовки, текст, кнопки, лейблы. Контраст ролей строится только весом и размером.</li>
+<li><strong>JetBrains Mono</strong> — только для настоящего mono-контента: код, ID/slug, табличные числа, технические/админские экраны, мета-подписи.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Роль</th>
+<th>Размер</th>
+<th>Вес</th>
+<th>Line-height</th>
+<th>Letter-spacing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>body</td>
+<td>15px</td>
+<td>400</td>
+<td>1.55</td>
+<td>0</td>
+</tr>
+<tr>
+<td>small / caption</td>
+<td>13px</td>
+<td>400–500</td>
+<td>1.5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>mono-meta (бейдж-подписи)</td>
+<td>11px</td>
+<td>500</td>
+<td>1.4</td>
+<td>0.08em, uppercase</td>
+</tr>
+<tr>
+<td>h1</td>
+<td>clamp(32px, 6vw, 60px)</td>
+<td>800</td>
+<td>1.05</td>
+<td>−0.025em</td>
+</tr>
+<tr>
+<td>h2</td>
+<td>clamp(24px, 4vw, 40px)</td>
+<td>700</td>
+<td>1.05</td>
+<td>−0.025em</td>
+</tr>
+<tr>
+<td>h3</td>
+<td>20–24px</td>
+<td>700</td>
+<td>1.15</td>
+<td>−0.025em</td>
+</tr>
+<tr>
+<td>Заголовок карточки</td>
+<td>24px</td>
+<td>600</td>
+<td>1.0</td>
+<td>−0.01em</td>
+</tr>
+<tr>
+<td>Кнопка</td>
+<td>14px (sm 13px, lg 15px)</td>
+<td>600</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>Прочее: <code>font-feature-settings: &quot;rlig&quot; 1, &quot;calt&quot; 1, &quot;ss01&quot; 1</code>, антиалиасинг включён. Ширина текстового блока ≤ 68ch. На мобильных все <code>input/select/textarea</code> — <strong>минимум 16px</strong>, иначе iOS зумит.</p>
+<hr>
+<h2>3. Сетка, отступы, лейаут</h2>
+<h3>3.1 Шаг сетки</h3>
+<p>Базовый шаг <strong>4px</strong>. Разрешённые отступы: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96px. Промежуточных значений не изобретаем.</p>
+<h3>3.2 Контейнер страницы (full-bleed)</h3>
+<p>Приложение full-bleed: контент растянут на всю ширину, ограничение делают только горизонтальные паддинги.</p>
+<pre><code class="language-css">.page-shell {
+  width: 100%;
+  padding-left:  max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+@media (min-width: 640px)  { .page-shell { padding-inline: 24px; } }
+@media (min-width: 1024px) { .page-shell { padding-inline: 32px; } }
+@media (min-width: 1280px) { .page-shell { padding-inline: 40px; } }
+@media (min-width: 1536px) { .page-shell { padding-inline: 48px; } }
+</code></pre>
+<p>Запрещено: <code>margin-inline: auto</code> + <code>max-width</code> на корне страницы, любые «bootstrap-подобные» центрирующие контейнеры. Исключение: промо-секции лендинга оборачиваются в inset-карточку с <code>margin-inline: 12px</code> (≥640px — 16px), а с 1024px — <code>max-width: 1240px; margin-inline: auto</code>.</p>
+<h3>3.3 Брейкпоинты</h3>
+<p><code>sm 640px</code>, <code>md 768px</code>, <code>lg 1024px</code>, <code>xl 1280px</code>, <code>2xl 1536px</code>. <strong>768px — граница «мобайл/десктоп»</strong>: ниже — нижняя навигация и Sheet-паттерны, выше — верхняя навигация и Dialog.</p>
+<h3>3.4 Вертикальные размеры</h3>
+<table>
+<thead>
+<tr>
+<th>Элемент</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Высота шапки</td>
+<td><code>64px</code> (+ <code>env(safe-area-inset-top)</code>)</td>
+</tr>
+<tr>
+<td>Мобильная нижняя навигация</td>
+<td><code>60px</code> (+ <code>env(safe-area-inset-bottom)</code>)</td>
+</tr>
+<tr>
+<td>Отступ секции (моб / десктоп)</td>
+<td><code>48px</code> / <code>80px</code> по вертикали</td>
+</tr>
+<tr>
+<td>Внутренний паддинг карточки</td>
+<td><code>24px</code> (компактная — <code>16px</code>)</td>
+</tr>
+<tr>
+<td>Зазор в сетке карточек</td>
+<td><code>16px</code> моб, <code>24px</code> десктоп</td>
+</tr>
+</tbody></table>
+<p>Высоты экрана считаем через <code>100dvh</code>, никогда <code>100vh</code>:</p>
+<pre><code class="language-css">min-height: min(100dvh, var(--vvh, 100dvh));
+</code></pre>
+<p><code>overflow: hidden</code> на <code>body</code> запрещён (ломает скролл iOS) — только <code>overflow-x: clip</code>.</p>
+<hr>
+<h2>4. Радиусы, тени, движение</h2>
+<ul>
+<li>Базовый радиус: <strong>10px</strong> (<code>--radius: 0.625rem</code>). Производные: sm 6px, md 8px, lg 10px, xl 12px, 2xl 16px.</li>
+<li><strong>Кнопки, чипы, бейджи, пилюли — всегда <code>border-radius: 9999px</code>.</strong> Прямоугольных кнопок нет.</li>
+<li>Панели/карточки: 12–16px. Триггер селекта: 14px. Поповер-контент селекта: 26px.</li>
+<li>Теней в классическом смысле нет — вместо «серого блюра» используется свечение:</li>
+</ul>
+<pre><code class="language-css">--glow-volt:   0 0 20px rgba(200,255,0,0.25), 0 0 60px rgba(200,255,0,0.08);
+--glow-plasma: 0 0 20px rgba(159,110,255,0.22), 0 0 60px rgba(159,110,255,0.08);
+--glow-brand:  0 0 32px rgba(200,255,0,0.20), 0 0 80px rgba(200,255,0,0.08);
+</code></pre>
+<p>  Внутренний хайлайт кнопки: <code>inset 0 1px 0 rgba(255,255,255,0.12)</code>.</p>
+<ul>
+<li>Переходы: <strong>150–200 ms</strong>, easing <code>ease-out</code>; анимируем только <code>background-color, border-color, color, opacity, transform, filter</code>. Layout-свойства не анимируем.</li>
+<li>Hover CTA: <code>translateY(-1px)</code> + <code>brightness(1.10)</code>. Active: <code>scale(0.97)</code> (или <code>translateY(0.5px)</code> для утилитарных кнопок).</li>
+<li>Появление контента: <code>fade-up</code> — <code>opacity 0→1</code>, <code>translateY(16px→0)</code>, 500 ms, <code>cubic-bezier(0.16, 1, 0.3, 1)</code>. Переход страницы: тот же кейфрейм 300 ms.</li>
+<li>Пульс свечения (для «идёт генерация»): 2.5–3 s <code>ease-in-out infinite</code>, от 20px/0.25 до 32px/0.42.</li>
+<li>Все анимации обязаны отключаться при <code>prefers-reduced-motion: reduce</code>.</li>
+</ul>
+<hr>
+<h2>5. Слои (z-index)</h2>
+<table>
+<thead>
+<tr>
+<th>Слой</th>
+<th>z</th>
+<th>Что</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Контент</td>
+<td>10</td>
+<td>подложки, hover-контролы внутри карточек</td>
+</tr>
+<tr>
+<td>Локальный оверлей</td>
+<td>20–30</td>
+<td>sticky-заголовки таблиц, плавающие панели секции</td>
+</tr>
+<tr>
+<td>Sticky-шапка / сайдбар</td>
+<td>40</td>
+<td>навигация</td>
+</tr>
+<tr>
+<td>Портальные оверлеи</td>
+<td>50</td>
+<td>Dialog, Sheet, Select, Popover, Menu, Tooltip, Toast</td>
+</tr>
+<tr>
+<td>Coach-marks, бейджи режима</td>
+<td>70–80</td>
+<td>onboarding, индикаторы окружения</td>
+</tr>
+<tr>
+<td>Полноэкранные блокеры</td>
+<td>100</td>
+<td>welcome-оверлей, модалка авторизации, мобильная нижняя навигация</td>
+</tr>
+</tbody></table>
+<p>Любой оверлей рендерится в портал в <code>body</code>, а не внутри секции — иначе <code>overflow</code>/<code>transform</code> предка обрежет его.</p>
+<hr>
+<h2>6. Выпадающие списки и оверлеи — правила размещения</h2>
+<h3>6.1 Когда какой компонент</h3>
+<table>
+<thead>
+<tr>
+<th>Ситуация</th>
+<th>Компонент</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Выбор одного значения из фиксированного набора (2+ опций)</td>
+<td><strong>Select (выпадающий список)</strong></td>
+</tr>
+<tr>
+<td>Действия над объектом</td>
+<td>Dropdown menu по клику на иконку «…»</td>
+</tr>
+<tr>
+<td>Фильтры, сложный контент выбора, поиск внутри</td>
+<td>Popover</td>
+</tr>
+<tr>
+<td>Мультивыбор</td>
+<td>Popover со списком чекбоксов + чипы выбранного под триггером</td>
+</tr>
+<tr>
+<td>Подтверждение/форма (десктоп)</td>
+<td>Dialog по центру</td>
+</tr>
+<tr>
+<td>То же на ширине &lt; 768px</td>
+<td>Sheet снизу</td>
+</tr>
+<tr>
+<td>Пояснение к иконке</td>
+<td>Tooltip</td>
+</tr>
+</tbody></table>
+<p>Радио-группы — только когда опций ≤ 3 <strong>и</strong> нужно видеть все варианты одновременно (например, тариф). Во всех остальных случаях — выпадающий список. Нативный <code>&lt;select&gt;</code> не используется (кроме крайних случаев на мобиле).</p>
+<h3>6.2 Позиционирование (одинаково для Select, Menu, Popover)</h3>
+<ul>
+<li>Стратегия — <strong>anchored popper</strong>, ширина списка ≥ ширины триггера (<code>min-width: 8rem</code>, для Select — <code>min-width</code> = ширина триггера).</li>
+<li>Направление по умолчанию: <strong>вниз</strong> (<code>side=&quot;bottom&quot;</code>, <code>align=&quot;start&quot;</code>).</li>
+<li><strong>Автопереворот</strong>: если снизу до края вьюпорта меньше высоты списка — список открывается вверх. Никакой ручной логики «всегда сверху» — только авто-flip.</li>
+<li><strong>Список никогда не перекрывает свой триггер.</strong> Отступ от триггера: <code>4px</code> (offset), для Select добавляется <code>translateY(4px)</code> вниз / <code>-4px</code> вверх.</li>
+<li>Максимальная высота списка: <code>384px</code> (24rem), дальше внутренний скролл со стрелками-скроллерами сверху/снизу.</li>
+<li>Максимальная ширина: <code>calc(100vw - 16px)</code>; на мобиле список прижимается к краям с полем 8px.</li>
+<li>Выравнивание: <code>start</code> для полей формы, <code>end</code> для меню действий в правом верхнем углу.</li>
+<li>Клик по фону, <code>Esc</code>, скролл контейнера (для меню) — закрывают список; фокус возвращается на триггер.</li>
+</ul>
+<h3>6.3 Анимация открытия</h3>
+<p><code>fade-in 0 → 1</code> + <code>zoom-in 95% → 100%</code>, 150 ms, плюс сдвиг на 8px со стороны, противоположной открытию (<code>side=bottom</code> → въезд сверху). Закрытие — зеркально, 100 ms.</p>
+<h3>6.4 Внешний вид</h3>
+<ul>
+<li>Триггер Select: высота <code>40px</code>, паддинг <code>12px</code>, радиус <code>14px</code>, фон <code>rgba(30,32,41,0.75)</code> + <code>backdrop-filter: blur(20px)</code>, граница <code>rgba(255,255,255,0.10)</code>, внутренний хайлайт <code>inset 0 1px 0 rgba(235,238,249,0.05)</code>, справа шеврон 16px с <code>opacity .5</code>.</li>
+<li>Контент: фон <code>#191B24</code>, граница <code>rgba(255,255,255,0.10)</code>, радиус <code>26px</code> (меню/поповеры — 8–12px), паддинг <code>4px</code>.</li>
+<li>Пункт: высота <code>36px</code>, паддинг <code>8px 12px</code> (при наличии чек-маркера — <code>padding-left: 32px</code>), радиус <code>6px</code>, hover/focus — фон <code>rgba(255,255,255,0.06)</code>, выбранный — Volt-галочка 16px слева, текст <code>#e2e6f4</code>.</li>
+<li>Заголовок группы: 12px/600, <code>#9098b8</code>, паддинг <code>8px 12px</code>. Разделитель: <code>1px</code> <code>#3A3C4A</code>, вертикальные поля 4px.</li>
+</ul>
+<hr>
+<h2>7. Компоненты — точные значения</h2>
+<h3>7.1 Кнопка</h3>
+<p>Общее: <code>display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:9999px; font-size:14px; font-weight:600; transition:150ms;</code> фокус — кольцо 2px <code>#C8FF00</code> с offset 2px; disabled — <code>opacity: .45</code>, курсор по умолчанию.</p>
+<table>
+<thead>
+<tr>
+<th>Размер</th>
+<th>Высота</th>
+<th>Паддинг</th>
+<th>Шрифт</th>
+<th>Иконка</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sm</td>
+<td>36px</td>
+<td>0 16px</td>
+<td>13px</td>
+<td>14px</td>
+</tr>
+<tr>
+<td>default</td>
+<td>40px</td>
+<td>0 20px</td>
+<td>14px</td>
+<td>16px</td>
+</tr>
+<tr>
+<td>lg</td>
+<td>48px</td>
+<td>0 28px</td>
+<td>15px</td>
+<td>16px</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>40×40px</td>
+<td>—</td>
+<td>—</td>
+<td>16px</td>
+</tr>
+<tr>
+<td>icon-sm</td>
+<td>32×32px</td>
+<td>—</td>
+<td>—</td>
+<td>14px</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Вариант</th>
+<th>Фон</th>
+<th>Текст</th>
+<th>Граница</th>
+<th>Hover</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>primary (CTA)</td>
+<td><code>#C8FF00</code></td>
+<td><code>#0a1100</code></td>
+<td>нет</td>
+<td><code>#D8FF44</code>, <code>translateY(-1px)</code>, свечение 28px</td>
+</tr>
+<tr>
+<td>sky</td>
+<td><code>#00C2FF</code></td>
+<td><code>#001a24</code></td>
+<td>нет</td>
+<td><code>#33CEFF</code>, <code>translateY(-1px)</code></td>
+</tr>
+<tr>
+<td>secondary</td>
+<td><code>#2E303D</code></td>
+<td><code>#EBEEF9</code></td>
+<td><code>rgba(255,255,255,0.10)</code></td>
+<td>фон <code>#3A3C4A</code></td>
+</tr>
+<tr>
+<td>outline</td>
+<td>прозрачный</td>
+<td><code>#EBEEF9</code></td>
+<td><code>rgba(255,255,255,0.15)</code></td>
+<td>фон <code>rgba(255,255,255,0.05)</code></td>
+</tr>
+<tr>
+<td>ghost</td>
+<td>нет</td>
+<td><code>#9FA5BC</code></td>
+<td>нет</td>
+<td>фон <code>rgba(255,255,255,0.05)</code>, текст <code>#EBEEF9</code></td>
+</tr>
+<tr>
+<td>destructive</td>
+<td><code>#FF4D3D</code></td>
+<td><code>#FFFFFF</code></td>
+<td>нет</td>
+<td><code>brightness(1.1)</code></td>
+</tr>
+</tbody></table>
+<p>Правило: <strong>один primary-CTA на экран</strong>. Остальное — secondary/outline/ghost.</p>
+<h3>7.2 Поле ввода</h3>
+<p>Высота 40px (textarea — min 96px), радиус 10–14px, фон <code>#191B24</code>, граница <code>rgba(255,255,255,0.10)</code>, паддинг <code>0 12px</code>, шрифт 14px (на мобиле 16px), placeholder <code>#5c6280</code>. Focus: граница прозрачная + кольцо 2px <code>#C8FF00</code> с offset 2px. Ошибка: граница <code>#FF4D3D</code>, подпись 13px <code>#FF4D3D</code> под полем с отступом 6px. Лейбл: 13px/500 <code>#9FA5BC</code>, отступ снизу 6px.</p>
+<h3>7.3 Карточка</h3>
+<p>Радиус 12px, фон <code>#1E2029</code>, граница <code>rgba(255,255,255,0.05)</code> → hover <code>rgba(255,255,255,0.10)</code>, <code>overflow:hidden</code>, transition 200ms. Паддинг блоков: header/content/footer — 24px (<code>padding-top: 0</code> у content и footer). Заголовок 24px/600, описание 14px <code>#9FA5BC</code>.</p>
+<h3>7.4 Диалог / Sheet</h3>
+<ul>
+<li>Оверлей: <code>rgba(0,0,0,0.80)</code>, fade 200 ms, <code>z-index: 50</code>.</li>
+<li>Dialog: по центру, ширина <code>calc(100vw - 16px)</code>, <code>max-width: 512px</code>, паддинг 24px, радиус 12px (на &lt; 640px — во всю ширину с полями 8px), gap между блоками 16px. Анимация: fade + zoom 95→100% + сдвиг 2% сверху, 200 ms.</li>
+<li>Sheet: со стороны экрана, паддинг 24px, ширина боковой панели <code>max-width: 400px</code>, нижний sheet — высота до <code>88svh</code>, вход 500 ms / выход 300 ms.</li>
+<li>Заголовок 18px/600, описание 14px <code>#9FA5BC</code>. Кнопка закрытия — icon-sm в правом верхнем углу с отступом 16px.</li>
+<li>Фокус-ловушка обязательна, <code>Esc</code> закрывает, при закрытии фокус возвращается на триггер.</li>
+<li><strong>На ширине &lt; 768px модалку заменяем нижним Sheet.</strong></li>
+</ul>
+<h3>7.5 Бейджи и статусы</h3>
+<p>Пилюля: радиус 9999px, паддинг <code>3px 9px</code>, шрифт 10–11px/700, <code>letter-spacing: 0.1em</code>, uppercase. Цветовая схема: текст = акцент, фон = его dim (10–12%), граница = его border (22%). Статус — всегда цвет <strong>плюс</strong> текст, цветом одним смысл не передаём.</p>
+<h3>7.6 Тултип</h3>
+<p>Фон <code>#191B24</code>, граница <code>rgba(255,255,255,0.10)</code>, радиус 8px, паддинг <code>6px 12px</code>, шрифт 14px/400 (никакого uppercase), задержка появления 200 ms, отступ от триггера 6px, авто-flip как у списков.</p>
+<h3>7.7 Таблицы</h3>
+<p>Шапка 12px/600 uppercase <code>#9098b8</code>, строки 40px, разделитель <code>1px rgba(255,255,255,0.06)</code>, hover строки <code>rgba(255,255,255,0.03)</code>. Числа и ID — JetBrains Mono, выравнивание по правому краю, табличные цифры. На &lt; 768px таблица превращается в список карточек «лейбл → значение».</p>
+<h3>7.8 Скроллбар</h3>
+<p>Ширина/высота 4px, трек прозрачный, ползунок <code>rgba(255,255,255,0.10)</code> → hover <code>rgba(255,255,255,0.18)</code>, радиус 9999px.</p>
+<hr>
+<h2>8. Иконки и медиа</h2>
+<ul>
+<li>Иконочный набор — линейный, обводка 1.5–2px (стиль Lucide). Размеры: 14 / 16 / 20 / 24px, наследуют <code>currentColor</code>.</li>
+<li>Иконка внутри кнопки — 16px, gap до текста 8px. Кнопка-иконка обязана иметь <code>aria-label</code> и тултип.</li>
+<li>Превью и медиа — с фиксированным соотношением (1:1, 4:3, 16:9), <code>object-fit: cover</code>, радиус 12px, скелетон-плейсхолдер <code>#242632</code> до загрузки.</li>
+<li>Изображения ниже первого экрана — <code>loading=&quot;lazy&quot;</code>; у всех есть <code>alt</code>.</li>
+<li>Видео: <code>playsInline</code>, <code>muted</code> для автоплея, постер обязателен.</li>
+<li>Медиа не шире контейнера: <code>img, video, svg, canvas, iframe { max-width: 100%; display: block; }</code>.</li>
+</ul>
+<hr>
+<h2>9. Мобильная версия (сводные правила)</h2>
+<h3>9.1 Брейкпоинт и переключение паттернов</h3>
+<ul>
+<li>Граница мобайл/десктоп — <strong>768px</strong> (<code>md</code>). Всё, что ниже 768px, считаем мобильным/планшетным портретом.</li>
+<li>Ниже 768px: нижняя навигация, Sheet вместо Dialog, таблицы → карточки, выпадающие списки прижимаются к краям экрана.</li>
+<li>Проверяем три точки: <strong>375px</strong> (компактный телефон), <strong>768px</strong> (планшет/граница), <strong>1440px</strong> (десктоп).</li>
+</ul>
+<h3>9.2 Нижняя навигация</h3>
+<ul>
+<li>Высота: <strong>60px</strong> + <code>env(safe-area-inset-bottom)</code>.</li>
+<li><code>position: fixed; bottom: 0; left: 0; right: 0; z-index: 100</code>.</li>
+<li>Фон: <code>rgba(19,20,27,0.95)</code> + <code>backdrop-filter: blur(20px)</code>, верхняя граница <code>rgba(255,255,255,0.06)</code>.</li>
+<li>Максимум <strong>5 пунктов</strong>. Если пунктов больше — последний пункт «More» с выпадающим меню.</li>
+<li>Пункт: иконка 20px + подпись 11px/500, gap 4px, цвет <code>#9FA5BC</code>, активный — Volt <code>#C8FF00</code>.</li>
+<li>Тач-зона каждого пункта: не менее <strong>44×44px</strong>.</li>
+<li>Контент страницы получает нижний паддинг: <code>padding-bottom: calc(60px + env(safe-area-inset-bottom))</code>.</li>
+</ul>
+<h3>9.3 Модальные окна на мобиле</h3>
+<ul>
+<li><strong>На ширине &lt; 768px Dialog заменяется нижним Sheet.</strong></li>
+<li>Sheet: вход снизу, высота до <strong>88svh</strong>, радиус верхних углов <strong>26px</strong>, паддинг 24px.</li>
+<li>Pull-индикатор сверху: 36px × 5px, цвет <code>rgba(255,255,255,0.15)</code>, отступ сверху 8px.</li>
+<li>Закрытие: свайп вниз, кнопка закрытия, клик по оверлею, <code>Esc</code>.</li>
+</ul>
+<h3>9.4 Выпадающие списки на мобиле</h3>
+<ul>
+<li>Список не «плавает» по центру экрана — он <strong>прижимается к краям</strong> с полями <strong>8px</strong>.</li>
+<li>Максимальная ширина: <code>calc(100vw - 16px)</code>.</li>
+<li>Максимальная высота: <strong>384px</strong>, дальше внутренний скролл.</li>
+<li>Авто-flip: если снизу не хватает места — открывается вверх.</li>
+</ul>
+<h3>9.5 Таблицы → карточки</h3>
+<ul>
+<li>На &lt; 768px таблица скрывается, данные выводятся списком карточек.</li>
+<li>Карточка: радиус 12px, фон <code>#1E2029</code>, паддинг 16px, gap между «лейбл → значение» 12px.</li>
+<li>Каждая строка внутри карточки: лейбл 12px/500 <code>#9FA5BC</code>, значение 14px/400 <code>#EBEEF9</code>.</li>
+<li>Числа и ID по-прежнему JetBrains Mono, выровнены по правому краю внутри строки.</li>
+</ul>
+<h3>9.6 Типографика и поля на мобиле</h3>
+<ul>
+<li>Все <code>input/select/textarea</code> — <strong>минимум 16px</strong>, иначе iOS Safari будет зумить при фокусе.</li>
+<li>Заголовки h1: <code>clamp(32px, 6vw, 60px)</code> — на 375px это <strong>32px</strong>.</li>
+<li>Основной текст body остаётся 15px, но ширина строки ≤ 48ch (не 68ch).</li>
+<li>Кнопки в мобильных формах: высота <strong>48px</strong>, ширина 100% контейнера, радиус 9999px.</li>
+</ul>
+<h3>9.7 Тач-таргеты и safe-area</h3>
+<ul>
+<li>Минимальная зона нажатия: <strong>44×44px</strong>. Если визуальный элемент меньше — padding увеличиваем до 44px.</li>
+<li>Учитываем <code>env(safe-area-inset-*)</code> для iPhone с Dynamic Island и нижней полосой.</li>
+<li>Горизонтальный скролл запрещён: <code>overflow-x: clip</code> на <code>html/body</code>.</li>
+<li>Вертикальный скролл никогда не блокируем <code>overflow: hidden</code> на <code>body</code>.</li>
+</ul>
+<h3>9.8 Тосты на мобиле</h3>
+<ul>
+<li>Позиция: <strong>верхний центр</strong> или верхний правый угол, не нижний (чтобы не перекрывать нижнюю навигацию).</li>
+<li>Ширина: <code>calc(100vw - 32px)</code>, max-width 400px.</li>
+<li>Отступ сверху: <code>calc(16px + env(safe-area-inset-top))</code>.</li>
+</ul>
+<h3>9.9 Мобильный чек-лист</h3>
+<ol>
+<li>Нет горизонтального скролла на 375px.</li>
+<li>Все интерактивные элементы ≥ 44px.</li>
+<li>Поля ввода ≥ 16px.</li>
+<li>Dialog заменён на Sheet &lt; 768px.</li>
+<li>Таблицы превращены в карточки &lt; 768px.</li>
+<li>Нижняя навигация не перекрывает контент (есть нижний паддинг).</li>
+<li>Safe-area инсеты учтены.</li>
+</ol>
+<hr>
+<h2>10. Навигация</h2>
+<ul>
+<li>Шапка 64px, sticky, фон <code>rgba(19,20,27,0.80)</code> + <code>backdrop-filter: blur(20px)</code>, нижняя граница <code>rgba(255,255,255,0.06)</code>, <code>z-index: 40</code>.</li>
+<li>На &lt; 768px: нижняя навигация 60px, <code>z-index: 100</code>, максимум 5 пунктов, иконка 20px + подпись 11px, активный пункт — Volt. Контент страницы получает нижний паддинг <code>calc(60px + env(safe-area-inset-bottom))</code>.</li>
+<li>Табов на экране ≤ 5; больше — выпадающий список.</li>
+<li>Активный пункт — цвет Volt и подчёркивание 2px, а не жирный фон.</li>
+<li>Хлебные крошки только глубже 2 уровня, разделитель «/», последний элемент не ссылка.</li>
+</ul>
+<hr>
+<h2>10. Доступность</h2>
+<ul>
+<li>Все интерактивные элементы достигаются с клавиатуры, порядок фокуса = порядок чтения.</li>
+<li>Фокус-кольцо не убираем никогда: <code>outline: none</code> допустимо только вместе с <code>box-shadow: 0 0 0 2px #C8FF00</code> (offset 2px от фона).</li>
+<li>Контраст: обычный текст ≥ 4.5:1, крупный ≥ 3:1. Разрешённые пары: <code>#EBEEF9</code> на <code>#13141B</code>/<code>#1E2029</code>, <code>#9FA5BC</code> на <code>#13141B</code>, <code>#0a1100</code> на <code>#C8FF00</code>. Запрещено: <code>#5c6280</code> как основной текст, белый на Volt/Lime.</li>
+<li>Минимальная зона нажатия на тач-устройствах — 44×44px.</li>
+<li>Каждое поле имеет <code>&lt;label&gt;</code> (визуальный или <code>sr-only</code>), ошибки связаны через <code>aria-describedby</code>.</li>
+<li>Цвет — не единственный носитель смысла.</li>
+</ul>
+<hr>
+<h2>11. Форматы, состояния, тексты</h2>
+<ul>
+<li>Язык интерфейса — английский, <code>Sentence case</code> для заголовков и кнопок (не Title Case, не CAPS; CAPS только для мини-бейджей).</li>
+<li>Кнопка — глагол действия: «Generate», «Save changes». «OK/Submit» не используем.</li>
+<li>Числа и деньги — через <code>Intl.NumberFormat</code> с локалью пользователя, валюта не хардкодится. Даты: относительные («2 hours ago») в лентах, <code>MMM D, YYYY</code> в деталях, полный timestamp — в <code>title</code>.</li>
+<li>Длинные ID — mono, обрезка посередине, копирование по клику.</li>
+<li>У каждого экрана с данными четыре обязательных состояния: <strong>loading (скелетон) → empty → error → content</strong>.<ul>
+<li>Скелетон повторяет геометрию контента, фон <code>#242632</code>, пульсация 1.5 s.</li>
+<li>Empty: иконка 32px, заголовок 16px/600, строка пояснения 14px <code>#9FA5BC</code>, один CTA.</li>
+<li>Error: короткий заголовок, человеческая причина, кнопка «Try again», технический код — 12px mono <code>#5c6280</code>.</li>
+</ul>
+</li>
+<li>Кнопка в процессе: спиннер 16px внутри кнопки, ширина не прыгает, кнопка disabled.</li>
+<li>Тосты: правый нижний угол (на мобиле — верх), ширина до 400px, автоскрытие 5 s, ошибки — без автоскрытия.</li>
+</ul>
+<hr>
+<h2>12. Чек-лист перед мержем UI</h2>
+<ol>
+<li>Нет центрирующих <code>max-width</code>-контейнеров и <code>100vh</code>; нет хардкод-цветов вне палитры.</li>
+<li>Кнопки — пилюли; на экране один primary-CTA.</li>
+<li>Любой выбор из набора — выпадающий список; он открывается от триггера, не перекрывает его, авто-flip вверх при нехватке места.</li>
+<li>Тач-таргеты ≥ 44px, шрифт полей на мобиле ≥ 16px, учтены safe-area.</li>
+<li>Есть loading / empty / error, фокус-кольцо, <code>aria-label</code> у иконочных кнопок.</li>
+<li>Проверено на 375 / 768 / 1440px и при <code>prefers-reduced-motion: reduce</code>.</li>
+</ol>
+<hr>
+<h2>13. Чего не делать</h2>
+<ul>
+<li>Светлая тема, серые «материальные» тени, прямоугольные кнопки.</li>
+<li>Второй акцентный цвет рядом с Volt в одном блоке (Volt + Sky только в градиенте).</li>
+<li>Белый текст на Volt/Lime, серый <code>#5c6280</code> как основной текст.</li>
+<li>Радио-группы и нативные <code>&lt;select&gt;</code> вместо выпадающих списков.</li>
+<li>Модалка на мобиле вместо нижнего Sheet, оверлей внутри секции без портала.</li>
+<li>Uppercase и трекинг в обычных подписях и кнопках (это только для мини-бейджей).</li>
+<li>Анимация <code>width/height/top/left</code>, длительность &gt; 300 ms в интерфейсных переходах.</li>
+</ul>
+
+<hr>
+<h2>14. UI-примеры (живые компоненты)</h2>
+<p>Ниже — работающая разметка в точных значениях спецификации. Всё отрисовано только CSS-токенами из разделов 1–13; можно открывать DevTools и снимать размеры напрямую.</p>
+
+<h3>14.1 Палитра</h3>
+<div class="ex">
+  <p class="ex-title">Core palette</p>
+  <div class="grid3">
+    <div class="swatch"><div class="chip" style="background:#13141B"></div><small>#13141B · background</small></div>
+    <div class="swatch"><div class="chip" style="background:#1E2029"></div><small>#1E2029 · card</small></div>
+    <div class="swatch"><div class="chip" style="background:#191B24"></div><small>#191B24 · popover</small></div>
+    <div class="swatch"><div class="chip" style="background:#C8FF00"></div><small>#C8FF00 · volt / primary</small></div>
+    <div class="swatch"><div class="chip" style="background:#00C2FF"></div><small>#00C2FF · sky</small></div>
+    <div class="swatch"><div class="chip" style="background:#FF4D3D"></div><small>#FF4D3D · destructive</small></div>
+    <div class="swatch"><div class="chip" style="background:#39FF88"></div><small>#39FF88 · success</small></div>
+    <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#C8FF00,#00C2FF)"></div><small>brand gradient 135°</small></div>
+  </div>
+</div>
+
+<h3>14.2 Кнопки</h3>
+<div class="ex">
+  <p class="ex-title">Variants · height 40px · radius 9999px</p>
+  <div class="row">
+    <button class="btn btn-primary">Generate <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-outline">Outline</button>
+    <button class="btn btn-ghost">Ghost</button>
+    <button class="btn btn-destructive">Delete</button>
+    <button class="btn btn-primary" disabled>Disabled</button>
+  </div>
+  <p class="note">На экране всегда один primary-CTA. Иконка 16px, gap 8px.</p>
+</div>
+<div class="ex">
+  <p class="ex-title">Sizes · sm 36 / default 40 / lg 48 / icon 40×40</p>
+  <div class="row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-lg">Large</button>
+    <button class="btn btn-secondary btn-icon" aria-label="Next"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<h3>14.3 Бейджи и статусы</h3>
+<div class="ex">
+  <p class="ex-title">Badges · 10px / 700 / uppercase / tracking .1em</p>
+  <div class="row">
+    <span class="badge b-volt">Pro</span>
+    <span class="badge b-sky">Beta</span>
+    <span class="badge b-lime">Succeeded</span>
+    <span class="badge b-coral">Failed</span>
+    <span class="badge b-muted">Draft</span>
+  </div>
+</div>
+
+<h3>14.4 Формы</h3>
+<div class="ex">
+  <p class="ex-title">Input · label always visible · radius 10px · focus ring volt</p>
+  <div class="row" style="align-items:flex-start;gap:24px">
+    <div class="field">
+      <label class="label" for="ex-in">Название проекта</label>
+      <input class="input" id="ex-in" placeholder="Например, Summer campaign">
+      <span class="help">До 60 символов.</span>
+    </div>
+    <div class="field">
+      <label class="label" for="ex-in2">E-mail</label>
+      <input class="input input-error" id="ex-in2" value="not-an-email" aria-invalid="true">
+      <span class="err">Введите корректный адрес.</span>
+    </div>
+  </div>
+  <div class="field" style="margin-top:16px;max-width:520px">
+    <label class="label" for="ex-ta">Prompt</label>
+    <textarea class="textarea" id="ex-ta" placeholder="Опишите кадр: свет, ракурс, движение камеры…"></textarea>
+  </div>
+  <div class="row" style="margin-top:18px">
+    <span class="switch on" role="switch" aria-checked="true"><i></i></span><span class="help">Включено</span>
+    <span class="switch" role="switch" aria-checked="false" style="margin-left:16px"><i></i></span><span class="help">Выключено</span>
+  </div>
+</div>
+
+<h3>14.5 Выпадающие списки</h3>
+<div class="ex">
+  <p class="ex-title">Select · открывается вниз, offset 4px (кликните)</p>
+  <details class="sel">
+    <summary>Aspect ratio — 16:9 <svg class="ico" viewBox="0 0 24 24" style="color:#9FA5BC"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="sel-menu">
+      <div class="sel-label">Формат</div>
+      <div class="sel-item" aria-selected="true">16:9 <svg class="ico" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="sel-item">9:16</div>
+      <div class="sel-item">1:1</div>
+      <div class="sel-item">4:3</div>
+    </div>
+  </details>
+  <p class="note">Ширина меню = ширине триггера, радиус 14px, фон <code>#191B24</code>, тень <code>0 18px 50px rgba(0,0,0,.55)</code>.</p>
+</div>
+<div class="ex">
+  <p class="ex-title">Select в нижней панели · открывается вверх (side="top")</p>
+  <div style="height:210px;display:flex;align-items:flex-end;padding-top:150px">
+    <details class="sel sel-up" open>
+      <summary>Model — Veo 3.1 <svg class="ico" viewBox="0 0 24 24" style="color:#9FA5BC"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="sel-menu">
+        <div class="sel-label">Video</div>
+        <div class="sel-item" aria-selected="true">Veo 3.1 <svg class="ico" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div class="sel-item">Kling v3 Pro</div>
+        <div class="sel-item">Seedance 2.5</div>
+      </div>
+    </details>
+  </div>
+  <p class="note">Контролы в нижнем композере всегда открываются вверх — оверлей не перекрывает триггер.</p>
+</div>
+
+<h3>14.6 Карточки и табы</h3>
+<div class="ex">
+  <p class="ex-title">Cards · radius 12px · border rgba(255,255,255,.10)</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-volt">Popular</span>
+      <p class="card-title" style="margin-top:12px">Starter</p>
+      <p class="card-sub">500 кредитов в месяц</p>
+      <button class="btn btn-primary" style="width:100%">Выбрать</button>
+    </div>
+    <div class="card">
+      <span class="badge b-sky">New</span>
+      <p class="card-title" style="margin-top:12px">Nano Banana Pro</p>
+      <p class="card-sub">Image · 4 сек · 12 кредитов</p>
+      <button class="btn btn-outline" style="width:100%">Открыть</button>
+    </div>
+    <div class="card">
+      <p class="card-title">Загрузка</p>
+      <p class="card-sub">Skeleton вместо спиннера</p>
+      <div class="col">
+        <div class="sk" style="height:12px;width:80%"></div>
+        <div class="sk" style="height:12px;width:60%"></div>
+        <div class="sk" style="height:64px"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:18px">
+    <div class="tabs"><span class="tab is-active">Все</span><span class="tab">Видео</span><span class="tab">Фото</span><span class="tab">Аудио</span></div>
+  </div>
+</div>
+
+<h3>14.7 Диалог и тосты</h3>
+<div class="ex">
+  <p class="ex-title">Dialog · overlay rgba(0,0,0,.80) · footer справа на десктопе</p>
+  <div class="dialog-mock">
+    <div class="dialog">
+      <h4>Удалить генерацию?</h4>
+      <p>Действие нельзя отменить. Файл исчезнет из истории и хранилища.</p>
+      <div class="dialog-footer">
+        <button class="btn btn-ghost">Отмена</button>
+        <button class="btn btn-destructive">Удалить</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ex">
+  <p class="ex-title">Toasts · человеческие формулировки, без кодов провайдера</p>
+  <div class="col">
+    <div class="toast"><span class="badge b-lime">OK</span><div><p class="toast-t">Генерация готова</p><p class="toast-d">Видео 8 сек добавлено в историю.</p></div></div>
+    <div class="toast"><span class="badge b-coral">Ошибка</span><div><p class="toast-t">Не хватает кредитов</p><p class="toast-d">Нужно ещё 40 кредитов. Пополните баланс.</p></div></div>
+  </div>
+</div>
+
+<h3>14.8 Пустое состояние</h3>
+<div class="ex">
+  <p class="ex-title">Empty state · заголовок + одна строка + один CTA</p>
+  <div class="empty">
+    <span class="badge b-muted">История</span>
+    <h4>Пока пусто</h4>
+    <p>Здесь появятся ваши генерации после первого запуска.</p>
+    <button class="btn btn-primary">Создать первое видео</button>
+  </div>
+</div>
+
+<h3>14.9 Мобильная версия</h3>
+<div class="ex">
+  <p class="ex-title">Mobile · шапка 56px, нижняя навигация 60px, Sheet вместо Dialog</p>
+  <div class="row" style="align-items:flex-start;gap:24px">
+    <div class="phone">
+      <div class="phone-top"><span>Robinzone</span><span class="badge b-volt">610</span></div>
+      <div class="phone-body">
+        <div class="card" style="padding:14px"><p class="card-title" style="font-size:14px">Veo 3.1</p><p class="card-sub" style="margin:0">Text → Video</p></div>
+        <button class="btn btn-primary" style="width:100%;height:44px">Generate</button>
+      </div>
+      <div class="phone-nav">
+        <div class="is-active"><span>◉</span>Home</div><div><span>◎</span>Models</div><div><span>◎</span>Create</div><div><span>◎</span>Профиль</div>
+      </div>
+    </div>
+    <div class="phone" style="display:flex;flex-direction:column;justify-content:flex-end">
+      <div class="phone-body" style="opacity:.35"><div class="sk" style="height:16px;width:70%"></div><div class="sk" style="height:120px"></div></div>
+      <div class="sheet-mock">
+        <div class="sheet-grab"></div>
+        <p class="card-title" style="font-size:15px">Выбор модели</p>
+        <div class="sel-item" aria-selected="true">Veo 3.1 <svg class="ico" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div class="sel-item">Kling v3 Pro</div>
+        <div class="sel-item">Seedance 2.5</div>
+        <button class="btn btn-primary" style="width:100%;height:44px;margin-top:12px">Применить</button>
+      </div>
+    </div>
+  </div>
+  <p class="note">Тач-таргеты ≥ 44px, шрифт полей ≥ 16px, нижний Sheet до 88svh, safe-area учитывается отступом снизу.</p>
+</div>
+
+    </main>
+  </div>
+  <script>
+    const toc = document.getElementById('toc');
+    document.querySelectorAll('main h2').forEach(h => {
+      const id = h.id || h.textContent.toLowerCase().replace(/[^a-z0-9а-яё]+/g, '-').replace(/^-|-$/g, '');
+      h.id = id;
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      toc.appendChild(li);
+    });
+  </script>
+</body>
+</html>
